@@ -1,0 +1,1454 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>مغامرة الأبطال - المنهاج العراقي</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Cairo & Tajawal -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@500;700;800;900&family=Tajawal:wght@500;700;800&display=swap" rel="stylesheet">
+  
+  <style>
+    /* Custom Typography & Base Setup */
+    body {
+      font-family: 'Cairo', 'Tajawal', sans-serif;
+      background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 45%, #311042 100%);
+      color: #ffffff;
+      min-height: 100vh;
+      overflow-x: hidden;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    /* Animated Floating Stars Background */
+    .stars-bg {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      background-image: 
+        radial-gradient(2px 2px at 20px 30px, #ffffff, rgba(0,0,0,0)),
+        radial-gradient(2px 2px at 40px 70px, #fde047, rgba(0,0,0,0)),
+        radial-gradient(2px 2px at 90px 40px, #38bdf8, rgba(0,0,0,0)),
+        radial-gradient(2.5px 2.5px at 160px 120px, #ffffff, rgba(0,0,0,0)),
+        radial-gradient(2px 2px at 230px 80px, #f472b6, rgba(0,0,0,0));
+      background-repeat: repeat;
+      background-size: 260px 260px;
+      opacity: 0.45;
+      animation: twinkle 8s infinite alternate ease-in-out;
+    }
+
+    @keyframes twinkle {
+      0% { opacity: 0.35; transform: translateY(0px); }
+      100% { opacity: 0.65; transform: translateY(-10px); }
+    }
+
+    /* 3D Juicy Arcade Buttons */
+    .btn-3d {
+      transition: transform 0.12s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.12s ease, filter 0.15s ease;
+    }
+    .btn-3d:active:not(:disabled) {
+      transform: translateY(4px) scale(0.98);
+    }
+    .btn-3d:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+      filter: grayscale(0.6);
+    }
+
+    /* Card Hover & Float Effects */
+    .hero-card {
+      transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .hero-card:hover {
+      transform: translateY(-6px) scale(1.02);
+    }
+    .hero-card:active {
+      transform: translateY(2px) scale(0.99);
+    }
+
+    /* Real Photo Portrait Framing */
+    .real-photo-yaqoub {
+      object-fit: cover;
+      object-position: 50% 25%;
+    }
+    .real-photo-youssef {
+      object-fit: cover;
+      object-position: 52% 22%;
+    }
+
+    @keyframes floatSlow {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-8px) rotate(2deg); }
+    }
+    .animate-float {
+      animation: floatSlow 3.5s ease-in-out infinite;
+    }
+
+    @keyframes pulseFire {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.18); }
+    }
+    .animate-fire {
+      animation: pulseFire 0.8s ease-in-out infinite;
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20% { transform: translateX(-8px); }
+      40% { transform: translateX(8px); }
+      60% { transform: translateX(-6px); }
+      80% { transform: translateX(6px); }
+    }
+    .animate-shake {
+      animation: shake 0.4s ease-in-out;
+    }
+
+    @keyframes popIn {
+      0% { opacity: 0; transform: scale(0.85) translateY(15px); }
+      100% { opacity: 1; transform: scale(1) translateY(0); }
+    }
+    .animate-pop {
+      animation: popIn 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    }
+
+    /* Confetti Canvas */
+    #confetti-canvas {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 100;
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: rgba(15, 23, 42, 0.5);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(139, 92, 246, 0.5);
+      border-radius: 999px;
+    }
+  </style>
+</head>
+<body class="relative antialiased selection:bg-amber-400 selection:text-slate-900">
+  <!-- Decorative Background & Confetti -->
+  <div class="stars-bg"></div>
+  <canvas id="confetti-canvas"></canvas>
+
+  <!-- Main App Wrapper -->
+  <div id="app" class="relative z-10 max-w-5xl mx-auto px-4 py-4 sm:py-6 min-h-screen flex flex-col">
+    
+    <!-- Top Navigation / Status Header -->
+    <header class="flex flex-wrap items-center justify-between gap-3 bg-white/10 backdrop-blur-md border border-white/15 rounded-3xl px-4 py-3 shadow-xl mb-6">
+      <div class="flex items-center gap-3">
+        <button id="home-btn" onclick="goHome()" class="btn-3d bg-gradient-to-tr from-amber-400 to-orange-500 text-slate-950 font-black p-2.5 rounded-2xl shadow-lg shadow-orange-500/30 flex items-center gap-2 text-sm sm:text-base" title="القائمة الرئيسية">
+          <span class="text-xl">🏰</span>
+          <span class="hidden sm:inline">الرئيسية</span>
+        </button>
+        <div>
+          <h1 class="text-lg sm:text-2xl font-black tracking-tight bg-gradient-to-l from-amber-300 via-yellow-200 to-cyan-300 bg-clip-text text-transparent">
+            مغامرة الأبطال 🇮🇶
+          </h1>
+          <p id="header-subtitle" class="text-xs sm:text-sm text-indigo-200 font-medium">
+            المنهاج الدراسي العراقي الممتع
+          </p>
+        </div>
+      </div>
+
+      <!-- Player Stats Bar (Visible when grade is selected) -->
+      <div id="player-hud" class="hidden flex-wrap items-center gap-2 sm:gap-3">
+        <!-- Active Avatar & Level -->
+        <div class="flex items-center gap-2 bg-indigo-950/80 border border-indigo-400/30 rounded-2xl px-3 py-1.5">
+          <div id="hud-avatar" class="w-9 h-9 rounded-full overflow-hidden flex items-center justify-center bg-white/10 text-2xl shrink-0 border border-amber-300/50">🦁</div>
+          <div class="leading-tight">
+            <div id="hud-title" class="text-xs font-bold text-amber-300">مستكشف مبتدئ</div>
+            <div class="text-xs text-indigo-200">المستوى <span id="hud-level" class="font-black text-white">1</span></div>
+          </div>
+        </div>
+
+        <!-- Golden Stars Counter -->
+        <div class="flex items-center gap-1.5 bg-amber-500/20 border border-amber-400/40 rounded-2xl px-3 py-1.5 shadow-inner">
+          <span class="text-xl">⭐</span>
+          <span id="hud-stars" class="font-black text-amber-300 text-base sm:text-lg">0</span>
+        </div>
+
+        <!-- Reward Shop Button -->
+        <button onclick="openShop()" class="btn-3d bg-gradient-to-r from-fuchsia-500 to-pink-600 hover:from-fuchsia-400 hover:to-pink-500 text-white font-extrabold px-3.5 py-2 rounded-2xl shadow-lg shadow-pink-600/30 flex items-center gap-1.5 text-sm">
+          <span>🎁</span>
+          <span>المتجر</span>
+        </button>
+      </div>
+
+      <!-- Sound Mute Toggle -->
+      <button id="mute-btn" onclick="toggleMute()" class="btn-3d bg-white/15 hover:bg-white/25 border border-white/20 p-2.5 rounded-2xl text-xl" title="تشغيل/كتم الصوت">
+        🔊
+      </button>
+    </header>
+
+    <!-- SCREEN 1: GRADE SELECTION SCREEN -->
+    <main id="screen-grades" class="flex-1 flex flex-col justify-center items-center text-center animate-pop">
+      <div class="max-w-3xl mb-5">
+        <span class="inline-block bg-emerald-500/20 border border-emerald-400/40 text-emerald-300 font-bold text-xs sm:text-sm px-4 py-1.5 rounded-full mb-2">
+          ✨ مغامرة خاصة للأبطال: يعقوب ويوسف 🇮🇶
+        </span>
+        <h2 class="text-2xl sm:text-4xl font-black mb-1 leading-tight">
+          اختر بطلك لتبدأ اللعب! 🚀
+        </h2>
+        <p class="text-indigo-200 text-xs sm:text-sm">
+          اضغط على صورة يعقوب أو يوسف لبدء التحدي في المنهاج العراقي وجمع النجوم الذهبية
+        </p>
+      </div>
+
+      <!-- Hidden File Inputs for Custom Hero Photo Upload -->
+      <input type="file" id="upload-hero-4" accept="image/*" class="hidden" onchange="handleHeroPhotoUpload(4, event)">
+      <input type="file" id="upload-hero-6" accept="image/*" class="hidden" onchange="handleHeroPhotoUpload(6, event)">
+
+      <!-- Quick Banner to Load Real Photos -->
+      <div id="real-photo-banner" class="w-full max-w-4xl bg-amber-400/15 border-2 border-dashed border-amber-300/70 rounded-2xl p-3 sm:p-4 mb-5 flex flex-wrap items-center justify-between gap-3 text-right">
+        <div class="flex items-center gap-2.5">
+          <span class="text-2xl">📸</span>
+          <div class="text-xs sm:text-sm">
+            <div class="font-black text-amber-300">بۆ دانانی وێنە ڕاستەقینەکانی یەعقوب و یوسف:</div>
+            <div class="text-indigo-100">کلیک لە دوگمەی وێنەی هەریەکەیان بکە و وێنەکەی لە مۆبایل/کۆمپیوتەر هەڵبژێرە تا یەکسەر جێگیر بێت.</div>
+          </div>
+        </div>
+        <div class="flex items-center gap-2">
+          <button type="button" onclick="triggerHeroUpload(4)" class="btn-3d bg-sky-500 hover:bg-sky-400 text-white font-black text-xs px-3 py-2 rounded-xl shadow">
+            📥 وێنەی یەعقوب
+          </button>
+          <button type="button" onclick="triggerHeroUpload(6)" class="btn-3d bg-fuchsia-500 hover:bg-fuchsia-400 text-white font-black text-xs px-3 py-2 rounded-xl shadow">
+            📥 وێنەی یوسف
+          </button>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-4xl">
+        <!-- Grade 4 Card: Yaqoub (يعقوب) -->
+        <div onclick="selectGrade(4)" class="hero-card cursor-pointer relative overflow-hidden bg-gradient-to-br from-sky-500 via-blue-600 to-emerald-600 rounded-3xl p-6 sm:p-7 border-4 border-sky-300/60 shadow-2xl shadow-sky-900/50 text-right flex flex-col justify-between group">
+          <div class="absolute -left-6 -top-6 text-8xl opacity-15 group-hover:scale-110 transition-transform">🇮🇶</div>
+          <div>
+            <div class="flex items-center justify-between gap-2 mb-3">
+              <span class="bg-white/25 backdrop-blur-sm text-white font-extrabold px-3.5 py-1 rounded-full text-xs sm:text-sm">
+                الصف الرابع الابتدائي
+              </span>
+              <button type="button" onclick="event.stopPropagation(); triggerHeroUpload(4)" class="btn-3d bg-slate-950/50 hover:bg-slate-950/80 border border-white/30 text-white text-xs font-bold px-3 py-1.5 rounded-full flex items-center gap-1" title="اضغط لوضع صورتك الحقيقية أو الكرتونية">
+                <span>📸</span>
+                <span>تغيير الصورة</span>
+              </button>
+            </div>
+
+            <!-- Yaqoub Custom Portrait & Name -->
+            <div class="flex items-center gap-4 mb-4">
+              <div id="hero-card-avatar-4" onclick="event.stopPropagation(); triggerHeroUpload(4)" title="اضغط لاختيار صورة يعقوب الحقيقية" class="cursor-pointer relative w-24 h-24 sm:w-28 sm:h-28 rounded-3xl bg-gradient-to-b from-sky-200 to-emerald-200 border-4 border-amber-300 shadow-xl overflow-hidden shrink-0 flex items-center justify-center animate-float group/avatar">
+                <div class="text-center p-1">
+                  <div class="text-3xl mb-0.5">📷</div>
+                  <div class="text-[11px] font-black text-slate-900 leading-tight">اضغط لوضع صورة يعقوب</div>
+                </div>
+              </div>
+              <div>
+                <h3 class="text-3xl sm:text-4xl font-black text-amber-300 drop-shadow mb-1">
+                  البطل يعقوب 🌟
+                </h3>
+                <p class="text-sky-100 font-bold text-xs sm:text-sm leading-relaxed">
+                  مغامر الصف الرابع! القراءة والقواعد، الرياضيات، العلوم، الاجتماعيات، الإسلامية، والإنجليزية.
+                </p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="space-y-3">
+            <div class="flex items-center justify-between bg-black/25 rounded-2xl px-4 py-2.5 text-sm">
+              <span class="text-sky-100 font-bold">رصيد نجوم يعقوب:</span>
+              <span class="font-black text-amber-300 text-base">⭐ <span id="g4-preview-stars">0</span></span>
+            </div>
+            <button class="w-full btn-3d bg-amber-400 hover:bg-amber-300 text-slate-950 font-black py-3.5 rounded-2xl text-lg shadow-lg shadow-amber-500/30">
+              ابدأ اللعب يا يعقوب 🎮
+            </button>
+          </div>
+        </div>
+
+        <!-- Grade 6 Card: Youssef (يوسف) -->
+        <div onclick="selectGrade(6)" class="hero-card cursor-pointer relative overflow-hidden bg-gradient-to-br from-purple-600 via-fuchsia-700 to-indigo-800 rounded-3xl p-6 sm:p-7 border-4 border-fuchsia-300/60 shadow-2xl shadow-purple-900/50 text-right flex flex-col justify-between group">
+          <div class="absolute -left-6 -top-6 text-8xl opacity-15 group-hover:scale-110 transition-transform">🚀</div>
+          <div>
+            <div class="flex items-center justify-between gap-2 mb-3">
+              <span class="bg-white/25 backdrop-blur-sm text-white font-extrabold px-3.5 py-1 rounded-full text-xs sm:text-sm">
+                الصف السادس الابتدائي
+              </span>
+              <button type="button" onclick="event.stopPropagation(); triggerHeroUpload(6)" class="btn-3d bg-slate-950/50 hover:bg-slate-950/80 border border-white/30 text-white text-xs font-bold px-3 py-1.5 rounded-full flex items-center gap-1" title="اضغط لوضع صورتك الحقيقية أو الكرتونية">
+                <span>📸</span>
+                <span>تغيير الصورة</span>
+              </button>
+            </div>
+
+            <!-- Youssef Custom Portrait & Name -->
+            <div class="flex items-center gap-4 mb-4">
+              <div id="hero-card-avatar-6" onclick="event.stopPropagation(); triggerHeroUpload(6)" title="اضغط لاختيار صورة يوسف الحقيقية" class="cursor-pointer relative w-24 h-24 sm:w-28 sm:h-28 rounded-3xl bg-gradient-to-b from-fuchsia-200 to-indigo-200 border-4 border-amber-300 shadow-xl overflow-hidden shrink-0 flex items-center justify-center animate-float group/avatar">
+                <div class="text-center p-1">
+                  <div class="text-3xl mb-0.5">📷</div>
+                  <div class="text-[11px] font-black text-slate-900 leading-tight">اضغط لوضع صورة يوسف</div>
+                </div>
+              </div>
+              <div>
+                <h3 class="text-3xl sm:text-4xl font-black text-amber-300 drop-shadow mb-1">
+                  البطل يوسف ⚡
+                </h3>
+                <p class="text-purple-100 font-bold text-xs sm:text-sm leading-relaxed">
+                  فارس السادس الابتدائي! القواعد، الرياضيات، العلوم، الاجتماعيات، الإسلامية، والإنجليزية.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="space-y-3">
+            <div class="flex items-center justify-between bg-black/25 rounded-2xl px-4 py-2.5 text-sm">
+              <span class="text-purple-100 font-bold">رصيد نجوم يوسف:</span>
+              <span class="font-black text-amber-300 text-base">⭐ <span id="g6-preview-stars">0</span></span>
+            </div>
+            <button class="w-full btn-3d bg-amber-400 hover:bg-amber-300 text-slate-950 font-black py-3.5 rounded-2xl text-lg shadow-lg shadow-amber-500/30">
+              ابدأ التحدي يا يوسف 🔥
+            </button>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- SCREEN 2: SUBJECT SELECTION SCREEN -->
+    <section id="screen-subjects" class="hidden flex-1 flex-col animate-pop">
+      <!-- XP Progress Banner -->
+      <div class="bg-white/10 backdrop-blur-md border border-white/15 rounded-3xl p-4 sm:p-5 mb-6">
+        <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+          <div class="flex items-center gap-2">
+            <span id="grade-badge" class="bg-amber-400 text-slate-950 font-black px-3 py-1 rounded-xl text-sm">الصف الثالث</span>
+            <h2 class="text-xl sm:text-2xl font-black">اختر المادة الدراسية أو التحدي الشامل!</h2>
+          </div>
+          <div class="text-xs sm:text-sm font-bold text-cyan-300">
+            نقاط الخبرة: <span id="xp-text">0 / 100 XP</span>
+          </div>
+        </div>
+        <!-- XP Bar -->
+        <div class="w-full h-4 bg-slate-900/80 rounded-full overflow-hidden p-0.5 border border-white/10">
+          <div id="xp-bar" class="h-full bg-gradient-to-l from-amber-400 via-emerald-400 to-cyan-400 rounded-full transition-all duration-500" style="width: 15%"></div>
+        </div>
+      </div>
+
+      <!-- Subjects Grid -->
+      <div id="subjects-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 mb-6">
+        <!-- Dynamically populated -->
+      </div>
+    </section>
+
+    <!-- SCREEN 3: QUIZ / BATTLE ARENA SCREEN -->
+    <section id="screen-quiz" class="hidden flex-1 flex-col max-w-3xl mx-auto w-full animate-pop">
+      <!-- Top Battle Info Bar -->
+      <div class="flex items-center justify-between gap-3 bg-white/10 backdrop-blur-md border border-white/15 rounded-2xl px-4 py-3 mb-4">
+        <button onclick="exitQuiz()" class="btn-3d bg-rose-500/25 hover:bg-rose-500/40 border border-rose-400/40 text-rose-200 font-bold px-3 py-1.5 rounded-xl text-sm">
+          ✖ انسحاب
+        </button>
+
+        <!-- Question Counter & Progress -->
+        <div class="flex-1 mx-2">
+          <div class="flex justify-between text-xs font-bold mb-1 text-indigo-200">
+            <span id="quiz-subject-label">المادة</span>
+            <span>السؤال <span id="q-current">1</span> من <span id="q-total">8</span></span>
+          </div>
+          <div class="w-full h-3 bg-slate-950/70 rounded-full overflow-hidden">
+            <div id="quiz-progress-bar" class="h-full bg-gradient-to-l from-amber-400 to-emerald-400 transition-all duration-300" style="width: 12%"></div>
+          </div>
+        </div>
+
+        <!-- Streak Flame -->
+        <div id="streak-box" class="flex items-center gap-1 bg-orange-500/20 border border-orange-400/40 px-3 py-1.5 rounded-xl">
+          <span id="streak-icon" class="text-lg">🔥</span>
+          <span id="streak-count" class="font-black text-orange-300">0</span>
+        </div>
+      </div>
+
+      <!-- Question Card -->
+      <div id="question-card" class="bg-white/12 backdrop-blur-lg border-2 border-white/20 rounded-3xl p-5 sm:p-8 shadow-2xl mb-5 relative overflow-hidden">
+        <div class="flex items-center justify-between mb-3">
+          <span id="q-tag" class="bg-indigo-500/40 border border-indigo-300/30 text-indigo-100 text-xs font-bold px-3 py-1 rounded-full">
+            تحدي الأبطال
+          </span>
+          <span class="text-amber-300 font-extrabold text-sm">+10 ⭐</span>
+        </div>
+
+        <!-- Question Text -->
+        <h3 id="question-text" class="text-xl sm:text-2xl md:text-3xl font-black leading-relaxed text-white mb-6">
+          نص السؤال يظهر هنا...
+        </h3>
+
+        <!-- Hint Box (Hidden by default) -->
+        <div id="hint-box" class="hidden bg-amber-400/20 border border-amber-300/50 rounded-2xl p-3.5 mb-5 text-amber-200 text-sm sm:text-base font-bold flex items-start gap-2 animate-pop">
+          <span class="text-xl">💡</span>
+          <p id="hint-text"></p>
+        </div>
+
+        <!-- 4 Multiple Choice Options -->
+        <div id="options-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+          <!-- Options injected by JS -->
+        </div>
+
+        <!-- Smart Explanation Feedback Box (Shown after answering) -->
+        <div id="feedback-box" class="hidden mt-6 rounded-2xl p-4 sm:p-5 border-2 animate-pop">
+          <div class="flex items-center gap-2 mb-1.5">
+            <span id="feedback-icon" class="text-2xl">🎉</span>
+            <h4 id="feedback-title" class="text-lg sm:text-xl font-black">إجابة رائعة!</h4>
+          </div>
+          <p id="feedback-explanation" class="text-sm sm:text-base font-medium leading-relaxed opacity-95 mb-4"></p>
+          <button id="next-q-btn" onclick="nextQuestion()" class="w-full btn-3d bg-amber-400 hover:bg-amber-300 text-slate-950 font-black py-3.5 rounded-2xl text-lg shadow-lg">
+            السؤال التالي ⬅️
+          </button>
+        </div>
+      </div>
+
+      <!-- Power-Ups / Helpers Bar -->
+      <div class="grid grid-cols-3 gap-3 bg-slate-950/50 border border-white/10 rounded-3xl p-3">
+        <button id="btn-5050" onclick="use5050()" class="btn-3d bg-gradient-to-b from-sky-500 to-blue-600 text-white rounded-2xl p-2.5 sm:p-3 flex flex-col items-center justify-center shadow-lg">
+          <span class="text-xl sm:text-2xl mb-0.5">✂️</span>
+          <span class="font-extrabold text-xs sm:text-sm">حذف إجابتين</span>
+          <span class="text-[11px] bg-black/30 px-2 py-0.5 rounded-full mt-1 text-amber-300 font-bold">5 ⭐</span>
+        </button>
+
+        <button id="btn-hint" onclick="useHint()" class="btn-3d bg-gradient-to-b from-amber-500 to-orange-600 text-white rounded-2xl p-2.5 sm:p-3 flex flex-col items-center justify-center shadow-lg">
+          <span class="text-xl sm:text-2xl mb-0.5">💡</span>
+          <span class="font-extrabold text-xs sm:text-sm">تلميح ذكي</span>
+          <span class="text-[11px] bg-black/30 px-2 py-0.5 rounded-full mt-1 text-amber-200 font-bold">5 ⭐</span>
+        </button>
+
+        <button id="btn-skip" onclick="useSkip()" class="btn-3d bg-gradient-to-b from-purple-500 to-fuchsia-600 text-white rounded-2xl p-2.5 sm:p-3 flex flex-col items-center justify-center shadow-lg">
+          <span class="text-xl sm:text-2xl mb-0.5">⏭️</span>
+          <span class="font-extrabold text-xs sm:text-sm">تخطي السؤال</span>
+          <span class="text-[11px] bg-black/30 px-2 py-0.5 rounded-full mt-1 text-amber-300 font-bold">8 ⭐</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- SCREEN 4: ROUND VICTORY / SUMMARY SCREEN -->
+    <section id="screen-result" class="hidden flex-1 flex-col items-center justify-center text-center max-w-xl mx-auto w-full animate-pop">
+      <div class="bg-white/12 backdrop-blur-xl border-2 border-amber-300/40 rounded-3xl p-6 sm:p-8 shadow-2xl w-full">
+        <div id="result-trophy" class="text-7xl mb-3 animate-float">🏆</div>
+        <h2 id="result-title" class="text-3xl sm:text-4xl font-black text-amber-300 mb-2">
+          أحسنت يا بطل!
+        </h2>
+        <p id="result-subtitle" class="text-indigo-200 font-semibold mb-6">
+          لقد أكملت المغامرة بنجاح باهر!
+        </p>
+
+        <div class="grid grid-cols-3 gap-3 mb-6">
+          <div class="bg-slate-900/70 border border-white/10 rounded-2xl p-3">
+            <div class="text-xs text-indigo-300 font-bold mb-1">الإجابات الصحيحة</div>
+            <div id="res-score" class="text-xl sm:text-2xl font-black text-emerald-400">8 / 8</div>
+          </div>
+          <div class="bg-slate-900/70 border border-white/10 rounded-2xl p-3">
+            <div class="text-xs text-indigo-300 font-bold mb-1">النجوم المكتسبة</div>
+            <div id="res-stars" class="text-xl sm:text-2xl font-black text-amber-300">+80 ⭐</div>
+          </div>
+          <div class="bg-slate-900/70 border border-white/10 rounded-2xl p-3">
+            <div class="text-xs text-indigo-300 font-bold mb-1">أعلى سلسلة</div>
+            <div id="res-streak" class="text-xl sm:text-2xl font-black text-orange-400">5 🔥</div>
+          </div>
+        </div>
+
+        <div class="flex flex-col sm:flex-row gap-3">
+          <button onclick="replaySubject()" class="flex-1 btn-3d bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-black py-3.5 rounded-2xl text-lg shadow-lg">
+            العب مرة أخرى 🔄
+          </button>
+          <button onclick="backToSubjects()" class="flex-1 btn-3d bg-amber-400 hover:bg-amber-300 text-slate-950 font-black py-3.5 rounded-2xl text-lg shadow-lg">
+            اختيار مادة أخرى 📚
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- MODAL: REWARD SHOP & AVATARS -->
+    <div id="shop-modal" class="hidden fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4">
+      <div class="bg-gradient-to-b from-indigo-900 to-slate-900 border-2 border-fuchsia-400/40 rounded-3xl max-w-2xl w-full max-h-[88vh] flex flex-col shadow-2xl animate-pop">
+        <div class="flex items-center justify-between p-5 border-b border-white/10">
+          <div class="flex items-center gap-2.5">
+            <span class="text-3xl">🎁</span>
+            <div>
+              <h3 class="text-xl sm:text-2xl font-black text-white">متجر الأبطال والأوسمة</h3>
+              <p class="text-xs text-indigo-200">استبدل نجومك الذهبية بشخصيات وألقاب رائعة!</p>
+            </div>
+          </div>
+          <div class="flex items-center gap-3">
+            <span class="bg-amber-500/20 border border-amber-400/40 px-3 py-1 rounded-xl font-black text-amber-300">
+              ⭐ <span id="shop-stars">0</span>
+            </span>
+            <button onclick="closeShop()" class="btn-3d bg-white/10 hover:bg-white/20 text-white font-black w-9 h-9 rounded-xl">
+              ✖
+            </button>
+          </div>
+        </div>
+
+        <div id="shop-items-grid" class="p-5 overflow-y-auto grid grid-cols-2 sm:grid-cols-3 gap-3.5">
+          <!-- Shop avatars injected here -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Toast Notification Banner -->
+    <div id="toast" class="fixed bottom-5 left-1/2 -translate-x-1/2 z-50 bg-slate-900/95 border-2 border-amber-400 text-white px-5 py-3 rounded-2xl shadow-2xl font-bold text-sm sm:text-base hidden transition-all">
+    </div>
+  </div>
+
+  <script>
+    /* ==========================================================================
+       1. WEB AUDIO API SOUND SYNTHESIZER (No external audio URLs needed!)
+       ========================================================================== */
+    const SoundFX = {
+      ctx: null,
+      muted: false,
+      init() {
+        if (!this.ctx) {
+          const AudioCtx = window.AudioContext || window.webkitAudioContext;
+          if (AudioCtx) this.ctx = new AudioCtx();
+        }
+        if (this.ctx && this.ctx.state === 'suspended') {
+          this.ctx.resume();
+        }
+      },
+      playTone(freq, type, duration, delay = 0, vol = 0.18) {
+        if (this.muted) return;
+        this.init();
+        if (!this.ctx) return;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq, this.ctx.currentTime + delay);
+        gain.gain.setValueAtTime(vol, this.ctx.currentTime + delay);
+        gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + delay + duration);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start(this.ctx.currentTime + delay);
+        osc.stop(this.ctx.currentTime + delay + duration);
+      },
+      click() {
+        this.playTone(520, 'sine', 0.08, 0, 0.12);
+      },
+      correct() {
+        this.playTone(523.25, 'triangle', 0.14, 0, 0.2);    // C5
+        this.playTone(659.25, 'triangle', 0.14, 0.09, 0.2); // E5
+        this.playTone(783.99, 'triangle', 0.25, 0.18, 0.22);// G5
+      },
+      wrong() {
+        this.playTone(220, 'sawtooth', 0.18, 0, 0.14);
+        this.playTone(175, 'sawtooth', 0.25, 0.12, 0.14);
+      },
+      powerup() {
+        this.playTone(440, 'sine', 0.1, 0, 0.18);
+        this.playTone(880, 'sine', 0.2, 0.08, 0.18);
+      },
+      victory() {
+        const notes = [523.25, 659.25, 783.99, 1046.50];
+        notes.forEach((n, idx) => {
+          this.playTone(n, 'triangle', 0.25, idx * 0.12, 0.22);
+        });
+      }
+    };
+
+    function toggleMute() {
+      SoundFX.muted = !SoundFX.muted;
+      document.getElementById('mute-btn').textContent = SoundFX.muted ? '🔇' : '🔊';
+      if (!SoundFX.muted) SoundFX.click();
+    }
+
+    /* ==========================================================================
+       2. CONFETTI CELEBRATION ENGINE
+       ========================================================================== */
+    function launchConfetti() {
+      const canvas = document.getElementById('confetti-canvas');
+      const ctx = canvas.getContext('2d');
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      const colors = ['#fde047', '#34d399', '#38bdf8', '#f472b6', '#a78bfa', '#fb923c'];
+      const particles = Array.from({ length: 90 }, () => ({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height - canvas.height,
+        r: Math.random() * 7 + 4,
+        d: Math.random() * 40 + 10,
+        color: colors[Math.floor(Math.random() * colors.length)],
+        tilt: Math.random() * 10 - 10,
+        tiltAngle: 0,
+        tiltSpeed: Math.random() * 0.08 + 0.04
+      }));
+
+      let frame = 0;
+      function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        particles.forEach(p => {
+          p.tiltAngle += p.tiltSpeed;
+          p.y += (Math.cos(p.d) + 3.5);
+          p.x += Math.sin(p.tiltAngle) * 2;
+          ctx.beginPath();
+          ctx.lineWidth = p.r;
+          ctx.strokeStyle = p.color;
+          ctx.moveTo(p.x + p.tilt + p.r / 2, p.y);
+          ctx.lineTo(p.x + p.tilt, p.y + p.tilt + p.r / 2);
+          ctx.stroke();
+        });
+        frame++;
+        if (frame < 140) {
+          requestAnimationFrame(draw);
+        } else {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+      }
+      draw();
+    }
+
+    /* ==========================================================================
+       3. SHOP AVATARS & TITLES DATA
+       ========================================================================== */
+    const SHOP_ITEMS = [
+      { id: 'hero_self', emoji: '🌟', title: 'صورة البطل الشخصية', cost: 0 },
+      { id: 'lion', emoji: '🦁', title: 'أسد الرافدين', cost: 0 },
+      { id: 'eagle', emoji: '🦅', title: 'نسر العراق', cost: 30 },
+      { id: 'astronaut', emoji: '👨‍🚀', title: 'رائد الفضاء', cost: 60 },
+      { id: 'scientist', emoji: '🔬', title: 'عالم المستقبل', cost: 100 },
+      { id: 'wizard', emoji: '🧙‍♂️', title: 'عبقري الذكاء', cost: 150 },
+      { id: 'robot', emoji: '🤖', title: 'البطل الآلي', cost: 200 },
+      { id: 'dragon', emoji: '🐉', title: 'تنين المعرفة', cost: 280 },
+      { id: 'crown', emoji: '👑', title: 'ملك التفوق', cost: 400 }
+    ];
+
+    /* ==========================================================================
+       4. IRAQI CURRICULUM QUESTION BANK (GRADE 4 YAQOUB & GRADE 6 YOUSSEF)
+       ========================================================================== */
+    const CURRICULUM_DATA = {
+      4: {
+        heroName: 'يعقوب',
+        name: 'الصف الرابع الابتدائي - البطل يعقوب',
+        subjects: [
+          { id: 'arabic4', name: 'القراءة وقواعد اللغة العربية', icon: '📖', color: 'from-emerald-500 to-teal-600', desc: 'أقسام الكلام، المذكر والمؤنث، الضمائر' },
+          { id: 'math4', name: 'الرياضيات', icon: '🔢', color: 'from-blue-500 to-indigo-600', desc: 'الملايين، الضرب، القسمة، والكسور' },
+          { id: 'science4', name: 'العلوم', icon: '🔬', color: 'from-lime-500 to-green-600', desc: 'البكتيريا والطحالب، دورات الحياة، المادة' },
+          { id: 'social4', name: 'الاجتماعيات', icon: '🗺️', color: 'from-cyan-500 to-sky-600', desc: 'البيئة المحلية، الخريطة، والاتجاهات' },
+          { id: 'islamic4', name: 'التربية الإسلامية', icon: '🕌', color: 'from-amber-500 to-orange-600', desc: 'السور الكريمة، الوضوء، وسيرة النبي (ص)' },
+          { id: 'english4', name: 'اللغة الإنجليزية', icon: '🔤', color: 'from-pink-500 to-rose-600', desc: 'الأشهر، البلدان، والصفات' },
+          { id: 'mixed4', name: 'التحدي الشامل ليعقوب', icon: '🏆', color: 'from-purple-600 to-fuchsia-600', desc: 'مغامرة تجمع كل مواد الصف الرابع!' }
+        ],
+        questions: {
+          arabic4: [
+            { q: 'ما أقسام الكلام في اللغة العربية يا يعقوب؟', options: ['اسم وفعل وحرف', 'مبتدأ وخبر فقط', 'ماضٍ ومضارع فقط', 'مفرد وجمع'], ans: 0, hint: 'الكلام يتكون من ثلاثة أقسام رئيسية.', exp: 'ينقسم الكلام في اللغة العربية إلى ثلاثة أقسام: اسم، وفعل، وحرف.' },
+            { q: 'ما نوع الفعل في جملة: (كَتَبَ يعقوبُ الدرسَ)؟', options: ['فعل ماضٍ', 'فعل مضارع', 'فعل أمر', 'حرف جر'], ans: 0, hint: 'حدث وانتهى في الزمن الماضي.', exp: '(كَتَبَ) فعل ماضٍ مبني على الفتح لأنه يدل على حدث وقع في الماضي.' },
+            { q: 'أي ضمير من الضمائر الآتية نستخدمه للمفرد المذكر الغائب؟', options: ['هُوَ', 'هِيَ', 'هُما', 'نَحنُ'], ans: 0, hint: 'نقول: ..... تلميذٌ مجتهدٌ.', exp: '(هُوَ) ضمير للمفرد المذكر الغائب.' },
+            { q: 'ما جمع المؤنث السالم لكلمة (مُعَلِّمة)؟', options: ['مُعَلِّمات', 'مُعَلِّمون', 'مُعَلِّمتان', 'عُلَماء'], ans: 0, hint: 'نزيد ألفاً وتاءً طويلة في آخر الاسم المفرد المؤنث.', exp: 'جمع المؤنث السالم لكلمة مُعَلِّمة هو (مُعَلِّمات).' },
+            { q: 'أي من الأسماء الآتية هو (اسم موصول) للمفرد المذكر؟', options: ['الذي', 'التي', 'الذين', 'اللتان'], ans: 0, hint: 'نقول: جاء التلميذُ ..... فاز بالسباق.', exp: '(الذي) اسم موصول يُستخدم للمفرد المذكر.' },
+            { q: 'ما نوع الجملة: (السماءُ صافيةٌ)؟', options: ['جملة اسمية', 'جملة فعلية', 'شبه جملة', 'أسلوب نهي'], ans: 0, hint: 'تبدأ باسم (السماءُ).', exp: 'تسمى جملة اسمية لأنها تبدأ باسم (مبتدأ وخبر).' },
+            { q: 'أي حرف من الحروف الآتية هو من (حروف الجر)؟', options: ['في', 'لَم', 'سَوفَ', 'قَد'], ans: 0, hint: 'من حروف الجر: مِن، إلى، عَن، على، في.', exp: '(في) حرف جر يجر الاسم الذي يأتي بعده بالكسرة.' },
+            { q: 'ما المثنى لكلمة (قَلَم)؟', options: ['قَلَمان', 'أَقلام', 'قُلَيم', 'قَلَمات'], ans: 0, hint: 'يدل على اثنين بزيادة ألف ونون.', exp: 'مثنى قَلَم هو (قَلَمان) في حالة الرفع.' },
+            { q: 'اختر اسم الإشارة المناسب: (..... تلميذٌ ذكيٌّ)', options: ['هذا', 'هذه', 'هؤلاء', 'تلك'], ans: 0, hint: 'للمفرد المذكر القريب.', exp: '(هذا) اسم إشارة للمفرد المذكر القريب.' }
+          ],
+          math4: [
+            { q: 'كم صفراً يوجد في العدد (مليون)؟', options: ['6 أصفار', '5 أصفار', '7 أصفار', '4 أصفار'], ans: 0, hint: 'المليون هو ألف ألف (1,000,000).', exp: 'العدد مليون يُكتب 1,000,000 ويحتوي على 6 أصفار.' },
+            { q: 'ما ناتج ضرب: 25 × 4 = ؟', options: ['100', '80', '90', '120'], ans: 0, hint: 'أربع خمسة وعشرينات تساوي مئة.', exp: '25 × 4 = 100.' },
+            { q: 'ما ناتج قسمة: 72 ÷ 8 = ؟', options: ['9', '8', '7', '6'], ans: 0, hint: 'ما العدد الذي نضربه في 8 ليكون الناتج 72؟', exp: '8 × 9 = 72، إذن 72 ÷ 8 = 9.' },
+            { q: 'إذا قُرب العدد (4720) إلى أقرب ألف، فما الناتج؟', options: ['5000', '4000', '4700', '4800'], ans: 0, hint: 'انظر إلى مرتبة المئات (7)، وهي أكبر من 5 فتُعطي 1 للألوف.', exp: 'بما أن رقم المئات 7 (كريم)، يُقرّب العدد 4720 إلى 5000.' },
+            { q: 'ما الكسر العشري الذي يساوي (نصف 0.5)؟', options: ['0.5', '0.2', '0.05', '5.0'], ans: 0, hint: 'خمسة أعشار (5/10).', exp: 'الكسر 5/10 يساوي 1/2 ويُكتب عشرياً 0.5.' },
+            { q: 'كم قياس الزاوية القائمة بالدرجات؟', options: ['90 درجة', '180 درجة', '45 درجة', '60 درجة'], ans: 0, hint: 'مثل زاوية المربع أو المستطيل.', exp: 'قياس الزاوية القائمة يساوي 90 درجة بالضبط.' },
+            { q: 'ما محيط مربع طول ضلعه 5 سم؟', options: ['20 سم', '25 سم', '10 سم', '15 سم'], ans: 0, hint: 'محيط المربع = طول الضلع × 4.', exp: 'محيط المربع = 5 × 4 = 20 سم.' },
+            { q: 'ما ناتج: 4500 + 1500 = ؟', options: ['6000', '5000', '5500', '6500'], ans: 0, hint: '4000 + 1000 = 5000، و 500 + 500 = 1000.', exp: '4500 + 1500 = 6000.' }
+          ],
+          science4: [
+            { q: 'كائنات حية بسيطة جداً لا تُرى بالعين المجردة وتُشاهد بالمجهر:', options: ['البكتيريا', 'الأسماك', 'الطيور', 'الأشجار'], ans: 0, hint: 'توجد في كل مكان وتُرى بالمجهر.', exp: 'البكتيريا كائنات حية بسيطة صغيرة جداً لا تُرى إلا بالمجهر.' },
+            { q: 'ما أول مرحلة في دورة حياة الفراشة؟', options: ['البيضة', 'اليرقة', 'العذراء', 'الحشرة الكاملة'], ans: 0, hint: 'تضعها الفراشة على أوراق النباتات.', exp: 'تبدأ دورة حياة الفراشة بـ (البيضة) ثم اليرقة ثم العذراء ثم الحشرة الكاملة.' },
+            { q: 'أي جزء في الزهرة ينتج حبوب اللقاح؟', options: ['السداة (الطلع)', 'الكأس', 'التويج', 'الساق'], ans: 0, hint: 'عضو التذكير في الزهرة.', exp: 'السداة (الطلع) هي عضو التذكير في الزهرة وتنتج حبوب اللقاح.' },
+            { q: 'تُسمى القوة التي تجذب الأجسام نحو الأرض:', options: ['قوة الجاذبية الأرضية', 'قوة الاحتكاك', 'القوة المغناطيسية', 'قوة الدفع'], ans: 0, hint: 'هي التي تجعل التفاحة تسقط نحو الأسفل.', exp: 'الجاذبية الأرضية هي القوة التي تجذب بها الأرض الأجسام نحوها.' },
+            { q: 'ما الحالة التي تكون فيها المادة ذات شكل وحجم ثابتين؟', options: ['الحالة الصلبة', 'الحالة السائلة', 'الحالة الغازية', 'البلازما'], ans: 0, hint: 'مثل الحجر والحديد والكتاب.', exp: 'المادة الصلبة لها شكل ثابت وحجم ثابت.' },
+            { q: 'أي من الموارد الآتية يُعد من (الوقود الأحفوري)؟', options: ['النفط والغاز الطبيعي', 'الماء', 'الرياح', 'أشعة الشمس'], ans: 0, hint: 'يُستخرج من باطن الأرض ويشتهر به العراق.', exp: 'النفط والغاز الطبيعي والفحم الحجري من أنواع الوقود الأحفوري.' },
+            { q: 'ما اسم العملية التي يتحول فيها الماء السائل إلى غاز بالتسخين؟', options: ['التبخر', 'التكاثف', 'الانجماد', 'الانصهار'], ans: 0, hint: 'تحدث لمياه البحار بفعل حرارة الشمس.', exp: 'التبخر هو تحول المادة من الحالة السائلة إلى الحالة الغازية بالتسخين.' },
+            { q: 'تُسمى الحيوانات التي تمتلك عموداً فقرياً في أجسامها:', options: ['الفقريات', 'اللافقريات', 'الطحالب', 'الفطريات'], ans: 0, hint: 'مثل الأسماك والطيور والإنسان.', exp: 'الحيوانات الفقارية هي التي تمتلك عموداً فقرياً في الجهة الظهرية من أجسامها.' }
+          ],
+          social4: [
+            { q: 'ما العلم الذي يدرس المكان وما عليه من ظواهر طبيعية وبشرية؟', options: ['علم الجغرافية', 'علم التاريخ', 'علم الفلك', 'علم الكيمياء'], ans: 0, hint: 'يهتم بالخرائط والجبال والأنهار والمدن.', exp: 'علم الجغرافية هو العلم الذي يدرس المكان بما يحتويه من ظواهر طبيعية وبشرية.' },
+            { q: 'ما هي الجهات الأصلية الأربع على الخريطة؟', options: ['الشمال، الجنوب، الشرق، الغرب', 'الأعلى والأسفل فقط', 'اليمين واليسار', 'الشمال الشرقي فقط'], ans: 0, hint: 'تُستخدم لتحديد المواقع بدقة.', exp: 'الجهات الأصلية أربع: الشمال، الجنوب، الشرق، والغرب.' },
+            { q: 'تُسمى الأرض المرتفعة ولها قمة عالية وجوانب شديدة الانحدار:', options: ['الجبل', 'السهل', 'الوادي', 'الهضبة'], ans: 0, hint: 'تكثر في شمال وطننا العراق.', exp: 'الجبل هو أرض مرتفعة ذات قمة عالية وجوانب شديدة الانحدار.' },
+            { q: 'ما اسم عاصمة جمهوريتنا الحبيبة العراق؟', options: ['بغداد', 'البصرة', 'أربيل', 'الموصل'], ans: 0, hint: 'تقع في وسط العراق ويمر فيها نهر دجلة.', exp: 'بغداد هي عاصمة جمهورية العراق وأكبر مدنه.' },
+            { q: 'ما العنصر في الخريطة الذي يوضح معنى الرموز والألوان المستخدمة؟', options: ['مفتاح الخريطة', 'عنوان الخريطة', 'مقياس الرسم', 'إطار الخريطة'], ans: 0, hint: 'يشبه المفتاح الذي يفتح لنا فهم الخريطة.', exp: 'مفتاح الخريطة يوضح معنى الرموز والألوان الموجودة على الخريطة.' },
+            { q: 'تُعد المدرسة والحديقة العامة والمستشفى من:', options: ['الممتلكات العامة', 'الممتلكات الخاصة', 'الظواهر الطبيعية', 'التضاريس'], ans: 0, hint: 'ملك لجميع المواطنين ويجب الحفاظ عليها.', exp: 'المدرسة والمستشفى من الممتلكات العامة التي تخدم المجتمع كله.' },
+            { q: 'ما النهران العظيمان اللذان يجريان في أرض العراق (بلاد الرافدين)؟', options: ['دجلة والفرات', 'النيل والأردن', 'بردى والعاصي', 'السند والغانج'], ans: 0, hint: 'بسببهما سُمي العراق بلاد الرافدين.', exp: 'نهرا دجلة والفرات هما شريان الحياة في العراق.' },
+            { q: 'الظواهر التي لا دخل للإنسان في تكوينها مثل الجبال والأمطار تُسمى:', options: ['ظواهر طبيعية', 'ظواهر بشرية', 'مصانع', 'جسور'], ans: 0, hint: 'من صنع الله تعالى في الطبيعة.', exp: 'الظواهر الطبيعية هي التي أوجدها الله تعالى دون تدخل الإنسان.' }
+          ],
+          islamic4: [
+            { q: 'ما السورة التي نزلت في غار حراء وكانت أول ما نزل من القرآن الكريم؟', options: ['سورة العلق (اقرأ)', 'سورة الفاتحة', 'سورة الإخلاص', 'سورة الكوثر'], ans: 0, hint: 'تبدأ بكلمة (اقْرَأْ بِاسْمِ رَبِّكَ).', exp: 'أول آيات نزلت على نبينا محمد (ص) هي صدر سورة العلق.' },
+            { q: 'كم عدد الصلوات المفروضة على المسلم في اليوم والليلة؟', options: ['5 صلوات', '3 صلوات', '4 صلوات', '7 صلوات'], ans: 0, hint: 'الصبح، الظهر، العصر، المغرب، العشاء.', exp: 'الصلوات المفروضة خمس صلوات في اليوم والليلة.' },
+            { q: 'من هو النبي الذي بنى السفينة بأمر الله تعالى لينجو مع المؤمنين من الطوفان؟', options: ['نبي الله نوح (ع)', 'نبي الله موسى (ع)', 'نبي الله صالح (ع)', 'نبي الله هود (ع)'], ans: 0, hint: 'أول الرسل من أولي العزم.', exp: 'نبي الله نوح (عليه السلام) صنع السفينة بأمر الله تعالى.' },
+            { q: 'ما حكم من يغش في الامتحان أو في البيع؟', options: ['حرام ولا يرضى به الله', 'أمر عادي', 'شطارة', 'مكروه فقط'], ans: 0, hint: 'قال النبي (ص): من غشّنا فليس منّا.', exp: 'الغش محرم في الإسلام لأن المسلم صادق وأمين.' },
+            { q: 'ما اسم الكتاب السماوي الذي أنزله الله على نبينا محمد (ص)؟', options: ['القرآن الكريم', 'التوراة', 'الإنجيل', 'الزبور'], ans: 0, hint: 'خاتم الكتب السماوية.', exp: 'القرآن الكريم هو كلام الله المنزل على نبينا محمد (ص).' },
+            { q: 'أكمل الآية الكريمة من سورة الضحى: (وَالضُّحَى * وَاللَّيْلِ إِذَا .....)', options: ['سَجَى', 'يَغْشَى', 'أَسْرَى', 'تَجَلَّى'], ans: 0, hint: 'سكن واشتد ظلامه.', exp: 'قال تعالى: {وَالضُّحَى * وَاللَّيْلِ إِذَا سَجَى}.' },
+            { q: 'من هو أول من آمن بالنبي (ص) من النساء؟', options: ['السيدة خديجة بنت خويلد (ع)', 'السيدة آمنة', 'السيدة حليمة', 'السيدة آسية'], ans: 0, hint: 'زوجة النبي (ص) وأم المؤمنين.', exp: 'السيدة خديجة الكبرى (عليها السلام) هي أول من آمنت بالنبي (ص) من النساء.' },
+            { q: 'ماذا نفعل قبل أداء الصلاة لكي تصح صلاتنا؟', options: ['نتوضأ وضوءاً صحيحاً', 'نلعب بالكرة', 'نأكل الطعام', 'ننام'], ans: 0, hint: 'الطهارة شرط لصحة الصلاة.', exp: 'الوضوء والطهارة شرط أساسي لصحة الصلاة.' }
+          ],
+          english4: [
+            { q: 'ماذا تعني كلمة (Iraq) باللغة العربية؟', options: ['العراق', 'مصر', 'الأردن', 'لبنان'], ans: 0, hint: 'وطننا الحبيب 🇮🇶.', exp: 'Iraq تعني العراق.' },
+            { q: 'ما هو الشهر الأول في السنة الميلادية بالإنجليزية؟', options: ['January', 'March', 'May', 'December'], ans: 0, hint: 'يبدأ بحرف J (كانون الثاني).', exp: 'January هو شهر كانون الثاني (الشهر الأول).' },
+            { q: 'ماذا تعني صفة (Tall) باللغة العربية؟', options: ['طويل', 'قصير', 'سريع', 'كبير'], ans: 0, hint: 'عكس كلمة Short.', exp: 'Tall تعني طويل.' },
+            { q: 'كيف نقول (ملعب / ساحة اللعب) باللغة الإنجليزية؟', options: ['Playground', 'Classroom', 'Library', 'Kitchen'], ans: 0, hint: 'تتكون من Play (يلعب) + ground (أرض).', exp: 'Playground تعني ساحة اللعب أو الملعب.' },
+            { q: 'اختر الفعل المساعد الصحيح: Yousif and Yaqoub ..... brothers.', options: ['are', 'is', 'am', 'was'], ans: 0, hint: 'لأن يوسف ويعقوب جمع (اثنان).', exp: 'نستخدم (are) مع الجمع: Yousif and Yaqoub are brothers.' },
+            { q: 'ماذا تعني كلمة (Mountain) في وصف الطبيعة؟', options: ['جبل', 'نهر', 'بحر', 'صحراء'], ans: 0, hint: 'أرض مرتفعة جداً.', exp: 'Mountain تعني جبل.' },
+            { q: 'ما هو الرقم (Twenty) بالأرقام؟', options: ['20', '12', '30', '200'], ans: 0, hint: 'عشرون.', exp: 'Twenty تعني 20.' },
+            { q: 'كيف نسأل عن العمر بالإنجليزية: How ..... are you?', options: ['old', 'tall', 'many', 'much'], ans: 0, hint: 'How old are you?', exp: 'نقول How old are you? للسؤال عن العمر.' }
+          ]
+        }
+      },
+      6: {
+        heroName: 'يوسف',
+        name: 'الصف السادس الابتدائي - البطل يوسف',
+        subjects: [
+          { id: 'arabic6', name: 'اللغة العربية والقواعد', icon: '✒️', color: 'from-emerald-600 to-teal-700', desc: 'المبتدأ والخبر، كان وإن وأخواتها' },
+          { id: 'math6', name: 'الرياضيات', icon: '📐', color: 'from-blue-600 to-indigo-700', desc: 'الأعداد الصحيحة، الكسور، النسبة، الدائرة' },
+          { id: 'science6', name: 'العلوم', icon: '⚛️', color: 'from-cyan-600 to-sky-700', desc: 'التكاثر، الجهاز العصبي، الذرة، الكهرباء' },
+          { id: 'social6', name: 'الاجتماعيات', icon: '🇮🇶', color: 'from-red-600 to-rose-700', desc: 'محافظات العراق، دجلة والفرات، الحضارات' },
+          { id: 'islamic6', name: 'التربية الإسلامية', icon: '🕌', color: 'from-amber-600 to-orange-700', desc: 'أحكام التلاوة، السيرة، والعقيدة' },
+          { id: 'english6', name: 'اللغة الإنجليزية', icon: '🌍', color: 'from-violet-600 to-purple-700', desc: 'المهن، الروتين اليومي، والقواعد' },
+          { id: 'mixed6', name: 'معركة الزعيم ليوسف', icon: '👑', color: 'from-fuchsia-600 to-pink-700', desc: 'اختبار الأبطال الشامل لكل المواد الوزارية!' }
+        ],
+        questions: {
+          arabic3: [
+            { q: 'ما جمع كلمة (تِلميذ) في اللغة العربية؟', options: ['تَلاميذ', 'تِلميذان', 'تِلميذات', 'تَلمذة'], ans: 0, hint: 'نستخدمها لمجموعة من التلاميذ الذكور.', exp: 'جمع تكسير لكلمة تلميذ هو (تَلاميذ).' },
+            { q: 'أي كلمة من الكلمات الآتية تنتهي بـ (تاء مربوطة ة)؟', options: ['بَيت', 'مَدرَسة', 'بِنت', 'زَيت'], ans: 1, hint: 'عند الوقف عليها تُنطق هاءً.', exp: 'كلمة (مَدرَسة) تنتهي بتاء مربوطة لأنها اسم مفرد مؤنث.' },
+            { q: 'ما ضد كلمة (نَشيط)؟', options: ['سَريع', 'كَسول', 'ذَكي', 'قَوي'], ans: 1, hint: 'عكس الشخص الذي يحب العمل والحركة.', exp: 'ضد كلمة (نَشيط) هو (كَسول).' },
+            { q: 'كم عدد حروف اللغة العربية؟', options: ['26 حرفاً', '28 حرفاً', '30 حرفاً', '24 حرفاً'], ans: 1, hint: 'تبدأ بالألف وتنتهي بالياء.', exp: 'تتكون اللغة العربية من 28 حرفاً هجائياً.' },
+            { q: 'في درس (الرفق بالحيوان): كيف نعامل الحيوانات الأليفة؟', options: ['نؤذيها', 'نطعمها ونرفق بها', 'نتركها جائعة', 'نخيفها'], ans: 1, hint: 'ديننا الحنيف يأمرنا بالرحمة.', exp: 'الرفق بالحيوان وإطعامه من الأخلاق الجميلة التي أوصى بها الإسلام.' },
+            { q: 'ما مفرد كلمة (أَشجار)؟', options: ['شُجَيرة', 'شَجَرة', 'شَجَرتان', 'مَشجَر'], ans: 1, hint: 'تدل على واحدة فقط.', exp: 'مفرد (أَشجار) هو (شَجَرة).' },
+            { q: 'أكمل المثل العربي: العِلمُ في الصِّغَر كالنَّقشِ على .....', options: ['الورق', 'الحَجَر', 'الماء', 'الرمل'], ans: 1, hint: 'شيء صلب لا يزول أبداً.', exp: 'العلم في الصغر كالنقش على الحجر، أي أنه يثبت في العقل ولا يُنسى.' },
+            { q: 'أي من هذه الكلمات هي (فِعل)؟', options: ['قَلَم', 'يَكتُبُ', 'كِتاب', 'سَبّورة'], ans: 1, hint: 'كلمة تدل على عمل نقوم به.', exp: '(يَكتُبُ) فعل مضارع يدل على حدوث الكتابة.' },
+            { q: 'ما مرادف (معنى) كلمة (يُعاوِن)؟', options: ['يُساعد', 'يَترك', 'يَلعب', 'يَنام'], ans: 0, hint: 'التعاون بين الأصدقاء.', exp: 'يُعاوِن معناها يُساعد.' }
+          ],
+          math3: [
+            { q: 'ما ناتج ضرب: 6 × 7 = ؟', options: ['36', '42', '48', '49'], ans: 1, hint: '6 × 6 = 36، أضف 6 أخرى.', exp: '6 × 7 = 42.' },
+            { q: 'ما القيمة المكانية للرقم 5 في العدد (4521)؟', options: ['5', '50', '500', '5000'], ans: 2, hint: 'يقع الرقم 5 في مرتبة المئات.', exp: 'الرقم 5 في مرتبة المئات وقيمته المكانية 500.' },
+            { q: 'ما ناتج: 350 + 250 = ؟', options: ['500', '600', '550', '700'], ans: 1, hint: '300 + 200 = 500، و 50 + 50 = 100.', exp: '350 + 250 = 600.' },
+            { q: 'كم ضلعاً للمثلث؟', options: ['3 أضلاع', '4 أضلاع', '5 أضلاع', '6 أضلاع'], ans: 0, hint: 'اسمه يدل على العدد 3.', exp: 'المثلث شكل هندسي له 3 أضلاع و 3 رؤوس.' },
+            { q: 'إذا كان لديك 4 علب، في كل علبة 8 أقلام، فكم قلماً لديك؟', options: ['12', '24', '32', '36'], ans: 2, hint: 'اضرب 4 × 8.', exp: '4 × 8 = 32 قلماً.' },
+            { q: 'أي كسر يمثل (النصف)؟', options: ['1/4', '1/2', '1/3', '3/4'], ans: 1, hint: 'جزء واحد من جزأين متساويين.', exp: 'الكسر 1/2 يقرأ (نصف).' },
+            { q: 'ما العدد الذي يأتي مباشرة بعد (999)؟', options: ['990', '1000', '1001', '900'], ans: 1, hint: 'أصغر عدد مكون من 4 مراتب.', exp: 'العدد الذي يلي 999 مباشرة هو 1000 (ألف).' },
+            { q: 'ما ناتج قسمة: 36 ÷ 4 = ؟', options: ['7', '8', '9', '6'], ans: 2, hint: 'ما العدد الذي نضربه في 4 ليعطي 36؟', exp: 'بما أن 4 × 9 = 36، فإن 36 ÷ 4 = 9.' },
+            { q: 'كم دقيقة في الساعة الواحدة؟', options: ['30 دقيقة', '45 دقيقة', '60 دقيقة', '100 دقيقة'], ans: 2, hint: 'نصف الساعة 30 دقيقة.', exp: 'الساعة الواحدة تساوي 60 دقيقة.' }
+          ],
+          science3: [
+            { q: 'أي جزء في النبات يصنع الغذاء بعملية البناء الضوئي؟', options: ['الجذر', 'الساق', 'الأوراق', 'الزهرة'], ans: 2, hint: 'لونها أخضر وتستقبل ضوء الشمس.', exp: 'الأوراق الخضراء هي مصنع الغذاء في النبات.' },
+            { q: 'ما المصدر الرئيسي للضوء والحرارة على سطح الأرض؟', options: ['القمر', 'الشمس', 'النجوم', 'المصباح'], ans: 1, hint: 'نراها في السماء نهاراً.', exp: 'الشمس هي المصدر الرئيسي للضوء والحرارة على الأرض.' },
+            { q: 'أي من الكائنات الآتية يُعد من (آكلات اللحوم)؟', options: ['الأرنب', 'الأسد', 'الخروف', 'البقرة'], ans: 1, hint: 'ملك الغابة وله أنياب حادة.', exp: 'الأسد حيوان مفترس يتغذى على اللحوم.' },
+            { q: 'كيف ينتقل الضوء؟', options: ['في خطوط متعرجة', 'في خطوط مستقيمة', 'في دوائر', 'لا ينتقل'], ans: 1, hint: 'مثل شعاع الليزر أو أشعة الشمس.', exp: 'ينتقل الضوء في خطوط مستقيمة في جميع الاتجاهات.' },
+            { q: 'عند تسخين الماء السائل فإنه يتحول إلى:', options: ['ثلج', 'بخار ماء (غاز)', 'حجر', 'تراب'], ans: 1, hint: 'نراه يتصاعد من إبريق الشاي.', exp: 'التسخين يحول الماء السائل إلى بخار ماء (حالة غازية).' },
+            { q: 'ما الأداة التي نستخدمها لقياس درجة الحرارة؟', options: ['المسطرة', 'المحرار', 'الميزان', 'الساعة'], ans: 1, hint: 'يستخدمه الطبيب لقياس حرارة الجسم.', exp: 'المحرار هو أداة قياس درجة الحرارة.' },
+            { q: 'تُسمى الحيوانات التي تتغذى على النباتات والحيوانات معاً:', options: ['آكلات الأعشاب', 'مختلطة التغذية', 'آكلات اللحوم', 'المنتجات'], ans: 1, hint: 'تأكل النوعين مثل الدب والدجاجة.', exp: 'تسمى مختلطة التغذية لأنها تأكل النباتات واللحوم.' },
+            { q: 'أي من المواد الآتية يمر الضوء من خلالها بوضوح (شفافة)؟', options: ['الخشب', 'الزجاج الصافي', 'الحديد', 'الورق المقوى'], ans: 1, hint: 'نضعه في النوافذ لنرى الخارج.', exp: 'الزجاج الصافي جسم شفاف يسمح بمرور الضوء.' }
+          ],
+          islamic3: [
+            { q: 'كم عدد أركان الإسلام؟', options: ['3 أركان', '5 أركان', '6 أركان', '7 أركان'], ans: 1, hint: 'تبدأ بالشهادتين وتنتهي بحج البيت.', exp: 'أركان الإسلام خمسة: الشهادتان، الصلاة، الزكاة، الصوم، والحج.' },
+            { q: 'ما السورة التي تُسمى (قلب القرآن) أو تُقرأ في كل ركعة؟', options: ['سورة الفاتحة', 'سورة الفلق', 'سورة الناس', 'سورة الكوثر'], ans: 0, hint: 'أول سورة في القرآن الكريم.', exp: 'سورة الفاتحة هي أعظم سورة في القرآن وتُقرأ في كل ركعة.' },
+            { q: 'من هو خاتم الأنبياء والمرسلين؟', options: ['نبي الله موسى (ع)', 'نبي الله عيسى (ع)', 'نبينا محمد (ص)', 'نبي الله إبراهيم (ع)'], ans: 2, hint: 'وُلد في مكة المكرمة.', exp: 'نبينا محمد (صلى الله عليه وآله وسلم) هو خاتم الأنبياء.' },
+            { q: 'كم عدد الصلوات المفروضة في اليوم والليلة؟', options: ['3 صلوات', '4 صلوات', '5 صلوات', '6 صلوات'], ans: 2, hint: 'الفجر، الظهر، العصر، المغرب، العشاء.', exp: 'فرض الله تعالى خمس صلوات في اليوم والليلة.' },
+            { q: 'ماذا نقول عند البدء بتناول الطعام؟', options: ['الحمد لله', 'بسم الله الرحمن الرحيم', 'سبحان الله', 'أستغفر الله'], ans: 1, hint: 'نذكر اسم الله في البداية.', exp: 'نقول (بسم الله الرحمن الرحيم) قبل الأكل، و(الحمد لله) بعده.' },
+            { q: 'في أي شهر يصوم المسلمون؟', options: ['شهر رجب', 'شهر رمضان', 'شهر محرم', 'شهر شوال'], ans: 1, hint: 'شهر القرآن وليلة القدر.', exp: 'يصوم المسلمون في شهر رمضان المبارك.' },
+            { q: 'ما اسم والدة نبينا محمد (ص)؟', options: ['آمنة بنت وهب', 'خديجة بنت خويلد', 'فاطمة الزهراء', 'حليمة السعدية'], ans: 0, hint: 'اسمها آمنة.', exp: 'والدة نبينا محمد (ص) هي السيدة آمنة بنت وهب.' },
+            { q: 'أكمل الآية: (إِنَّا أَعْطَيْنَاكَ .....)', options: ['الْفَلَقَ', 'الْكَوْثَرَ', 'النَّاسَ', 'الْعَصْرَ'], ans: 1, hint: 'نهر في الجنة أعطاه الله للنبي.', exp: 'سورة الكوثر: {إِنَّا أَعْطَيْنَاكَ الْكَوْثَرَ}.' }
+          ],
+          english3: [
+            { q: 'ماذا تعني كلمة (Apple) باللغة العربية؟', options: ['موزة', 'تفاحة', 'برتقالة', 'عنب'], ans: 1, hint: 'فاكهة حمراء أو خضراء لذيذة.', exp: 'Apple معناها تفاحة.' },
+            { q: 'ما هو الرقم (Seven) بالأرقام؟', options: ['5', '6', '7', '8'], ans: 2, hint: 'يأتي بعد Six (6).', exp: 'Seven تعني الرقم 7.' },
+            { q: 'أي لون يمثل كلمة (Blue)؟', options: ['أحمر', 'أزرق', 'أصفر', 'أخضر'], ans: 1, hint: 'لون السماء الصافية والبحر.', exp: 'Blue يعني اللون الأزرق.' },
+            { q: 'ماذا تعني كلمة (Cat)؟', options: ['كلب', 'قطة', 'أسد', 'طائر'], ans: 1, hint: 'حيوان أليف يقول مياو.', exp: 'Cat معناها قطة.' },
+            { q: 'كيف نقول (كتاب) باللغة الإنجليزية؟', options: ['Pen', 'Book', 'Bag', 'Desk'], ans: 1, hint: 'نقرأ فيه الدروس.', exp: 'Book معناها كتاب.' },
+            { q: 'أكمل العبارة: Good ..... (صباح الخير)', options: ['Night', 'Morning', 'Bye', 'Afternoon'], ans: 1, hint: 'نقولها في الصباح الباكر.', exp: 'Good morning معناها صباح الخير.' },
+            { q: 'كم عدد الأصابع في اليد الواحدة بالإنجليزية؟', options: ['Three', 'Four', 'Five', 'Ten'], ans: 2, hint: 'العدد 5.', exp: 'Five تعني خمسة (5).' },
+            { q: 'ماذا تعني كلمة (Mother)؟', options: ['أب', 'أم', 'أخت', 'أخ'], ans: 1, hint: 'أغلى إنسانة في حياتنا.', exp: 'Mother معناها أم.' }
+          ]
+        }
+      },
+      6: {
+        name: 'الصف السادس الابتدائي',
+        subjects: [
+          { id: 'arabic6', name: 'اللغة العربية والقواعد', icon: '✒️', color: 'from-emerald-600 to-teal-700', desc: 'المبتدأ والخبر، كان وإن وأخواتها' },
+          { id: 'math6', name: 'الرياضيات', icon: '📐', color: 'from-blue-600 to-indigo-700', desc: 'الأعداد الصحيحة، الكسور، النسبة، الدائرة' },
+          { id: 'science6', name: 'العلوم', icon: '⚛️', color: 'from-cyan-600 to-sky-700', desc: 'التكاثر، الجهاز العصبي، الذرة، الكهرباء' },
+          { id: 'social6', name: 'الاجتماعيات', icon: '🇮🇶', color: 'from-red-600 to-rose-700', desc: 'محافظات العراق، دجلة والفرات، الحضارات' },
+          { id: 'islamic6', name: 'التربية الإسلامية', icon: '🕌', color: 'from-amber-600 to-orange-700', desc: 'أحكام التلاوة، السيرة، والعقيدة' },
+          { id: 'english6', name: 'اللغة الإنجليزية', icon: '🌍', color: 'from-violet-600 to-purple-700', desc: 'المهن، الروتين اليومي، والقواعد' },
+          { id: 'mixed6', name: 'معركة الزعيم الشاملة', icon: '👑', color: 'from-fuchsia-600 to-pink-700', desc: 'اختبار الأبطال الشامل لكل المواد الوزارية!' }
+        ],
+        questions: {
+          arabic6: [
+            { q: 'ما عمل (كانَ وأخواتها) عند دخولها على الجملة الاسمية؟', options: ['ترفع المبتدأ وتنصب الخبر', 'تنصب المبتدأ وترفع الخبر', 'تجزم الفعل المضارع', 'تجر الاسم'], ans: 0, hint: 'كانَ الجوُّ جميلاً.', exp: 'كان وأخواتها أفعال ناقصة ترفع المبتدأ اسماً لها وتنصب الخبر خبراً لها.' },
+            { q: 'ما عمل (إنَّ وأخواتها) عند دخولها على الجملة الاسمية؟', options: ['ترفع الأول وتنصب الثاني', 'تنصب المبتدأ وترفع الخبر', 'ترفع الاثنين معاً', 'تنصب الاثنين معاً'], ans: 1, hint: 'عكس عمل كان وأخواتها تماماً.', exp: 'إنَّ وأخواتها حروف مشبهة بالفعل تنصب المبتدأ اسماً لها وترفع الخبر خبراً لها.' },
+            { q: 'ما علامة رفع الفاعل إذا كان (جمع مذكر سالماً) مثل: فازَ المجدّون؟', options: ['الضمة', 'الواو', 'الألف', 'الياء'], ans: 1, hint: 'انظر إلى الحرف قبل النون في (المجدّون).', exp: 'يُرفع جمع المذكر السالم بالواو (المجدّون) ويُنصب ويُجر بالياء.' },
+            { q: 'أعرب كلمة (العلمَ) في جملة: (إنَّ العلمَ نورٌ)', options: ['مبتدأ مرفوع', 'اسم إنَّ منصوب وعلامة نصبه الفتحة', 'خبر إنَّ مرفوع', 'فاعل مرفوع'], ans: 1, hint: 'جاءت بعد الحرف المشبه بالفعل (إنَّ).', exp: 'العلمَ: اسم إنَّ منصوب وعلامة نصبه الفتحة الظاهرة على آخره.' },
+            { q: 'أي من الأفعال الآتية هو من (الأفعال الخمسة)؟', options: ['يكتبُ', 'يكتبونَ', 'كتبَ', 'اكتبْ'], ans: 1, hint: 'كل فعل مضارع اتصلت به واو الجماعة أو ألف الاثنين أو ياء المخاطبة.', exp: '(يكتبونَ) فعل مضارع من الأفعال الخمسة مرفوع بثبوت النون.' },
+            { q: 'ما علامة نصب المفعول به إذا كان (مثنى) مثل: قرأتُ كتابينِ؟', options: ['الفتحة', 'الياء', 'الألف', 'الكسرة'], ans: 1, hint: 'المثنى يُرفع بالألف ويُنصب ويُجر بـ...', exp: 'يُنصب المثنى وعلامة نصبه الياء (كتابينِ).' },
+            { q: 'أي حرف من أخوات (إنَّ) يفيد (التمني)؟', options: ['لعلَّ', 'ليتَ', 'كأنَّ', 'لكنَّ'], ans: 1, hint: 'نستخدمه للأمر البعيد أو المستحيل: ..... الشبابَ يعودُ يوماً.', exp: '(ليتَ) حرف يفيد التمني، بينما (لعلَّ) تفيد الترجي.' },
+            { q: 'متى تُحذف همزة (ابن) خطاً ولفظاً؟', options: ['إذا وقعت بين اسمين علمين ثانيهما أب للأول', 'في بداية السطر', 'إذا جاءت بعد حرف جر', 'لا تُحذف أبداً'], ans: 0, hint: 'مثل: عمر بن الخطاب.', exp: 'تُحذف همزة (ابن) إذا وقعت بين علمين ثانيهما أب للأول ولم تقع في أول السطر.' },
+            { q: 'ما نوع الجمع في كلمة (المعلماتُ)؟', options: ['جمع مذكر سالم', 'جمع مؤنث سالم', 'جمع تكسير', 'مثنى'], ans: 1, hint: 'ينتهي بألف وتاء طويلتين.', exp: 'المعلماتُ جمع مؤنث سالم يُرفع بالضمة ويُنصب ويُجر بالكسرة.' }
+          ],
+          math6: [
+            { q: 'ما ناتج: (-7) + (+4) = ؟', options: ['-11', '-3', '+3', '+11'], ans: 1, hint: 'إشارتان مختلفتان: نطرح ونأخذ إشارة العدد الأكبر.', exp: '7 - 4 = 3، وبما أن 7 سالب وأكبر، فالناتج (-3).' },
+            { q: 'ما قيمة الجذر التربيعي للعدد (64)؟', options: ['6', '7', '8', '9'], ans: 2, hint: 'ما العدد الذي إذا ضُرب في نفسه كان الناتج 64؟', exp: '8 × 8 = 64، إذن الجذر التربيعي لـ 64 هو 8.' },
+            { q: 'ما قيمة الجذر التكعيبي للعدد (27)؟', options: ['3', '9', '6', '4'], ans: 0, hint: 'عدد يُضرب في نفسه ثلاث مرات يعطي 27.', exp: '3 × 3 × 3 = 27، إذن الجذر التكعيبي لـ 27 هو 3.' },
+            { q: 'ما قانون محيط الدائرة؟', options: ['القطر × النسبة الثابتة (π)', 'نصف القطر × 2', 'الطول × العرض', 'القطر + π'], ans: 0, hint: 'النسبة الثابتة π تساوي تقريباً 3.14 أو 22/7.', exp: 'محيط الدائرة = القطر × π (النسبة الثابتة).' },
+            { q: 'إذا كانت نسبة الأولاد إلى البنات في صف هي 2 : 3، وكان عدد الأولاد 10، فكم عدد البنات؟', options: ['12', '15', '20', '13'], ans: 1, hint: '2 أصبحت 10 بالضرب في 5، اضرب 3 في 5 أيضاً.', exp: '10 ÷ 2 = 5، إذن عدد البنات = 3 × 5 = 15.' },
+            { q: 'ما ناتج ضرب: 0.4 × 0.2 = ؟', options: ['0.8', '0.08', '8.0', '0.008'], ans: 1, hint: '4 × 2 = 8، ولدينا مرتبتان عشريتان بعد الفارزة.', exp: 'نضرب 4 × 2 = 8 ثم نضع الفارزة بعد مرتبتين: 0.08.' },
+            { q: 'الزاويتان المتتامتان هما زاويتان مجموع قياسهما يساوي:', options: ['90 درجة', '180 درجة', '360 درجة', '45 درجة'], ans: 0, hint: 'تشكلان معاً زاوية قائمة.', exp: 'الزاويتان المتتامتان مجموعهما 90°، أما المتكاملتان فمجموعهما 180°.' },
+            { q: 'حل المعادلة: س + 15 = 40 ، فما قيمة س؟', options: ['55', '25', '35', '15'], ans: 1, hint: 'اطرح 15 من 40.', exp: 'س = 40 - 15 = 25.' },
+            { q: 'أي الأعداد الآتية يمثل عدداً صحيحاً سالباً؟', options: ['صفر', 'تحت الصفر بـ 5 درجات (-5)', 'ربح 1000 دينار', 'ارتفاع 20 متراً'], ans: 1, hint: 'كلمة (تحت) أو (خسارة) تدل على السالب.', exp: 'درجة الحرارة تحت الصفر تُكتب (-5) وهي عدد صحيح سالب.' }
+          ],
+          science6: [
+            { q: 'ما الجزء المسؤول عن التكاثر في معظم النباتات الزهرية؟', options: ['الجذر', 'الساق', 'الزهرة', 'الورقة'], ans: 2, hint: 'تحتوي على أعضاء التذكير والتأنيث وتتحول إلى ثمرة.', exp: 'الزهرة هي عضو التكاثر في النباتات الزهرية.' },
+            { q: 'ما أصغر جزء في المادة يشترك في التغير الكيميائي؟', options: ['الخلية', 'الذرة', 'الجزيء', 'النسيج'], ans: 1, hint: 'تتكون من نواة وإلكترونات.', exp: 'الذرة هي أصغر وحدة بناء للمادة تشترك في التفاعل الكيميائي.' },
+            { q: 'ما الشحنة الكهربائية للإلكترونات التي تدور حول نواة الذرة؟', options: ['موجبة (+)', 'سالبة (-)', 'متعادلة', 'لا شحنة لها'], ans: 1, hint: 'البروتونات موجبة، أما الإلكترونات فهي...', exp: 'الإلكترونات جسيمات صغيرة جداً شحنتها سالبة (-).' },
+            { q: 'أي جزء من الجهاز العصبي يمثل مركز التحكم الرئيسي في الجسم؟', options: ['القلب', 'الدماغ', 'المعدة', 'الرئتان'], ans: 1, hint: 'موجود داخل الجمجمة لحمايته.', exp: 'الدماغ هو مركز التحكم الرئيسي في الجهاز العصبي المركزي.' },
+            { q: 'تُسمى طريقة تكاثر البطاطا والزنجبيل بالسيقان الأرضية بـ:', options: ['التكاثر بالبذور', 'التكاثر الخضري (الدرنات والأبصال)', 'التطعيم', 'الأبواغ'], ans: 1, hint: 'البطاطا هي درنة.', exp: 'تتكاثر البطاطا خضرياً بواسطة الدرنات.' },
+            { q: 'ما وظيفة (الأوتار) في الجهاز العضلي والهيكلي؟', options: ['تربط العضلات بالعظام', 'تنقل الدم', 'تهضم الطعام', 'تنتج الهرمونات'], ans: 0, hint: 'تصل العضلة بالعظم لتحريكه.', exp: 'الأوتار تراكيب تربط العضلات بالعظام.' },
+            { q: 'أي من المواد الآتية تُعد موصلة جيدة للكهرباء؟', options: ['المطاط', 'النحاس', 'البلاستيك', 'الخشب الجاف'], ans: 1, hint: 'تُصنع منه الأسلاك الكهربائية.', exp: 'النحاس فلز موصل ممتاز للتيار الكهربائي.' },
+            { q: 'ماذا ينتج عن اتحاد ذرتين أو أكثر؟', options: ['عنصر', 'جزيء', 'إلكترون', 'بروتون'], ans: 1, hint: 'مثل جزيء الماء H2O.', exp: 'الجزيء هو أصغر وحدة في المادة تحمل خواصها وينتج من اتحاد ذرتين أو أكثر.' }
+          ],
+          social6: [
+            { q: 'كم عدد محافظات جمهورية العراق؟', options: ['15 محافظة', '18 محافظة', '20 محافظة', '16 محافظة'], ans: 1, hint: 'تمتد من دهوك شمالاً إلى البصرة جنوباً.', exp: 'يتكون العراق إدارياً من 18 محافظة.' },
+            { q: 'أين يلتقي نهرا دجلة والفرات ليكوّنا شط العرب؟', options: ['في بغداد', 'في كرمة علي شمال البصرة', 'في الموصل', 'في الحلة'], ans: 1, hint: 'في أقصى جنوب العراق.', exp: 'يلتقي نهرا دجلة والفرات عند كرمة علي شمال مدينة البصرة ليكوّنا شط العرب.' },
+            { q: 'ما اسم السلسلة الجبلية التي تمثل أعلى قمة جبلية في العراق (هلكرد)؟', options: ['جبال حصاروست', 'جبال حمرين', 'جبال مكحول', 'جبال سنجار'], ans: 0, hint: 'تقع في محافظة أربيل ويبلغ ارتفاع قمة هلكرد 3600م.', exp: 'سلسلة جبال حصاروست في أربيل تضم أعلى قمة جبلية في العراق وهي قمة هلكرد.' },
+            { q: 'أي حضارة عراقية قديمة اشتهرت بـ (مسلة حمورابي) وقوانينها الشهيرة؟', options: ['الحضارة السومرية', 'الحضارة البابلية', 'الحضارة الآشورية', 'الحضارة الأكدية'], ans: 1, hint: 'عاصمتها بابل.', exp: 'الملك البابلي حمورابي اشتهر بمسلته التي ضمت 282 مادة قانونية.' },
+            { q: 'ما المحافظة العراقية التي تُلقب بـ (أم الربيعين)؟', options: ['بغداد', 'نينوى (الموصل)', 'كركوك', 'البصرة'], ans: 1, hint: 'تقع في شمال العراق ويمر فيها نهر دجلة.', exp: 'تُلقب محافظة نينوى (الموصل) بأم الربيعين لاعتدال مناخها في الربيع والخريف.' },
+            { q: 'ما هي المحافظة العراقية الوحيدة التي تطل على الخليج العربي؟', options: ['ذي قار', 'البصرة', 'ميسان', 'المثنى'], ans: 1, hint: 'ميناء العراق البحري الوحيد.', exp: 'البصرة هي المنفذ البحري الوحيد للعراق وتطل على الخليج العربي.' },
+            { q: 'أين تقع (الزقورة) الشهيرة التي بناها السومريون؟', options: ['في ذي قار (مدينة أور)', 'في الأنبار', 'في دهوك', 'في ديالى'], ans: 0, hint: 'مدينة أور الأثرية في جنوب العراق.', exp: 'تقع زقورة أور الأثرية في محافظة ذي قار.' },
+            { q: 'من هو باني مدينة بغداد المدورة عام 145 هـ؟', options: ['هارون الرشيد', 'أبو جعفر المنصور', 'المأمون', 'المعتصم'], ans: 1, hint: 'ثاني خلفاء الدولة العباسية.', exp: 'بنى الخليفة العباسي أبو جعفر المنصور مدينة بغداد المدورة.' }
+          ],
+          islamic6: [
+            { q: 'ما حكم النون الساكنة والتنوين إذا جاء بعدها أحد حروف (يرملون)؟', options: ['الإظهار', 'الإدغام', 'الإقلاب', 'الإخفاء'], ans: 1, hint: 'إدخال حرف ساكن بحرف متحرك.', exp: 'حروف الإدغام ستة مجموعة في كلمة (يرملون).' },
+            { q: 'ما حرف (الإقلاب) الوحيد في أحكام النون الساكنة والتنوين؟', options: ['الباء (ب)', 'الميم (م)', 'النون (ن)', 'الواو (و)'], ans: 0, hint: 'تُقلب النون الساكنة إلى ميم مخفاة عند هذا الحرف.', exp: 'الإقلاب له حرف واحد فقط هو الباء (ب).' },
+            { q: 'في أي سنة هجرية وقعت معركة (بدر الكبرى)؟', options: ['السنة الأولى للهجرة', 'السنة الثانية للهجرة', 'السنة الخامسة للهجرة', 'السنة الثامنة للهجرة'], ans: 1, hint: 'في السابع عشر من رمضان.', exp: 'وقعت معركة بدر الكبرى في السنة الثانية للهجرة وانتصر فيها المسلمون.' },
+            { q: 'ما اسم الصحابي الذي نام في فراش النبي (ص) ليلة الهجرة إلى المدينة؟', options: ['أبو بكر الصديق', 'الإمام علي بن أبي طالب (ع)', 'عمر بن الخطاب', 'عثمان بن عفان'], ans: 1, hint: 'ابن عم النبي (ص) وأول فدائي في الإسلام.', exp: 'نام الإمام علي بن أبي طالب (ع) في فراش النبي (ص) فداءً له ليلة الهجرة.' },
+            { q: 'كم عدد أركان الإيمان؟', options: ['4 أركان', '5 أركان', '6 أركان', '7 أركان'], ans: 2, hint: 'الإيمان بالله وملائكته وكتبه ورسله واليوم الآخر والقدر.', exp: 'أركان الإيمان ستة.' },
+            { q: 'ما السورة التي تبدأ بقوله تعالى: (وَالشَّمْسِ وَضُحَاهَا)؟', options: ['سورة الليل', 'سورة الشمس', 'سورة الفجر', 'سورة الضحى'], ans: 1, hint: 'اسمها في أول كلمة منها.', exp: 'سورة الشمس، وهي من السور المقررة للحفظ في الصف السادس.' },
+            { q: 'من هو النبي الذي أُلقي في النار فجعلها الله برداً وسلاماً عليه؟', options: ['نبي الله إبراهيم (ع)', 'نبي الله يونس (ع)', 'نبي الله نوح (ع)', 'نبي الله يوسف (ع)'], ans: 0, hint: 'أبو الأنبياء ومحطم الأصنام.', exp: 'نبي الله إبراهيم (عليه السلام) نجاه الله من نار النمرود.' },
+            { q: 'ما حكم النون الساكنة إذا جاء بعدها حرف (العين ع)؟', options: ['الإظهار الحلقي', 'الإدغام', 'الإقلاب', 'الإخفاء'], ans: 0, hint: 'العين من حروف الحلق الستة (أخي هاك علماً حازه غير خاسر).', exp: 'حروف الإظهار الحلقي ستة: (ء، هـ، ع، ح، غ، خ).' }
+          ],
+          english6: [
+            { q: 'من هو الشخص الذي يعمل في المستشفى ويساعد الأطباء؟ (Nurse)', options: ['المهندس', 'الممرضة / الممرض', 'المعلم', 'الطيار'], ans: 1, hint: 'Nurse تعمل في Hospital.', exp: 'Nurse معناها ممرضة أو ممرض.' },
+            { q: 'اختر حرف الجر الصحيح: My father works ..... a farm. (في مزرعة)', options: ['in', 'on', 'at', 'under'], ans: 1, hint: 'الأماكن المفتوحة مثل farm و roads تأخذ (on).', exp: 'نستخدم (on) مع المزرعة والطرق: on a farm / on the roads.' },
+            { q: 'ماذا تعني كلمة (Headache) في وحدة الأمراض؟', options: ['ألم في الأسنان', 'صداع (ألم الرأس)', 'ألم في المعدة', 'سعال'], ans: 1, hint: 'Head تعني رأس، و ache تعني ألم.', exp: 'Headache معناها صداع أو ألم في الرأس.' },
+            { q: 'أكمل السؤال: ..... old is your sister? (كم عمر أختك؟)', options: ['What', 'How', 'Where', 'When'], ans: 1, hint: 'للسؤال عن العمر نستخدم How old.', exp: 'How old تُستخدم للسؤال عن العمر.' },
+            { q: 'ما جمع كلمة (Tooth - سن) في اللغة الإنجليزية؟', options: ['Tooths', 'Teeth', 'Toothes', 'Teeths'], ans: 1, hint: 'جمع شاذ مثل Foot -> Feet.', exp: 'جمع Tooth هو Teeth (أسنان).' },
+            { q: 'اختر الضمير الانعكاسي الصحيح: I cut ..... with a sharp knife.', options: ['himself', 'myself', 'herself', 'yourself'], ans: 1, hint: 'الفاعل هو (I - أنا).', exp: 'الضمير الانعكاسي للفاعل (I) هو (myself).' },
+            { q: 'أين يعمل النادل (Waiter)؟', options: ['In a restaurant', 'In a school', 'On a building site', 'In an office'], ans: 0, hint: 'المكان الذي نأكل فيه الطعام.', exp: 'Waiter يعمل في المطعم (in a restaurant).' },
+            { q: 'ما الزمن المستخدم مع كلمة (Yesterday - أمس)؟', options: ['المضارع البسيط', 'الماضي البسيط (Past Simple)', 'المستقبل', 'المضارع المستمر'], ans: 1, hint: 'حدث انتهى في الماضي.', exp: 'Yesterday تدل على زمن الماضي البسيط.' }
+          ]
+        }
+      }
+    };
+
+    /* ==========================================================================
+       5. APPLICATION STATE & LOCALSTORAGE PERSISTENCE
+       ========================================================================== */
+    let currentGrade = null;
+    let currentSubjectId = null;
+    let currentQuestions = [];
+    let currentIndex = 0;
+    let roundScore = 0;
+    let roundStars = 0;
+    let streak = 0;
+    let maxStreak = 0;
+    let answeredCurrent = false;
+    let hintUsedCurrent = false;
+    let fiftyUsedCurrent = false;
+
+    const DEFAULT_PROFILE = {
+      stars: 20, // Starter gift stars!
+      xp: 0,
+      level: 1,
+      unlockedAvatars: ['hero_self', 'lion'],
+      activeAvatar: 'hero_self',
+      customPhoto: null
+    };
+
+    let profiles = {
+      4: loadProfile(4),
+      6: loadProfile(6)
+    };
+
+    function loadProfile(grade) {
+      try {
+        const saved = localStorage.getItem(`iraqi_heroes_g${grade}`);
+        if (saved) {
+          return { ...DEFAULT_PROFILE, ...JSON.parse(saved) };
+        }
+      } catch (e) {
+        console.warn('LocalStorage unavailable:', e);
+      }
+      return { ...DEFAULT_PROFILE };
+    }
+
+    function saveProfile(grade) {
+      try {
+        localStorage.setItem(`iraqi_heroes_g${grade}`, JSON.stringify(profiles[grade]));
+      } catch (e) {
+        console.warn('Could not save profile:', e);
+      }
+      updateHomePreviews();
+    }
+
+    function getDefaultHeroSvg(grade) {
+      const heroLabel = grade === 4 ? 'يعقوب' : 'يوسف';
+      return `
+        <div class="w-full h-full flex flex-col items-center justify-center text-center p-1 bg-slate-900/20">
+          <span class="text-3xl leading-none mb-0.5">📷</span>
+          <span class="text-[10px] font-black text-slate-950 leading-tight">صورة ${heroLabel}</span>
+        </div>
+      `;
+    }
+
+    function triggerHeroUpload(grade) {
+      SoundFX.click();
+      document.getElementById(`upload-hero-${grade}`).click();
+    }
+
+    function handleHeroPhotoUpload(grade, event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const img = new Image();
+        img.onload = function() {
+          // Compress & resize image nicely for localStorage
+          const canvas = document.createElement('canvas');
+          const size = 260;
+          canvas.width = size;
+          canvas.height = size;
+          const ctx = canvas.getContext('2d');
+          const minSide = Math.min(img.width, img.height);
+          const sx = (img.width - minSide) / 2;
+          const sy = (img.height - minSide) / 2;
+          ctx.drawImage(img, sx, sy, minSide, minSide, 0, 0, size, size);
+          const dataUrl = canvas.toDataURL('image/jpeg', 0.85);
+          
+          profiles[grade].customPhoto = dataUrl;
+          profiles[grade].activeAvatar = 'hero_self';
+          saveProfile(grade);
+          renderHeroCardAvatars();
+          if (currentGrade === grade) updateHUD();
+          SoundFX.victory();
+          showToast(`📸 تم تحديث صورة البطل ${CURRICULUM_DATA[grade].heroName} بنجاح!`);
+        };
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function renderHeroCardAvatars() {
+      [4, 6].forEach(g => {
+        const container = document.getElementById(`hero-card-avatar-${g}`);
+        if (!container) return;
+        if (profiles[g].customPhoto) {
+          container.innerHTML = `<img src="${profiles[g].customPhoto}" alt="صورة البطل" class="w-full h-full object-cover" />`;
+        } else {
+          container.innerHTML = getDefaultHeroSvg(g);
+        }
+      });
+      const banner = document.getElementById('real-photo-banner');
+      if (banner && profiles[4].customPhoto && profiles[6].customPhoto) {
+        banner.classList.add('hidden');
+      }
+    }
+
+    function updateHomePreviews() {
+      document.getElementById('g4-preview-stars').textContent = profiles[4].stars;
+      document.getElementById('g6-preview-stars').textContent = profiles[6].stars;
+      renderHeroCardAvatars();
+    }
+
+    /* ==========================================================================
+       6. NAVIGATION & UI HELPERS
+       ========================================================================== */
+    function showScreen(screenId) {
+      ['screen-grades', 'screen-subjects', 'screen-quiz', 'screen-result'].forEach(id => {
+        const el = document.getElementById(id);
+        el.classList.add('hidden');
+        el.classList.remove('flex');
+      });
+      const target = document.getElementById(screenId);
+      target.classList.remove('hidden');
+      target.classList.add('flex');
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      toast.textContent = msg;
+      toast.classList.remove('hidden');
+      clearTimeout(toast._timer);
+      toast._timer = setTimeout(() => {
+        toast.classList.add('hidden');
+      }, 2600);
+    }
+
+    function goHome() {
+      SoundFX.click();
+      currentGrade = null;
+      document.getElementById('player-hud').classList.add('hidden');
+      document.getElementById('player-hud').classList.remove('flex');
+      document.getElementById('header-subtitle').textContent = 'المنهاج الدراسي العراقي الممتع';
+      updateHomePreviews();
+      showScreen('screen-grades');
+    }
+
+    function updateHUD() {
+      if (!currentGrade) return;
+      const p = profiles[currentGrade];
+      const heroName = CURRICULUM_DATA[currentGrade].heroName;
+      const avatarObj = SHOP_ITEMS.find(i => i.id === p.activeAvatar) || SHOP_ITEMS[0];
+      
+      document.getElementById('player-hud').classList.remove('hidden');
+      document.getElementById('player-hud').classList.add('flex');
+      
+      const hudAvatarEl = document.getElementById('hud-avatar');
+      if (p.activeAvatar === 'hero_self') {
+        if (p.customPhoto) {
+          hudAvatarEl.innerHTML = `<img src="${p.customPhoto}" class="w-full h-full object-cover" />`;
+        } else {
+          hudAvatarEl.innerHTML = getDefaultHeroSvg(currentGrade);
+        }
+      } else {
+        hudAvatarEl.textContent = avatarObj.emoji;
+      }
+
+      document.getElementById('hud-title').textContent = `${heroName} • ${avatarObj.title}`;
+      document.getElementById('hud-level').textContent = p.level;
+      document.getElementById('hud-stars').textContent = p.stars;
+
+      // XP bar logic (100 XP per level)
+      const xpInLevel = p.xp % 100;
+      document.getElementById('xp-text').textContent = `${xpInLevel} / 100 XP`;
+      document.getElementById('xp-bar').style.width = `${Math.max(8, xpInLevel)}%`;
+    }
+
+    function selectGrade(grade) {
+      SoundFX.click();
+      currentGrade = grade;
+      const gradeData = CURRICULUM_DATA[grade];
+      document.getElementById('header-subtitle').textContent = gradeData.name;
+      document.getElementById('grade-badge').textContent = gradeData.name;
+      updateHUD();
+      renderSubjects();
+      showScreen('screen-subjects');
+    }
+
+    function renderSubjects() {
+      const grid = document.getElementById('subjects-grid');
+      const subjects = CURRICULUM_DATA[currentGrade].subjects;
+      grid.innerHTML = '';
+
+      subjects.forEach(sub => {
+        const isMixed = sub.id.startsWith('mixed');
+        const card = document.createElement('div');
+        card.onclick = () => startSubjectQuiz(sub.id);
+        card.className = `hero-card cursor-pointer bg-gradient-to-br ${sub.color} rounded-3xl p-5 sm:p-6 border-2 ${isMixed ? 'border-amber-300 shadow-amber-500/30 sm:col-span-2 lg:col-span-1' : 'border-white/25'} shadow-xl flex flex-col justify-between relative overflow-hidden group`;
+        
+        card.innerHTML = `
+          <div class="absolute -left-4 -bottom-4 text-7xl opacity-20 group-hover:scale-110 transition-transform">${sub.icon}</div>
+          <div>
+            <div class="flex items-center justify-between mb-3">
+              <span class="text-4xl">${sub.icon}</span>
+              <span class="bg-black/25 text-white text-xs font-extrabold px-3 py-1 rounded-full">
+                ${isMixed ? 'مكافأة مضاعفة ⭐' : '8 أسئلة'}
+              </span>
+            </div>
+            <h3 class="text-xl sm:text-2xl font-black text-white mb-1.5">${sub.name}</h3>
+            <p class="text-white/90 text-xs sm:text-sm font-medium mb-4">${sub.desc}</p>
+          </div>
+          <button class="w-full btn-3d bg-white/95 hover:bg-white text-slate-950 font-black py-2.5 rounded-2xl text-sm sm:text-base shadow">
+            انطلق الآن 🚀
+          </button>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    /* ==========================================================================
+       7. QUIZ GAMEPLAY LOGIC
+       ========================================================================== */
+    function shuffleArray(arr) {
+      const copy = [...arr];
+      for (let i = copy.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [copy[i], copy[j]] = [copy[j], copy[i]];
+      }
+      return copy;
+    }
+
+    function startSubjectQuiz(subjectId) {
+      SoundFX.click();
+      currentSubjectId = subjectId;
+      const gradeBank = CURRICULUM_DATA[currentGrade].questions;
+      const subInfo = CURRICULUM_DATA[currentGrade].subjects.find(s => s.id === subjectId);
+      
+      let pool = [];
+      if (subjectId.startsWith('mixed')) {
+        // Gather questions from all subjects in this grade
+        Object.values(gradeBank).forEach(qList => {
+          pool.push(...qList);
+        });
+        currentQuestions = shuffleArray(pool).slice(0, 10);
+      } else {
+        currentQuestions = shuffleArray(gradeBank[subjectId]).slice(0, 8);
+      }
+
+      currentIndex = 0;
+      roundScore = 0;
+      roundStars = 0;
+      streak = 0;
+      maxStreak = 0;
+
+      document.getElementById('quiz-subject-label').textContent = subInfo.name;
+      document.getElementById('q-total').textContent = currentQuestions.length;
+
+      showScreen('screen-quiz');
+      renderQuestion();
+    }
+
+    function renderQuestion() {
+      answeredCurrent = false;
+      hintUsedCurrent = false;
+      fiftyUsedCurrent = false;
+
+      const qObj = currentQuestions[currentIndex];
+      const total = currentQuestions.length;
+
+      document.getElementById('q-current').textContent = currentIndex + 1;
+      document.getElementById('quiz-progress-bar').style.width = `${((currentIndex + 1) / total) * 100}%`;
+      document.getElementById('streak-count').textContent = streak;
+      document.getElementById('streak-icon').className = streak >= 2 ? 'text-lg animate-fire' : 'text-lg';
+
+      document.getElementById('question-text').textContent = qObj.q;
+      document.getElementById('hint-box').classList.add('hidden');
+      document.getElementById('feedback-box').classList.add('hidden');
+
+      // Enable power-ups
+      document.getElementById('btn-5050').disabled = false;
+      document.getElementById('btn-hint').disabled = false;
+      document.getElementById('btn-skip').disabled = false;
+
+      // Render 4 options
+      const optionsGrid = document.getElementById('options-grid');
+      optionsGrid.innerHTML = '';
+      const optionLetters = ['أ', 'ب', 'ج', 'د'];
+
+      qObj.options.forEach((optText, idx) => {
+        const btn = document.createElement('button');
+        btn.id = `opt-btn-${idx}`;
+        btn.onclick = () => handleAnswer(idx);
+        btn.className = 'btn-3d bg-white/15 hover:bg-white/25 border-2 border-white/25 text-white font-extrabold text-base sm:text-lg p-4 rounded-2xl text-right flex items-center gap-3 shadow-md transition-all';
+        btn.innerHTML = `
+          <span class="w-9 h-9 rounded-xl bg-indigo-500/50 border border-indigo-300/40 flex items-center justify-center font-black text-amber-300 shrink-0">
+            ${optionLetters[idx]}
+          </span>
+          <span class="flex-1">${optText}</span>
+        `;
+        optionsGrid.appendChild(btn);
+      });
+    }
+
+    function handleAnswer(selectedIdx) {
+      if (answeredCurrent) return;
+      answeredCurrent = true;
+
+      // Disable power-ups after answering
+      document.getElementById('btn-5050').disabled = true;
+      document.getElementById('btn-hint').disabled = true;
+      document.getElementById('btn-skip').disabled = true;
+
+      const qObj = currentQuestions[currentIndex];
+      const isCorrect = selectedIdx === qObj.ans;
+      const isMixed = currentSubjectId.startsWith('mixed');
+
+      // Highlight buttons
+      qObj.options.forEach((_, idx) => {
+        const btn = document.getElementById(`opt-btn-${idx}`);
+        btn.disabled = true;
+        if (idx === qObj.ans) {
+          btn.className = 'bg-emerald-500 border-2 border-emerald-200 text-slate-950 font-black text-base sm:text-lg p-4 rounded-2xl text-right flex items-center gap-3 shadow-lg shadow-emerald-500/40 scale-[1.02]';
+        } else if (idx === selectedIdx && !isCorrect) {
+          btn.className = 'bg-rose-600 border-2 border-rose-300 text-white font-extrabold text-base sm:text-lg p-4 rounded-2xl text-right flex items-center gap-3 animate-shake';
+        } else {
+          btn.classList.add('opacity-40');
+        }
+      });
+
+      const fbBox = document.getElementById('feedback-box');
+      const fbIcon = document.getElementById('feedback-icon');
+      const fbTitle = document.getElementById('feedback-title');
+      const fbExp = document.getElementById('feedback-explanation');
+
+      if (isCorrect) {
+        SoundFX.correct();
+        roundScore++;
+        streak++;
+        if (streak > maxStreak) maxStreak = streak;
+
+        // Calculate earned stars (base 10 + streak bonus + mixed bonus)
+        const streakBonus = streak >= 3 ? 5 : 0;
+        const mixedBonus = isMixed ? 5 : 0;
+        const earned = 10 + streakBonus + mixedBonus;
+        roundStars += earned;
+
+        // Update player profile
+        const p = profiles[currentGrade];
+        p.stars += earned;
+        p.xp += 15;
+        const newLevel = Math.floor(p.xp / 100) + 1;
+        if (newLevel > p.level) {
+          p.level = newLevel;
+          showToast(`🎊 مبروك! ارتفع مستواك إلى المستوى ${p.level}!`);
+        }
+        saveProfile(currentGrade);
+        updateHUD();
+
+        document.getElementById('streak-count').textContent = streak;
+        document.getElementById('streak-icon').className = streak >= 2 ? 'text-lg animate-fire' : 'text-lg';
+
+        fbBox.className = 'mt-6 rounded-2xl p-4 sm:p-5 border-2 bg-emerald-950/80 border-emerald-400 text-emerald-100 animate-pop';
+        fbIcon.textContent = streak >= 3 ? '🔥' : '🌟';
+        fbTitle.textContent = streak >= 3 ? `إجابة خارقة! سلسلة ${streak} إجابات (+${earned} ⭐)` : `أحسنت يا بطل! (+${earned} ⭐)`;
+        fbExp.textContent = `معلومة ذكية: ${qObj.exp}`;
+      } else {
+        SoundFX.wrong();
+        streak = 0;
+        document.getElementById('streak-count').textContent = 0;
+        document.getElementById('streak-icon').className = 'text-lg';
+
+        fbBox.className = 'mt-6 rounded-2xl p-4 sm:p-5 border-2 bg-rose-950/80 border-rose-400 text-rose-100 animate-pop';
+        fbIcon.textContent = '💪';
+        fbTitle.textContent = 'حاول في السؤال القادم يا بطل!';
+        fbExp.textContent = `الإجابة الصحيحة هي (${qObj.options[qObj.ans]}). ${qObj.exp}`;
+      }
+
+      const nextBtn = document.getElementById('next-q-btn');
+      nextBtn.textContent = currentIndex === currentQuestions.length - 1 ? 'عرض النتيجة النهائية 🏆' : 'السؤال التالي ⬅️';
+      fbBox.classList.remove('hidden');
+    }
+
+    function nextQuestion() {
+      SoundFX.click();
+      currentIndex++;
+      if (currentIndex < currentQuestions.length) {
+        renderQuestion();
+      } else {
+        finishRound();
+      }
+    }
+
+    function finishRound() {
+      SoundFX.victory();
+      launchConfetti();
+      const total = currentQuestions.length;
+      const ratio = roundScore / total;
+
+      document.getElementById('res-score').textContent = `${roundScore} / ${total}`;
+      document.getElementById('res-stars').textContent = `+${roundStars} ⭐`;
+      document.getElementById('res-streak').textContent = `${maxStreak} 🔥`;
+
+      if (ratio >= 0.8) {
+        document.getElementById('result-trophy').textContent = '🏆';
+        document.getElementById('result-title').textContent = 'أداء أسطوري يا بطل العراق!';
+        document.getElementById('result-subtitle').textContent = 'أنت عبقري حقيقي وتستحق وسام التفوق!';
+      } else if (ratio >= 0.5) {
+        document.getElementById('result-trophy').textContent = '🥈';
+        document.getElementById('result-title').textContent = 'رائع جداً! تقدم ممتاز';
+        document.getElementById('result-subtitle').textContent = 'استمر في اللعب لتجمع نجوماً أكثر!';
+      } else {
+        document.getElementById('result-trophy').textContent = '🌟';
+        document.getElementById('result-title').textContent = 'بداية شجاعة يا بطل!';
+        document.getElementById('result-subtitle').textContent = 'كل محاولة تجعلك أذكى وأقوى، جرب مرة أخرى!';
+      }
+
+      showScreen('screen-result');
+    }
+
+    function replaySubject() {
+      startSubjectQuiz(currentSubjectId);
+    }
+
+    function backToSubjects() {
+      SoundFX.click();
+      renderSubjects();
+      showScreen('screen-subjects');
+    }
+
+    function exitQuiz() {
+      SoundFX.click();
+      showScreen('screen-subjects');
+    }
+
+    /* ==========================================================================
+       8. POWER-UPS / HELPERS (50/50, HINT, SKIP)
+       ========================================================================== */
+    function use5050() {
+      if (answeredCurrent || fiftyUsedCurrent) return;
+      const p = profiles[currentGrade];
+      if (p.stars < 5) {
+        SoundFX.wrong();
+        showToast('تحتاج إلى 5 نجوم ⭐ لاستخدام حذف إجابتين!');
+        return;
+      }
+
+      SoundFX.powerup();
+      p.stars -= 5;
+      saveProfile(currentGrade);
+      updateHUD();
+      fiftyUsedCurrent = true;
+      document.getElementById('btn-5050').disabled = true;
+
+      const qObj = currentQuestions[currentIndex];
+      const wrongIndices = [0, 1, 2, 3].filter(i => i !== qObj.ans);
+      const toHide = shuffleArray(wrongIndices).slice(0, 2);
+
+      toHide.forEach(idx => {
+        const btn = document.getElementById(`opt-btn-${idx}`);
+        btn.disabled = true;
+        btn.classList.add('opacity-20', 'pointer-events-none');
+      });
+      showToast('✂️ تم حذف إجابتين خاطئتين!');
+    }
+
+    function useHint() {
+      if (answeredCurrent || hintUsedCurrent) return;
+      const p = profiles[currentGrade];
+      if (p.stars < 5) {
+        SoundFX.wrong();
+        showToast('تحتاج إلى 5 نجوم ⭐ للحصول على تلميح ذكي!');
+        return;
+      }
+
+      SoundFX.powerup();
+      p.stars -= 5;
+      saveProfile(currentGrade);
+      updateHUD();
+      hintUsedCurrent = true;
+      document.getElementById('btn-hint').disabled = true;
+
+      const qObj = currentQuestions[currentIndex];
+      document.getElementById('hint-text').textContent = qObj.hint;
+      document.getElementById('hint-box').classList.remove('hidden');
+    }
+
+    function useSkip() {
+      if (answeredCurrent) return;
+      const p = profiles[currentGrade];
+      if (p.stars < 8) {
+        SoundFX.wrong();
+        showToast('تحتاج إلى 8 نجوم ⭐ لتخطي السؤال!');
+        return;
+      }
+
+      SoundFX.powerup();
+      p.stars -= 8;
+      saveProfile(currentGrade);
+      updateHUD();
+      showToast('⏭️ تم تخطي السؤال بنجاح!');
+      nextQuestion();
+    }
+
+    /* ==========================================================================
+       9. REWARD SHOP & AVATAR UNLOCK SYSTEM
+       ========================================================================== */
+    function openShop() {
+      if (!currentGrade) return;
+      SoundFX.click();
+      renderShop();
+      document.getElementById('shop-modal').classList.remove('hidden');
+    }
+
+    function closeShop() {
+      SoundFX.click();
+      document.getElementById('shop-modal').classList.add('hidden');
+    }
+
+    function renderShop() {
+      const p = profiles[currentGrade];
+      document.getElementById('shop-stars').textContent = p.stars;
+      const grid = document.getElementById('shop-items-grid');
+      grid.innerHTML = '';
+
+      SHOP_ITEMS.forEach(item => {
+        const isUnlocked = p.unlockedAvatars.includes(item.id);
+        const isActive = p.activeAvatar === item.id;
+
+        const card = document.createElement('div');
+        card.className = `rounded-2xl p-4 border-2 flex flex-col items-center text-center transition-all ${
+          isActive
+            ? 'bg-amber-400/20 border-amber-300 shadow-lg shadow-amber-500/20'
+            : isUnlocked
+            ? 'bg-white/10 border-white/20'
+            : 'bg-slate-950/60 border-white/10'
+        }`;
+
+        let btnHtml = '';
+        if (isActive) {
+          btnHtml = `<span class="w-full py-2 rounded-xl bg-emerald-500 text-slate-950 font-black text-xs">مُختار حالياً ✅</span>`;
+        } else if (isUnlocked) {
+          btnHtml = `<button onclick="equipAvatar('${item.id}')" class="w-full btn-3d py-2 rounded-xl bg-sky-500 hover:bg-sky-400 text-white font-black text-xs">اختيار الشخصية</button>`;
+        } else {
+          btnHtml = `<button onclick="buyAvatar('${item.id}')" class="w-full btn-3d py-2 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-black text-xs">فتح بـ ${item.cost} ⭐</button>`;
+        }
+
+        let visualHtml = `<div class="text-5xl mb-2 ${!isUnlocked ? 'grayscale opacity-75' : 'animate-float'}">${item.emoji}</div>`;
+        if (item.id === 'hero_self') {
+          const inner = p.customPhoto
+            ? `<img src="${p.customPhoto}" class="w-full h-full object-cover" />`
+            : getDefaultHeroSvg(currentGrade);
+          visualHtml = `<div class="w-16 h-16 rounded-2xl overflow-hidden border-2 border-amber-300 mb-2 animate-float">${inner}</div>`;
+        }
+
+        card.innerHTML = `
+          ${visualHtml}
+          <div class="font-black text-sm text-white mb-3">${item.title}</div>
+          ${btnHtml}
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    function buyAvatar(itemId) {
+      const p = profiles[currentGrade];
+      const item = SHOP_ITEMS.find(i => i.id === itemId);
+      if (!item || p.unlockedAvatars.includes(itemId)) return;
+
+      if (p.stars < item.cost) {
+        SoundFX.wrong();
+        showToast(`تحتاج إلى ${item.cost} نجمة ⭐ لفتح ${item.title}!`);
+        return;
+      }
+
+      SoundFX.victory();
+      launchConfetti();
+      p.stars -= item.cost;
+      p.unlockedAvatars.push(itemId);
+      p.activeAvatar = itemId;
+      saveProfile(currentGrade);
+      updateHUD();
+      renderShop();
+      showToast(`🎉 مبروك! حصلت على شخصية (${item.title})!`);
+    }
+
+    function equipAvatar(itemId) {
+      SoundFX.click();
+      const p = profiles[currentGrade];
+      if (!p.unlockedAvatars.includes(itemId)) return;
+      p.activeAvatar = itemId;
+      saveProfile(currentGrade);
+      updateHUD();
+      renderShop();
+    }
+
+    // Initialize on load
+    window.onload = function () {
+      updateHomePreviews();
+    };
+  </script>
+</body>
+</html>
