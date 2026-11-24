@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>مغامرة الأبطال - المنهاج العراقي</title>
+  <title>مغامرة الأبطال - المنهاج العراقي (100 سؤال لكل مادة)</title>
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Google Fonts: Cairo & Tajawal -->
@@ -12,7 +12,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@500;700;800;900&family=Tajawal:wght@500;700;800&display=swap" rel="stylesheet">
   
   <style>
-    /* Custom Typography & Base Setup */
+    /* Base Typography & Space-Arcade Background */
     body {
       font-family: 'Cairo', 'Tajawal', sans-serif;
       background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 45%, #311042 100%);
@@ -23,7 +23,7 @@
       -webkit-tap-highlight-color: transparent;
     }
 
-    /* Animated Floating Stars Background */
+    /* Animated Twinkling Stars */
     .stars-bg {
       position: fixed;
       inset: 0;
@@ -59,7 +59,7 @@
       filter: grayscale(0.6);
     }
 
-    /* Card Hover & Float Effects */
+    /* Hero & Subject Card Hover Physics */
     .hero-card {
       transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
@@ -68,16 +68,6 @@
     }
     .hero-card:active {
       transform: translateY(2px) scale(0.99);
-    }
-
-    /* Real Photo Portrait Framing */
-    .real-photo-yaqoub {
-      object-fit: cover;
-      object-position: 50% 25%;
-    }
-    .real-photo-youssef {
-      object-fit: cover;
-      object-position: 52% 22%;
     }
 
     @keyframes floatSlow {
@@ -115,7 +105,7 @@
       animation: popIn 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
     }
 
-    /* Confetti Canvas */
+    /* Fullscreen Confetti Canvas */
     #confetti-canvas {
       position: fixed;
       inset: 0;
@@ -123,25 +113,17 @@
       z-index: 100;
     }
 
-    /* Custom Scrollbar */
-    ::-webkit-scrollbar {
-      width: 8px;
-    }
-    ::-webkit-scrollbar-track {
-      background: rgba(15, 23, 42, 0.5);
-    }
-    ::-webkit-scrollbar-thumb {
-      background: rgba(139, 92, 246, 0.5);
-      border-radius: 999px;
-    }
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: rgba(15, 23, 42, 0.5); }
+    ::-webkit-scrollbar-thumb { background: rgba(139, 92, 246, 0.5); border-radius: 999px; }
   </style>
 </head>
 <body class="relative antialiased selection:bg-amber-400 selection:text-slate-900">
-  <!-- Decorative Background & Confetti -->
+  <!-- Decorative Background & Confetti Canvas -->
   <div class="stars-bg"></div>
   <canvas id="confetti-canvas"></canvas>
 
-  <!-- Main App Wrapper -->
+  <!-- Main Responsive Container -->
   <div id="app" class="relative z-10 max-w-5xl mx-auto px-4 py-4 sm:py-6 min-h-screen flex flex-col">
     
     <!-- Top Navigation / Status Header -->
@@ -156,14 +138,13 @@
             مغامرة الأبطال 🇮🇶
           </h1>
           <p id="header-subtitle" class="text-xs sm:text-sm text-indigo-200 font-medium">
-            المنهاج الدراسي العراقي الممتع
+            بنك الأسئلة الكامل (100 سؤال لكل مادة)
           </p>
         </div>
       </div>
 
-      <!-- Player Stats Bar (Visible when grade is selected) -->
+      <!-- Player HUD Bar -->
       <div id="player-hud" class="hidden flex-wrap items-center gap-2 sm:gap-3">
-        <!-- Active Avatar & Level -->
         <div class="flex items-center gap-2 bg-indigo-950/80 border border-indigo-400/30 rounded-2xl px-3 py-1.5">
           <div id="hud-avatar" class="w-9 h-9 rounded-full overflow-hidden flex items-center justify-center bg-white/10 text-2xl shrink-0 border border-amber-300/50">🦁</div>
           <div class="leading-tight">
@@ -172,36 +153,33 @@
           </div>
         </div>
 
-        <!-- Golden Stars Counter -->
         <div class="flex items-center gap-1.5 bg-amber-500/20 border border-amber-400/40 rounded-2xl px-3 py-1.5 shadow-inner">
           <span class="text-xl">⭐</span>
           <span id="hud-stars" class="font-black text-amber-300 text-base sm:text-lg">0</span>
         </div>
 
-        <!-- Reward Shop Button -->
         <button onclick="openShop()" class="btn-3d bg-gradient-to-r from-fuchsia-500 to-pink-600 hover:from-fuchsia-400 hover:to-pink-500 text-white font-extrabold px-3.5 py-2 rounded-2xl shadow-lg shadow-pink-600/30 flex items-center gap-1.5 text-sm">
           <span>🎁</span>
           <span>المتجر</span>
         </button>
       </div>
 
-      <!-- Sound Mute Toggle -->
       <button id="mute-btn" onclick="toggleMute()" class="btn-3d bg-white/15 hover:bg-white/25 border border-white/20 p-2.5 rounded-2xl text-xl" title="تشغيل/كتم الصوت">
         🔊
       </button>
     </header>
 
-    <!-- SCREEN 1: GRADE SELECTION SCREEN -->
+    <!-- SCREEN 1: HERO & GRADE SELECTION SCREEN -->
     <main id="screen-grades" class="flex-1 flex flex-col justify-center items-center text-center animate-pop">
       <div class="max-w-3xl mb-5">
         <span class="inline-block bg-emerald-500/20 border border-emerald-400/40 text-emerald-300 font-bold text-xs sm:text-sm px-4 py-1.5 rounded-full mb-2">
-          ✨ مغامرة خاصة للأبطال: يعقوب ويوسف 🇮🇶
+          ✨ مغامرة خاصة للأبطال: يعقوب ويوسف (100 سؤال لكل مادة) 🇮🇶
         </span>
         <h2 class="text-2xl sm:text-4xl font-black mb-1 leading-tight">
           اختر بطلك لتبدأ اللعب! 🚀
         </h2>
         <p class="text-indigo-200 text-xs sm:text-sm">
-          اضغط على صورة يعقوب أو يوسف لبدء التحدي في المنهاج العراقي وجمع النجوم الذهبية
+          كل مادة تحتوي على 100 سؤال متنوع من المنهاج العراقي مع نظام التقدم وحفظ الأسئلة المجابة
         </p>
       </div>
 
@@ -209,27 +187,27 @@
       <input type="file" id="upload-hero-4" accept="image/*" class="hidden" onchange="handleHeroPhotoUpload(4, event)">
       <input type="file" id="upload-hero-6" accept="image/*" class="hidden" onchange="handleHeroPhotoUpload(6, event)">
 
-      <!-- Quick Banner to Load Real Photos -->
+      <!-- Quick Photo Upload Banner -->
       <div id="real-photo-banner" class="w-full max-w-4xl bg-amber-400/15 border-2 border-dashed border-amber-300/70 rounded-2xl p-3 sm:p-4 mb-5 flex flex-wrap items-center justify-between gap-3 text-right">
         <div class="flex items-center gap-2.5">
           <span class="text-2xl">📸</span>
           <div class="text-xs sm:text-sm">
-            <div class="font-black text-amber-300">بۆ دانانی وێنە ڕاستەقینەکانی یەعقوب و یوسف:</div>
-            <div class="text-indigo-100">کلیک لە دوگمەی وێنەی هەریەکەیان بکە و وێنەکەی لە مۆبایل/کۆمپیوتەر هەڵبژێرە تا یەکسەر جێگیر بێت.</div>
+            <div class="font-black text-amber-300">أضف صورتك الحقيقية أيها البطل:</div>
+            <div class="text-indigo-100">اضغط على زر الصورة ليعقوب أو يوسف لاختيار صورة من جهازك وحفظها في ملفك الشخصي.</div>
           </div>
         </div>
         <div class="flex items-center gap-2">
           <button type="button" onclick="triggerHeroUpload(4)" class="btn-3d bg-sky-500 hover:bg-sky-400 text-white font-black text-xs px-3 py-2 rounded-xl shadow">
-            📥 وێنەی یەعقوب
+            📥 صورة يعقوب
           </button>
           <button type="button" onclick="triggerHeroUpload(6)" class="btn-3d bg-fuchsia-500 hover:bg-fuchsia-400 text-white font-black text-xs px-3 py-2 rounded-xl shadow">
-            📥 وێنەی یوسف
+            📥 صورة يوسف
           </button>
         </div>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-4xl">
-        <!-- Grade 4 Card: Yaqoub (يعقوب) -->
+        <!-- Grade 4 Card: Yaqoub -->
         <div onclick="selectGrade(4)" class="hero-card cursor-pointer relative overflow-hidden bg-gradient-to-br from-sky-500 via-blue-600 to-emerald-600 rounded-3xl p-6 sm:p-7 border-4 border-sky-300/60 shadow-2xl shadow-sky-900/50 text-right flex flex-col justify-between group">
           <div class="absolute -left-6 -top-6 text-8xl opacity-15 group-hover:scale-110 transition-transform">🇮🇶</div>
           <div>
@@ -237,15 +215,14 @@
               <span class="bg-white/25 backdrop-blur-sm text-white font-extrabold px-3.5 py-1 rounded-full text-xs sm:text-sm">
                 الصف الرابع الابتدائي
               </span>
-              <button type="button" onclick="event.stopPropagation(); triggerHeroUpload(4)" class="btn-3d bg-slate-950/50 hover:bg-slate-950/80 border border-white/30 text-white text-xs font-bold px-3 py-1.5 rounded-full flex items-center gap-1" title="اضغط لوضع صورتك الحقيقية أو الكرتونية">
+              <button type="button" onclick="event.stopPropagation(); triggerHeroUpload(4)" class="btn-3d bg-slate-950/50 hover:bg-slate-950/80 border border-white/30 text-white text-xs font-bold px-3 py-1.5 rounded-full flex items-center gap-1">
                 <span>📸</span>
                 <span>تغيير الصورة</span>
               </button>
             </div>
 
-            <!-- Yaqoub Custom Portrait & Name -->
             <div class="flex items-center gap-4 mb-4">
-              <div id="hero-card-avatar-4" onclick="event.stopPropagation(); triggerHeroUpload(4)" title="اضغط لاختيار صورة يعقوب الحقيقية" class="cursor-pointer relative w-24 h-24 sm:w-28 sm:h-28 rounded-3xl bg-gradient-to-b from-sky-200 to-emerald-200 border-4 border-amber-300 shadow-xl overflow-hidden shrink-0 flex items-center justify-center animate-float group/avatar">
+              <div id="hero-card-avatar-4" onclick="event.stopPropagation(); triggerHeroUpload(4)" class="cursor-pointer relative w-24 h-24 sm:w-28 sm:h-28 rounded-3xl bg-gradient-to-b from-sky-200 to-emerald-200 border-4 border-amber-300 shadow-xl overflow-hidden shrink-0 flex items-center justify-center animate-float">
                 <div class="text-center p-1">
                   <div class="text-3xl mb-0.5">📷</div>
                   <div class="text-[11px] font-black text-slate-900 leading-tight">اضغط لوضع صورة يعقوب</div>
@@ -256,7 +233,7 @@
                   البطل يعقوب 🌟
                 </h3>
                 <p class="text-sky-100 font-bold text-xs sm:text-sm leading-relaxed">
-                  مغامر الصف الرابع! القراءة والقواعد، الرياضيات، العلوم، الاجتماعيات، الإسلامية، والإنجليزية.
+                  6 مواد دراسية × 100 سؤال = 600 سؤال ممتع في المنهاج العراقي للصف الرابع!
                 </p>
               </div>
             </div>
@@ -273,7 +250,7 @@
           </div>
         </div>
 
-        <!-- Grade 6 Card: Youssef (يوسف) -->
+        <!-- Grade 6 Card: Youssef -->
         <div onclick="selectGrade(6)" class="hero-card cursor-pointer relative overflow-hidden bg-gradient-to-br from-purple-600 via-fuchsia-700 to-indigo-800 rounded-3xl p-6 sm:p-7 border-4 border-fuchsia-300/60 shadow-2xl shadow-purple-900/50 text-right flex flex-col justify-between group">
           <div class="absolute -left-6 -top-6 text-8xl opacity-15 group-hover:scale-110 transition-transform">🚀</div>
           <div>
@@ -281,15 +258,14 @@
               <span class="bg-white/25 backdrop-blur-sm text-white font-extrabold px-3.5 py-1 rounded-full text-xs sm:text-sm">
                 الصف السادس الابتدائي
               </span>
-              <button type="button" onclick="event.stopPropagation(); triggerHeroUpload(6)" class="btn-3d bg-slate-950/50 hover:bg-slate-950/80 border border-white/30 text-white text-xs font-bold px-3 py-1.5 rounded-full flex items-center gap-1" title="اضغط لوضع صورتك الحقيقية أو الكرتونية">
+              <button type="button" onclick="event.stopPropagation(); triggerHeroUpload(6)" class="btn-3d bg-slate-950/50 hover:bg-slate-950/80 border border-white/30 text-white text-xs font-bold px-3 py-1.5 rounded-full flex items-center gap-1">
                 <span>📸</span>
                 <span>تغيير الصورة</span>
               </button>
             </div>
 
-            <!-- Youssef Custom Portrait & Name -->
             <div class="flex items-center gap-4 mb-4">
-              <div id="hero-card-avatar-6" onclick="event.stopPropagation(); triggerHeroUpload(6)" title="اضغط لاختيار صورة يوسف الحقيقية" class="cursor-pointer relative w-24 h-24 sm:w-28 sm:h-28 rounded-3xl bg-gradient-to-b from-fuchsia-200 to-indigo-200 border-4 border-amber-300 shadow-xl overflow-hidden shrink-0 flex items-center justify-center animate-float group/avatar">
+              <div id="hero-card-avatar-6" onclick="event.stopPropagation(); triggerHeroUpload(6)" class="cursor-pointer relative w-24 h-24 sm:w-28 sm:h-28 rounded-3xl bg-gradient-to-b from-fuchsia-200 to-indigo-200 border-4 border-amber-300 shadow-xl overflow-hidden shrink-0 flex items-center justify-center animate-float">
                 <div class="text-center p-1">
                   <div class="text-3xl mb-0.5">📷</div>
                   <div class="text-[11px] font-black text-slate-900 leading-tight">اضغط لوضع صورة يوسف</div>
@@ -300,7 +276,7 @@
                   البطل يوسف ⚡
                 </h3>
                 <p class="text-purple-100 font-bold text-xs sm:text-sm leading-relaxed">
-                  فارس السادس الابتدائي! القواعد، الرياضيات، العلوم، الاجتماعيات، الإسلامية، والإنجليزية.
+                  6 مواد وزارية × 100 سؤال = 600 سؤال شامل في المنهاج العراقي للسادس!
                 </p>
               </div>
             </div>
@@ -321,81 +297,72 @@
 
     <!-- SCREEN 2: SUBJECT SELECTION SCREEN -->
     <section id="screen-subjects" class="hidden flex-1 flex-col animate-pop">
-      <!-- XP Progress Banner -->
       <div class="bg-white/10 backdrop-blur-md border border-white/15 rounded-3xl p-4 sm:p-5 mb-6">
         <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
           <div class="flex items-center gap-2">
-            <span id="grade-badge" class="bg-amber-400 text-slate-950 font-black px-3 py-1 rounded-xl text-sm">الصف الثالث</span>
-            <h2 class="text-xl sm:text-2xl font-black">اختر المادة الدراسية أو التحدي الشامل!</h2>
+            <span id="grade-badge" class="bg-amber-400 text-slate-950 font-black px-3 py-1 rounded-xl text-sm">الصف</span>
+            <h2 class="text-xl sm:text-2xl font-black">اختر المادة (100 سؤال لكل مادة)</h2>
           </div>
           <div class="text-xs sm:text-sm font-bold text-cyan-300">
             نقاط الخبرة: <span id="xp-text">0 / 100 XP</span>
           </div>
         </div>
-        <!-- XP Bar -->
         <div class="w-full h-4 bg-slate-900/80 rounded-full overflow-hidden p-0.5 border border-white/10">
           <div id="xp-bar" class="h-full bg-gradient-to-l from-amber-400 via-emerald-400 to-cyan-400 rounded-full transition-all duration-500" style="width: 15%"></div>
         </div>
       </div>
 
-      <!-- Subjects Grid -->
       <div id="subjects-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 mb-6">
-        <!-- Dynamically populated -->
       </div>
     </section>
 
     <!-- SCREEN 3: QUIZ / BATTLE ARENA SCREEN -->
     <section id="screen-quiz" class="hidden flex-1 flex-col max-w-3xl mx-auto w-full animate-pop">
-      <!-- Top Battle Info Bar -->
       <div class="flex items-center justify-between gap-3 bg-white/10 backdrop-blur-md border border-white/15 rounded-2xl px-4 py-3 mb-4">
         <button onclick="exitQuiz()" class="btn-3d bg-rose-500/25 hover:bg-rose-500/40 border border-rose-400/40 text-rose-200 font-bold px-3 py-1.5 rounded-xl text-sm">
-          ✖ انسحاب
+          💾 حفظ وخروج
         </button>
 
-        <!-- Question Counter & Progress -->
         <div class="flex-1 mx-2">
           <div class="flex justify-between text-xs font-bold mb-1 text-indigo-200">
             <span id="quiz-subject-label">المادة</span>
-            <span>السؤال <span id="q-current">1</span> من <span id="q-total">8</span></span>
+            <span>السؤال <span id="q-current">1</span> من <span id="q-total">100</span></span>
           </div>
           <div class="w-full h-3 bg-slate-950/70 rounded-full overflow-hidden">
-            <div id="quiz-progress-bar" class="h-full bg-gradient-to-l from-amber-400 to-emerald-400 transition-all duration-300" style="width: 12%"></div>
+            <div id="quiz-progress-bar" class="h-full bg-gradient-to-l from-amber-400 to-emerald-400 transition-all duration-300" style="width: 1%"></div>
           </div>
         </div>
 
-        <!-- Streak Flame -->
         <div id="streak-box" class="flex items-center gap-1 bg-orange-500/20 border border-orange-400/40 px-3 py-1.5 rounded-xl">
           <span id="streak-icon" class="text-lg">🔥</span>
           <span id="streak-count" class="font-black text-orange-300">0</span>
         </div>
       </div>
 
-      <!-- Question Card -->
       <div id="question-card" class="bg-white/12 backdrop-blur-lg border-2 border-white/20 rounded-3xl p-5 sm:p-8 shadow-2xl mb-5 relative overflow-hidden">
-        <div class="flex items-center justify-between mb-3">
+        <div class="flex items-center justify-between gap-2 mb-3">
           <span id="q-tag" class="bg-indigo-500/40 border border-indigo-300/30 text-indigo-100 text-xs font-bold px-3 py-1 rounded-full">
-            تحدي الأبطال
+            بنك الـ 100 سؤال
           </span>
+          <button id="read-q-btn" type="button" onclick="VoiceReader.readCurrentQuestion()" class="btn-3d bg-sky-500/30 hover:bg-sky-500/50 border border-sky-300/50 text-sky-100 text-xs sm:text-sm font-black px-3.5 py-1.5 rounded-full flex items-center gap-1.5 shadow">
+            <span id="read-q-icon">🗣️</span>
+            <span id="read-q-label">استمع للسؤال</span>
+          </button>
           <span class="text-amber-300 font-extrabold text-sm">+10 ⭐</span>
         </div>
 
-        <!-- Question Text -->
         <h3 id="question-text" class="text-xl sm:text-2xl md:text-3xl font-black leading-relaxed text-white mb-6">
           نص السؤال يظهر هنا...
         </h3>
 
-        <!-- Hint Box (Hidden by default) -->
         <div id="hint-box" class="hidden bg-amber-400/20 border border-amber-300/50 rounded-2xl p-3.5 mb-5 text-amber-200 text-sm sm:text-base font-bold flex items-start gap-2 animate-pop">
           <span class="text-xl">💡</span>
           <p id="hint-text"></p>
         </div>
 
-        <!-- 4 Multiple Choice Options -->
         <div id="options-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-          <!-- Options injected by JS -->
         </div>
 
-        <!-- Smart Explanation Feedback Box (Shown after answering) -->
         <div id="feedback-box" class="hidden mt-6 rounded-2xl p-4 sm:p-5 border-2 animate-pop">
           <div class="flex items-center gap-2 mb-1.5">
             <span id="feedback-icon" class="text-2xl">🎉</span>
@@ -408,7 +375,7 @@
         </div>
       </div>
 
-      <!-- Power-Ups / Helpers Bar -->
+      <!-- 3 Star-Powered Helpers -->
       <div class="grid grid-cols-3 gap-3 bg-slate-950/50 border border-white/10 rounded-3xl p-3">
         <button id="btn-5050" onclick="use5050()" class="btn-3d bg-gradient-to-b from-sky-500 to-blue-600 text-white rounded-2xl p-2.5 sm:p-3 flex flex-col items-center justify-center shadow-lg">
           <span class="text-xl sm:text-2xl mb-0.5">✂️</span>
@@ -444,21 +411,21 @@
         <div class="grid grid-cols-3 gap-3 mb-6">
           <div class="bg-slate-900/70 border border-white/10 rounded-2xl p-3">
             <div class="text-xs text-indigo-300 font-bold mb-1">الإجابات الصحيحة</div>
-            <div id="res-score" class="text-xl sm:text-2xl font-black text-emerald-400">8 / 8</div>
+            <div id="res-score" class="text-xl sm:text-2xl font-black text-emerald-400">100 / 100</div>
           </div>
           <div class="bg-slate-900/70 border border-white/10 rounded-2xl p-3">
             <div class="text-xs text-indigo-300 font-bold mb-1">النجوم المكتسبة</div>
-            <div id="res-stars" class="text-xl sm:text-2xl font-black text-amber-300">+80 ⭐</div>
+            <div id="res-stars" class="text-xl sm:text-2xl font-black text-amber-300">+1000 ⭐</div>
           </div>
           <div class="bg-slate-900/70 border border-white/10 rounded-2xl p-3">
             <div class="text-xs text-indigo-300 font-bold mb-1">أعلى سلسلة</div>
-            <div id="res-streak" class="text-xl sm:text-2xl font-black text-orange-400">5 🔥</div>
+            <div id="res-streak" class="text-xl sm:text-2xl font-black text-orange-400">25 🔥</div>
           </div>
         </div>
 
         <div class="flex flex-col sm:flex-row gap-3">
           <button onclick="replaySubject()" class="flex-1 btn-3d bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-black py-3.5 rounded-2xl text-lg shadow-lg">
-            العب مرة أخرى 🔄
+            جولة جديدة (أسئلة جديدة) 🔄
           </button>
           <button onclick="backToSubjects()" class="flex-1 btn-3d bg-amber-400 hover:bg-amber-300 text-slate-950 font-black py-3.5 rounded-2xl text-lg shadow-lg">
             اختيار مادة أخرى 📚
@@ -489,19 +456,18 @@
         </div>
 
         <div id="shop-items-grid" class="p-5 overflow-y-auto grid grid-cols-2 sm:grid-cols-3 gap-3.5">
-          <!-- Shop avatars injected here -->
         </div>
       </div>
     </div>
 
-    <!-- Toast Notification Banner -->
+    <!-- Custom Toast Notification Banner (No alert() used) -->
     <div id="toast" class="fixed bottom-5 left-1/2 -translate-x-1/2 z-50 bg-slate-900/95 border-2 border-amber-400 text-white px-5 py-3 rounded-2xl shadow-2xl font-bold text-sm sm:text-base hidden transition-all">
     </div>
   </div>
 
   <script>
     /* ==========================================================================
-       1. WEB AUDIO API SOUND SYNTHESIZER (No external audio URLs needed!)
+       1. WEB AUDIO API SOUND SYNTHESIZER
        ========================================================================== */
     const SoundFX = {
       ctx: null,
@@ -511,9 +477,7 @@
           const AudioCtx = window.AudioContext || window.webkitAudioContext;
           if (AudioCtx) this.ctx = new AudioCtx();
         }
-        if (this.ctx && this.ctx.state === 'suspended') {
-          this.ctx.resume();
-        }
+        if (this.ctx && this.ctx.state === 'suspended') this.ctx.resume();
       },
       playTone(freq, type, duration, delay = 0, vol = 0.18) {
         if (this.muted) return;
@@ -530,13 +494,11 @@
         osc.start(this.ctx.currentTime + delay);
         osc.stop(this.ctx.currentTime + delay + duration);
       },
-      click() {
-        this.playTone(520, 'sine', 0.08, 0, 0.12);
-      },
+      click() { this.playTone(520, 'sine', 0.08, 0, 0.12); },
       correct() {
-        this.playTone(523.25, 'triangle', 0.14, 0, 0.2);    // C5
-        this.playTone(659.25, 'triangle', 0.14, 0.09, 0.2); // E5
-        this.playTone(783.99, 'triangle', 0.25, 0.18, 0.22);// G5
+        this.playTone(523.25, 'triangle', 0.14, 0, 0.2);
+        this.playTone(659.25, 'triangle', 0.14, 0.09, 0.2);
+        this.playTone(783.99, 'triangle', 0.25, 0.18, 0.22);
       },
       wrong() {
         this.playTone(220, 'sawtooth', 0.18, 0, 0.14);
@@ -547,17 +509,201 @@
         this.playTone(880, 'sine', 0.2, 0.08, 0.18);
       },
       victory() {
-        const notes = [523.25, 659.25, 783.99, 1046.50];
-        notes.forEach((n, idx) => {
-          this.playTone(n, 'triangle', 0.25, idx * 0.12, 0.22);
-        });
+        [523.25, 659.25, 783.99, 1046.50].forEach((n, idx) => this.playTone(n, 'triangle', 0.25, idx * 0.12, 0.22));
       }
     };
+
+    /* ==========================================================================
+       1B. ARABIC FLUENT VOICE READER (NATURAL ARABIC NARRATOR)
+       ========================================================================== */
+    const VoiceReader = {
+      enabled: true,
+      arabicVoice: null,
+      currentAudio: null,
+      audioQueue: [],
+      isSpeaking: false,
+      init() {
+        if (!('speechSynthesis' in window)) return;
+        const pickVoice = () => {
+          const voices = window.speechSynthesis.getVoices();
+          if (!voices.length) return;
+          // Prioritize native Arabic voices (Egypt, Saudi, UAE, general Arabic) over non-Arabic voices
+          const arVoices = voices.filter(v => v.lang && v.lang.toLowerCase().startsWith('ar'));
+          if (!arVoices.length) {
+            this.arabicVoice = null;
+            return;
+          }
+          this.arabicVoice =
+            arVoices.find(v => /salma|hoda|tariq|majed|laila|zariyah|naomi|farid|amr|yasmin/i.test(v.name)) ||
+            arVoices.find(v => /ar-eg|ar-sa|ar-ae/i.test(v.lang)) ||
+            arVoices[0];
+        };
+        pickVoice();
+        window.speechSynthesis.onvoiceschanged = pickVoice;
+      },
+      setSpeakingUI(active) {
+        this.isSpeaking = active;
+        const btn = document.getElementById('read-q-btn');
+        const icon = document.getElementById('read-q-icon');
+        const label = document.getElementById('read-q-label');
+        if (!btn || !icon || !label) return;
+        if (active) {
+          btn.classList.add('bg-emerald-500/40', 'border-emerald-300');
+          icon.textContent = '🔊';
+          label.textContent = 'جاري القراءة...';
+        } else {
+          btn.classList.remove('bg-emerald-500/40', 'border-emerald-300');
+          icon.textContent = '🗣️';
+          label.textContent = 'استمع للسؤال';
+        }
+      },
+      // Strip English letters/symbols so the Arabic voice doesn't read them with a foreign accent
+      cleanForSpeech(text) {
+        if (!text) return '';
+        return text
+          .replace(/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}]/gu, '')
+          .replace(/[a-zA-Z]+/g, ' ')
+          .replace(/\.\.\.\.\./g, '، فراغ، ')
+          .replace(/×/g, ' ضرب ')
+          .replace(/÷/g, ' تقسيم ')
+          .replace(/\+/g, ' زائد ')
+          .replace(/=/g, ' يساوي ')
+          .replace(/%/g, ' بالمئة ')
+          .replace(/سم²/g, ' سنتيمتر مربع ')
+          .replace(/سم³/g, ' سنتيمتر مكعب ')
+          .replace(/سم/g, ' سنتيمتر ')
+          .replace(/كم/g, ' كيلومتر ')
+          .replace(/[()«»"']/g, ' ')
+          .replace(/\s+/g, ' ')
+          .trim();
+      },
+      splitChunks(text, maxLen = 165) {
+        const parts = text.split(/([.،؟!])/).reduce((acc, cur) => {
+          if (!cur) return acc;
+          if (/^[.،؟!]$/.test(cur) && acc.length) {
+            acc[acc.length - 1] += cur;
+          } else {
+            acc.push(cur.trim());
+          }
+          return acc;
+        }, []).filter(Boolean);
+
+        const chunks = [];
+        let current = '';
+        for (const p of parts) {
+          if ((current + ' ' + p).trim().length <= maxLen) {
+            current = (current + ' ' + p).trim();
+          } else {
+            if (current) chunks.push(current);
+            current = p.slice(0, maxLen);
+          }
+        }
+        if (current) chunks.push(current);
+        return chunks;
+      },
+      playOnlineArabicTTS(text) {
+        this.audioQueue = this.splitChunks(text, 165);
+        if (!this.audioQueue.length) return;
+        this.setSpeakingUI(true);
+
+        const playNextChunk = () => {
+          if (!this.audioQueue.length || SoundFX.muted) {
+            this.setSpeakingUI(false);
+            return;
+          }
+          const chunk = this.audioQueue.shift();
+          const url = `https://translate.google.com/translate_tts?ie=UTF-8&q=${encodeURIComponent(chunk)}&tl=ar&client=tw-ob`;
+          const audio = new Audio(url);
+          audio.playbackRate = 0.98;
+          this.currentAudio = audio;
+          audio.onended = () => playNextChunk();
+          audio.onerror = () => {
+            this.setSpeakingUI(false);
+          };
+          audio.play().catch(() => {
+            this.setSpeakingUI(false);
+          });
+        };
+        playNextChunk();
+      },
+      speak(text, rate = 0.95, pitch = 1.0) {
+        if (!this.enabled || SoundFX.muted) return;
+        this.stop();
+        const cleaned = this.cleanForSpeech(text);
+        if (!cleaned) return;
+
+        this.init();
+        // Only use speechSynthesis if a true native Arabic voice is found
+        if ('speechSynthesis' in window && this.arabicVoice) {
+          let started = false;
+          const utter = new SpeechSynthesisUtterance(cleaned);
+          window._activeUtterance = utter;
+          utter.lang = this.arabicVoice.lang || 'ar-SA';
+          utter.voice = this.arabicVoice;
+          utter.rate = rate;
+          utter.pitch = pitch;
+          utter.volume = 1.0;
+
+          utter.onstart = () => {
+            started = true;
+            this.setSpeakingUI(true);
+          };
+          utter.onend = () => {
+            this.setSpeakingUI(false);
+          };
+          utter.onerror = () => {
+            if (!started) this.playOnlineArabicTTS(cleaned);
+            else this.setSpeakingUI(false);
+          };
+
+          window.speechSynthesis.resume();
+          window.speechSynthesis.speak(utter);
+
+          setTimeout(() => {
+            if (!started && !SoundFX.muted) {
+              window.speechSynthesis.cancel();
+              this.playOnlineArabicTTS(cleaned);
+            }
+          }, 500);
+        } else {
+          // Use Arabic TTS audio directly instead of non-Arabic system voices
+          this.playOnlineArabicTTS(cleaned);
+        }
+      },
+      stop() {
+        this.audioQueue = [];
+        if (this.currentAudio) {
+          try {
+            this.currentAudio.pause();
+            this.currentAudio.src = '';
+          } catch (e) {}
+          this.currentAudio = null;
+        }
+        if ('speechSynthesis' in window) {
+          try { window.speechSynthesis.cancel(); } catch (e) {}
+        }
+        this.setSpeakingUI(false);
+      },
+      readCurrentQuestion() {
+        if (!currentQuestions || !currentQuestions[currentIndex]) return;
+        const qObj = currentQuestions[currentIndex];
+        const letters = ['ألف', 'باء', 'جيم', 'دال'];
+        const optionsText = qObj.options
+          .map((opt, idx) => `الخيار ${letters[idx]}: ${opt}`)
+          .join('، ');
+        this.speak(`${qObj.q}؟ ${optionsText}`, 0.95, 1.0);
+      }
+    };
+    VoiceReader.init();
 
     function toggleMute() {
       SoundFX.muted = !SoundFX.muted;
       document.getElementById('mute-btn').textContent = SoundFX.muted ? '🔇' : '🔊';
-      if (!SoundFX.muted) SoundFX.click();
+      if (SoundFX.muted) {
+        VoiceReader.stop();
+      } else {
+        SoundFX.click();
+      }
     }
 
     /* ==========================================================================
@@ -595,11 +741,8 @@
           ctx.stroke();
         });
         frame++;
-        if (frame < 140) {
-          requestAnimationFrame(draw);
-        } else {
-          ctx.clearRect(0, 0, canvas.width, canvas.height);
-        }
+        if (frame < 140) requestAnimationFrame(draw);
+        else ctx.clearRect(0, 0, canvas.width, canvas.height);
       }
       draw();
     }
@@ -620,20 +763,20 @@
     ];
 
     /* ==========================================================================
-       4. IRAQI CURRICULUM QUESTION BANK (GRADE 4 YAQOUB & GRADE 6 YOUSSEF)
+       4. IRAQI CURRICULUM QUESTION BANK (100 UNIQUE QUESTIONS PER SUBJECT)
        ========================================================================== */
     const CURRICULUM_DATA = {
       4: {
         heroName: 'يعقوب',
         name: 'الصف الرابع الابتدائي - البطل يعقوب',
         subjects: [
-          { id: 'arabic4', name: 'القراءة وقواعد اللغة العربية', icon: '📖', color: 'from-emerald-500 to-teal-600', desc: 'أقسام الكلام، المذكر والمؤنث، الضمائر' },
-          { id: 'math4', name: 'الرياضيات', icon: '🔢', color: 'from-blue-500 to-indigo-600', desc: 'الملايين، الضرب، القسمة، والكسور' },
-          { id: 'science4', name: 'العلوم', icon: '🔬', color: 'from-lime-500 to-green-600', desc: 'البكتيريا والطحالب، دورات الحياة، المادة' },
-          { id: 'social4', name: 'الاجتماعيات', icon: '🗺️', color: 'from-cyan-500 to-sky-600', desc: 'البيئة المحلية، الخريطة، والاتجاهات' },
-          { id: 'islamic4', name: 'التربية الإسلامية', icon: '🕌', color: 'from-amber-500 to-orange-600', desc: 'السور الكريمة، الوضوء، وسيرة النبي (ص)' },
-          { id: 'english4', name: 'اللغة الإنجليزية', icon: '🔤', color: 'from-pink-500 to-rose-600', desc: 'الأشهر، البلدان، والصفات' },
-          { id: 'mixed4', name: 'التحدي الشامل ليعقوب', icon: '🏆', color: 'from-purple-600 to-fuchsia-600', desc: 'مغامرة تجمع كل مواد الصف الرابع!' }
+          { id: 'arabic4', name: 'القراءة وقواعد اللغة العربية', icon: '📖', color: 'from-emerald-500 to-teal-600', desc: '100 سؤال في القواعد والقراءة والإملاء' },
+          { id: 'math4', name: 'الرياضيات', icon: '🔢', color: 'from-blue-500 to-indigo-600', desc: '100 سؤال في الملايين والضرب والقسمة والكسور' },
+          { id: 'science4', name: 'العلوم', icon: '🔬', color: 'from-lime-500 to-green-600', desc: '100 سؤال في الكائنات الحية والطاقة والمادة' },
+          { id: 'social4', name: 'الاجتماعيات', icon: '🗺️', color: 'from-cyan-500 to-sky-600', desc: '100 سؤال في الخريطة والبيئة وتاريخ العراق' },
+          { id: 'islamic4', name: 'التربية الإسلامية', icon: '🕌', color: 'from-amber-500 to-orange-600', desc: '100 سؤال في السور والوضوء والسيرة النبوية' },
+          { id: 'english4', name: 'اللغة الإنجليزية', icon: '🔤', color: 'from-pink-500 to-rose-600', desc: '100 سؤال في المفردات والأشهر والصفات والقواعد' },
+          { id: 'mixed4', name: 'التحدي الشامل ليعقوب', icon: '🏆', color: 'from-purple-600 to-fuchsia-600', desc: 'تحدٍ شامل يجمع 600 سؤال من كل مواد الصف الرابع!' }
         ],
         questions: {
           arabic4: [
@@ -703,79 +846,13 @@
         heroName: 'يوسف',
         name: 'الصف السادس الابتدائي - البطل يوسف',
         subjects: [
-          { id: 'arabic6', name: 'اللغة العربية والقواعد', icon: '✒️', color: 'from-emerald-600 to-teal-700', desc: 'المبتدأ والخبر، كان وإن وأخواتها' },
-          { id: 'math6', name: 'الرياضيات', icon: '📐', color: 'from-blue-600 to-indigo-700', desc: 'الأعداد الصحيحة، الكسور، النسبة، الدائرة' },
-          { id: 'science6', name: 'العلوم', icon: '⚛️', color: 'from-cyan-600 to-sky-700', desc: 'التكاثر، الجهاز العصبي، الذرة، الكهرباء' },
-          { id: 'social6', name: 'الاجتماعيات', icon: '🇮🇶', color: 'from-red-600 to-rose-700', desc: 'محافظات العراق، دجلة والفرات، الحضارات' },
-          { id: 'islamic6', name: 'التربية الإسلامية', icon: '🕌', color: 'from-amber-600 to-orange-700', desc: 'أحكام التلاوة، السيرة، والعقيدة' },
-          { id: 'english6', name: 'اللغة الإنجليزية', icon: '🌍', color: 'from-violet-600 to-purple-700', desc: 'المهن، الروتين اليومي، والقواعد' },
-          { id: 'mixed6', name: 'معركة الزعيم ليوسف', icon: '👑', color: 'from-fuchsia-600 to-pink-700', desc: 'اختبار الأبطال الشامل لكل المواد الوزارية!' }
-        ],
-        questions: {
-          arabic3: [
-            { q: 'ما جمع كلمة (تِلميذ) في اللغة العربية؟', options: ['تَلاميذ', 'تِلميذان', 'تِلميذات', 'تَلمذة'], ans: 0, hint: 'نستخدمها لمجموعة من التلاميذ الذكور.', exp: 'جمع تكسير لكلمة تلميذ هو (تَلاميذ).' },
-            { q: 'أي كلمة من الكلمات الآتية تنتهي بـ (تاء مربوطة ة)؟', options: ['بَيت', 'مَدرَسة', 'بِنت', 'زَيت'], ans: 1, hint: 'عند الوقف عليها تُنطق هاءً.', exp: 'كلمة (مَدرَسة) تنتهي بتاء مربوطة لأنها اسم مفرد مؤنث.' },
-            { q: 'ما ضد كلمة (نَشيط)؟', options: ['سَريع', 'كَسول', 'ذَكي', 'قَوي'], ans: 1, hint: 'عكس الشخص الذي يحب العمل والحركة.', exp: 'ضد كلمة (نَشيط) هو (كَسول).' },
-            { q: 'كم عدد حروف اللغة العربية؟', options: ['26 حرفاً', '28 حرفاً', '30 حرفاً', '24 حرفاً'], ans: 1, hint: 'تبدأ بالألف وتنتهي بالياء.', exp: 'تتكون اللغة العربية من 28 حرفاً هجائياً.' },
-            { q: 'في درس (الرفق بالحيوان): كيف نعامل الحيوانات الأليفة؟', options: ['نؤذيها', 'نطعمها ونرفق بها', 'نتركها جائعة', 'نخيفها'], ans: 1, hint: 'ديننا الحنيف يأمرنا بالرحمة.', exp: 'الرفق بالحيوان وإطعامه من الأخلاق الجميلة التي أوصى بها الإسلام.' },
-            { q: 'ما مفرد كلمة (أَشجار)؟', options: ['شُجَيرة', 'شَجَرة', 'شَجَرتان', 'مَشجَر'], ans: 1, hint: 'تدل على واحدة فقط.', exp: 'مفرد (أَشجار) هو (شَجَرة).' },
-            { q: 'أكمل المثل العربي: العِلمُ في الصِّغَر كالنَّقشِ على .....', options: ['الورق', 'الحَجَر', 'الماء', 'الرمل'], ans: 1, hint: 'شيء صلب لا يزول أبداً.', exp: 'العلم في الصغر كالنقش على الحجر، أي أنه يثبت في العقل ولا يُنسى.' },
-            { q: 'أي من هذه الكلمات هي (فِعل)؟', options: ['قَلَم', 'يَكتُبُ', 'كِتاب', 'سَبّورة'], ans: 1, hint: 'كلمة تدل على عمل نقوم به.', exp: '(يَكتُبُ) فعل مضارع يدل على حدوث الكتابة.' },
-            { q: 'ما مرادف (معنى) كلمة (يُعاوِن)؟', options: ['يُساعد', 'يَترك', 'يَلعب', 'يَنام'], ans: 0, hint: 'التعاون بين الأصدقاء.', exp: 'يُعاوِن معناها يُساعد.' }
-          ],
-          math3: [
-            { q: 'ما ناتج ضرب: 6 × 7 = ؟', options: ['36', '42', '48', '49'], ans: 1, hint: '6 × 6 = 36، أضف 6 أخرى.', exp: '6 × 7 = 42.' },
-            { q: 'ما القيمة المكانية للرقم 5 في العدد (4521)؟', options: ['5', '50', '500', '5000'], ans: 2, hint: 'يقع الرقم 5 في مرتبة المئات.', exp: 'الرقم 5 في مرتبة المئات وقيمته المكانية 500.' },
-            { q: 'ما ناتج: 350 + 250 = ؟', options: ['500', '600', '550', '700'], ans: 1, hint: '300 + 200 = 500، و 50 + 50 = 100.', exp: '350 + 250 = 600.' },
-            { q: 'كم ضلعاً للمثلث؟', options: ['3 أضلاع', '4 أضلاع', '5 أضلاع', '6 أضلاع'], ans: 0, hint: 'اسمه يدل على العدد 3.', exp: 'المثلث شكل هندسي له 3 أضلاع و 3 رؤوس.' },
-            { q: 'إذا كان لديك 4 علب، في كل علبة 8 أقلام، فكم قلماً لديك؟', options: ['12', '24', '32', '36'], ans: 2, hint: 'اضرب 4 × 8.', exp: '4 × 8 = 32 قلماً.' },
-            { q: 'أي كسر يمثل (النصف)؟', options: ['1/4', '1/2', '1/3', '3/4'], ans: 1, hint: 'جزء واحد من جزأين متساويين.', exp: 'الكسر 1/2 يقرأ (نصف).' },
-            { q: 'ما العدد الذي يأتي مباشرة بعد (999)؟', options: ['990', '1000', '1001', '900'], ans: 1, hint: 'أصغر عدد مكون من 4 مراتب.', exp: 'العدد الذي يلي 999 مباشرة هو 1000 (ألف).' },
-            { q: 'ما ناتج قسمة: 36 ÷ 4 = ؟', options: ['7', '8', '9', '6'], ans: 2, hint: 'ما العدد الذي نضربه في 4 ليعطي 36؟', exp: 'بما أن 4 × 9 = 36، فإن 36 ÷ 4 = 9.' },
-            { q: 'كم دقيقة في الساعة الواحدة؟', options: ['30 دقيقة', '45 دقيقة', '60 دقيقة', '100 دقيقة'], ans: 2, hint: 'نصف الساعة 30 دقيقة.', exp: 'الساعة الواحدة تساوي 60 دقيقة.' }
-          ],
-          science3: [
-            { q: 'أي جزء في النبات يصنع الغذاء بعملية البناء الضوئي؟', options: ['الجذر', 'الساق', 'الأوراق', 'الزهرة'], ans: 2, hint: 'لونها أخضر وتستقبل ضوء الشمس.', exp: 'الأوراق الخضراء هي مصنع الغذاء في النبات.' },
-            { q: 'ما المصدر الرئيسي للضوء والحرارة على سطح الأرض؟', options: ['القمر', 'الشمس', 'النجوم', 'المصباح'], ans: 1, hint: 'نراها في السماء نهاراً.', exp: 'الشمس هي المصدر الرئيسي للضوء والحرارة على الأرض.' },
-            { q: 'أي من الكائنات الآتية يُعد من (آكلات اللحوم)؟', options: ['الأرنب', 'الأسد', 'الخروف', 'البقرة'], ans: 1, hint: 'ملك الغابة وله أنياب حادة.', exp: 'الأسد حيوان مفترس يتغذى على اللحوم.' },
-            { q: 'كيف ينتقل الضوء؟', options: ['في خطوط متعرجة', 'في خطوط مستقيمة', 'في دوائر', 'لا ينتقل'], ans: 1, hint: 'مثل شعاع الليزر أو أشعة الشمس.', exp: 'ينتقل الضوء في خطوط مستقيمة في جميع الاتجاهات.' },
-            { q: 'عند تسخين الماء السائل فإنه يتحول إلى:', options: ['ثلج', 'بخار ماء (غاز)', 'حجر', 'تراب'], ans: 1, hint: 'نراه يتصاعد من إبريق الشاي.', exp: 'التسخين يحول الماء السائل إلى بخار ماء (حالة غازية).' },
-            { q: 'ما الأداة التي نستخدمها لقياس درجة الحرارة؟', options: ['المسطرة', 'المحرار', 'الميزان', 'الساعة'], ans: 1, hint: 'يستخدمه الطبيب لقياس حرارة الجسم.', exp: 'المحرار هو أداة قياس درجة الحرارة.' },
-            { q: 'تُسمى الحيوانات التي تتغذى على النباتات والحيوانات معاً:', options: ['آكلات الأعشاب', 'مختلطة التغذية', 'آكلات اللحوم', 'المنتجات'], ans: 1, hint: 'تأكل النوعين مثل الدب والدجاجة.', exp: 'تسمى مختلطة التغذية لأنها تأكل النباتات واللحوم.' },
-            { q: 'أي من المواد الآتية يمر الضوء من خلالها بوضوح (شفافة)؟', options: ['الخشب', 'الزجاج الصافي', 'الحديد', 'الورق المقوى'], ans: 1, hint: 'نضعه في النوافذ لنرى الخارج.', exp: 'الزجاج الصافي جسم شفاف يسمح بمرور الضوء.' }
-          ],
-          islamic3: [
-            { q: 'كم عدد أركان الإسلام؟', options: ['3 أركان', '5 أركان', '6 أركان', '7 أركان'], ans: 1, hint: 'تبدأ بالشهادتين وتنتهي بحج البيت.', exp: 'أركان الإسلام خمسة: الشهادتان، الصلاة، الزكاة، الصوم، والحج.' },
-            { q: 'ما السورة التي تُسمى (قلب القرآن) أو تُقرأ في كل ركعة؟', options: ['سورة الفاتحة', 'سورة الفلق', 'سورة الناس', 'سورة الكوثر'], ans: 0, hint: 'أول سورة في القرآن الكريم.', exp: 'سورة الفاتحة هي أعظم سورة في القرآن وتُقرأ في كل ركعة.' },
-            { q: 'من هو خاتم الأنبياء والمرسلين؟', options: ['نبي الله موسى (ع)', 'نبي الله عيسى (ع)', 'نبينا محمد (ص)', 'نبي الله إبراهيم (ع)'], ans: 2, hint: 'وُلد في مكة المكرمة.', exp: 'نبينا محمد (صلى الله عليه وآله وسلم) هو خاتم الأنبياء.' },
-            { q: 'كم عدد الصلوات المفروضة في اليوم والليلة؟', options: ['3 صلوات', '4 صلوات', '5 صلوات', '6 صلوات'], ans: 2, hint: 'الفجر، الظهر، العصر، المغرب، العشاء.', exp: 'فرض الله تعالى خمس صلوات في اليوم والليلة.' },
-            { q: 'ماذا نقول عند البدء بتناول الطعام؟', options: ['الحمد لله', 'بسم الله الرحمن الرحيم', 'سبحان الله', 'أستغفر الله'], ans: 1, hint: 'نذكر اسم الله في البداية.', exp: 'نقول (بسم الله الرحمن الرحيم) قبل الأكل، و(الحمد لله) بعده.' },
-            { q: 'في أي شهر يصوم المسلمون؟', options: ['شهر رجب', 'شهر رمضان', 'شهر محرم', 'شهر شوال'], ans: 1, hint: 'شهر القرآن وليلة القدر.', exp: 'يصوم المسلمون في شهر رمضان المبارك.' },
-            { q: 'ما اسم والدة نبينا محمد (ص)؟', options: ['آمنة بنت وهب', 'خديجة بنت خويلد', 'فاطمة الزهراء', 'حليمة السعدية'], ans: 0, hint: 'اسمها آمنة.', exp: 'والدة نبينا محمد (ص) هي السيدة آمنة بنت وهب.' },
-            { q: 'أكمل الآية: (إِنَّا أَعْطَيْنَاكَ .....)', options: ['الْفَلَقَ', 'الْكَوْثَرَ', 'النَّاسَ', 'الْعَصْرَ'], ans: 1, hint: 'نهر في الجنة أعطاه الله للنبي.', exp: 'سورة الكوثر: {إِنَّا أَعْطَيْنَاكَ الْكَوْثَرَ}.' }
-          ],
-          english3: [
-            { q: 'ماذا تعني كلمة (Apple) باللغة العربية؟', options: ['موزة', 'تفاحة', 'برتقالة', 'عنب'], ans: 1, hint: 'فاكهة حمراء أو خضراء لذيذة.', exp: 'Apple معناها تفاحة.' },
-            { q: 'ما هو الرقم (Seven) بالأرقام؟', options: ['5', '6', '7', '8'], ans: 2, hint: 'يأتي بعد Six (6).', exp: 'Seven تعني الرقم 7.' },
-            { q: 'أي لون يمثل كلمة (Blue)؟', options: ['أحمر', 'أزرق', 'أصفر', 'أخضر'], ans: 1, hint: 'لون السماء الصافية والبحر.', exp: 'Blue يعني اللون الأزرق.' },
-            { q: 'ماذا تعني كلمة (Cat)؟', options: ['كلب', 'قطة', 'أسد', 'طائر'], ans: 1, hint: 'حيوان أليف يقول مياو.', exp: 'Cat معناها قطة.' },
-            { q: 'كيف نقول (كتاب) باللغة الإنجليزية؟', options: ['Pen', 'Book', 'Bag', 'Desk'], ans: 1, hint: 'نقرأ فيه الدروس.', exp: 'Book معناها كتاب.' },
-            { q: 'أكمل العبارة: Good ..... (صباح الخير)', options: ['Night', 'Morning', 'Bye', 'Afternoon'], ans: 1, hint: 'نقولها في الصباح الباكر.', exp: 'Good morning معناها صباح الخير.' },
-            { q: 'كم عدد الأصابع في اليد الواحدة بالإنجليزية؟', options: ['Three', 'Four', 'Five', 'Ten'], ans: 2, hint: 'العدد 5.', exp: 'Five تعني خمسة (5).' },
-            { q: 'ماذا تعني كلمة (Mother)؟', options: ['أب', 'أم', 'أخت', 'أخ'], ans: 1, hint: 'أغلى إنسانة في حياتنا.', exp: 'Mother معناها أم.' }
-          ]
-        }
-      },
-      6: {
-        name: 'الصف السادس الابتدائي',
-        subjects: [
-          { id: 'arabic6', name: 'اللغة العربية والقواعد', icon: '✒️', color: 'from-emerald-600 to-teal-700', desc: 'المبتدأ والخبر، كان وإن وأخواتها' },
-          { id: 'math6', name: 'الرياضيات', icon: '📐', color: 'from-blue-600 to-indigo-700', desc: 'الأعداد الصحيحة، الكسور، النسبة، الدائرة' },
-          { id: 'science6', name: 'العلوم', icon: '⚛️', color: 'from-cyan-600 to-sky-700', desc: 'التكاثر، الجهاز العصبي، الذرة، الكهرباء' },
-          { id: 'social6', name: 'الاجتماعيات', icon: '🇮🇶', color: 'from-red-600 to-rose-700', desc: 'محافظات العراق، دجلة والفرات، الحضارات' },
-          { id: 'islamic6', name: 'التربية الإسلامية', icon: '🕌', color: 'from-amber-600 to-orange-700', desc: 'أحكام التلاوة، السيرة، والعقيدة' },
-          { id: 'english6', name: 'اللغة الإنجليزية', icon: '🌍', color: 'from-violet-600 to-purple-700', desc: 'المهن، الروتين اليومي، والقواعد' },
-          { id: 'mixed6', name: 'معركة الزعيم الشاملة', icon: '👑', color: 'from-fuchsia-600 to-pink-700', desc: 'اختبار الأبطال الشامل لكل المواد الوزارية!' }
+          { id: 'arabic6', name: 'اللغة العربية والقواعد', icon: '✒️', color: 'from-emerald-600 to-teal-700', desc: '100 سؤال وزاري في القواعد والأدب والإملاء' },
+          { id: 'math6', name: 'الرياضيات', icon: '📐', color: 'from-blue-600 to-indigo-700', desc: '100 سؤال وزاري في الأعداد الصحيحة والجذور والنسبة والدائرة' },
+          { id: 'science6', name: 'العلوم', icon: '⚛️', color: 'from-cyan-600 to-sky-700', desc: '100 سؤال وزاري في التكاثر والجهاز العصبي والذرة والكهرباء' },
+          { id: 'social6', name: 'الاجتماعيات', icon: '🇮🇶', color: 'from-red-600 to-rose-700', desc: '100 سؤال وزاري في محافظات العراق الـ18 والحضارات' },
+          { id: 'islamic6', name: 'التربية الإسلامية', icon: '🕌', color: 'from-amber-600 to-orange-700', desc: '100 سؤال وزاري في أحكام التلاوة والسيرة والعقيدة' },
+          { id: 'english6', name: 'اللغة الإنجليزية', icon: '🌍', color: 'from-violet-600 to-purple-700', desc: '100 سؤال وزاري في المهن والضمائر والقواعد والقطع' },
+          { id: 'mixed6', name: 'معركة الزعيم ليوسف', icon: '👑', color: 'from-fuchsia-600 to-pink-700', desc: 'تحدٍ وزاري ضخم يجمع 600 سؤال من كل مواد السادس!' }
         ],
         questions: {
           arabic6: [
@@ -845,6 +922,839 @@
     };
 
     /* ==========================================================================
+       4B. EXPANSION ENGINE: BUILDING EXACTLY 100 DISTINCT QUESTIONS PER SUBJECT!
+       ========================================================================== */
+    function buildFull100QuestionBanks() {
+      const makeQ = (q, correct, wrongs, hint, exp) => {
+        const opts = [correct, ...wrongs];
+        let hash = 0;
+        for (let i = 0; i < q.length; i++) hash = ((hash << 5) - hash) + q.charCodeAt(i);
+        const shift = Math.abs(hash) % 4;
+        const rotated = opts.map((_, idx) => opts[(idx + shift) % 4]);
+        const ansIdx = rotated.indexOf(correct);
+        return { q, options: rotated, ans: ansIdx, hint, exp };
+      };
+
+      // 1. ARABIC GRADE 4 (to 100)
+      const ar4Pairs = [
+        ['كتاب', 'كتابان', 'مفرد مذكر'], ['مدرسة', 'مدرستان', 'مفرد مؤنث'], ['ولدان', 'ولد', 'مثنى مذكر'],
+        ['معلم', 'معلمون', 'جمع مذكر سالم'], ['مهندسة', 'مهندسات', 'جمع مؤنث سالم'], ['طالب', 'طلاب', 'جمع تكسير'],
+        ['شجرة', 'أشجار', 'جمع تكسير'], ['نهر', 'أنهار', 'جمع تكسير'], ['باب', 'أبواب', 'جمع تكسير'],
+        ['عصفور', 'عصافير', 'جمع تكسير'], ['فلاح', 'فلاحون', 'جمع مذكر سالم'], ['طبيبة', 'طبيبات', 'جمع مؤنث سالم'],
+        ['تلميذ', 'تلاميذ', 'جمع تكسير'], ['صديق', 'أصدقاء', 'جمع تكسير'], ['بطل', 'أبطال', 'جمع تكسير'],
+        ['سريع', 'بطيء', 'ضد الكلمة'], ['كبير', 'صغير', 'ضد الكلمة'], ['طويل', 'قصير', 'ضد الكلمة'],
+        ['نور', 'ظلام', 'ضد الكلمة'], ['ليل', 'نهار', 'ضد الكلمة'], ['شجاع', 'جبان', 'ضد الكلمة'],
+        ['صادق', 'كاذب', 'ضد الكلمة'], ['مجتهد', 'كسول', 'ضد الكلمة'], ['قريب', 'بعيد', 'ضد الكلمة'],
+        ['نظيف', 'وسخ', 'ضد الكلمة'], ['سعيد', 'حزين', 'ضد الكلمة'], ['واسع', 'ضيق', 'ضد الكلمة']
+      ];
+      ar4Pairs.forEach(([w1, w2, type]) => {
+        if (type === 'ضد الكلمة') {
+          CURRICULUM_DATA[4].questions.arabic4.push(makeQ(`ما ضد (عكس) كلمة (${w1}) يا يعقوب؟`, w2, [w1, 'جميل', 'كثير'], `فكر في المعنى المعاكس لكلمة (${w1}).`, `ضد كلمة (${w1}) في اللغة العربية هو (${w2}).`));
+        } else {
+          CURRICULUM_DATA[4].questions.arabic4.push(makeQ(`ما المثنى أو الجمع الصحيح لكلمة (${w1}) (${type})؟`, w2, [w1, 'هؤلاء', 'الذي'], `انتبه لنوع الاسم (${type}).`, `الصيغة الصحيحة لكلمة (${w1}) هي (${w2}).`));
+        }
+      });
+
+      const ar4Sentences = [
+        ['يقرأُ يعقوبُ القصةَ', 'فعل مضارع', 'يدل على الحاضر والمستقبل ويبدأ بالياء.'],
+        ['ادرسْ دروسكَ بجدٍّ', 'فعل أمر', 'يدل على طلب القيام بالعمل.'],
+        ['ذهبَ الفلاحُ إلى الحقلِ', 'فعل ماضٍ', 'حدث وانتهى في الزمن الماضي.'],
+        ['تشرقُ الشمسُ صباحاً', 'فعل مضارع', 'يبدأ بالتاء ويدل على الحاضر.'],
+        ['حافظْ على نظافةِ مدرستكَ', 'فعل أمر', 'فيه طلب المحافظة على النظافة.'],
+        ['رسمَ الفنانُ لوحةً جميلةً', 'فعل ماضٍ', 'انتهى الرسم في الماضي.'],
+        ['يلعبُ الأطفالُ في الحديقةِ', 'فعل مضارع', 'يحدث الآن في الحديقة.'],
+        ['اكتبْ واجبكَ البيتي يا بطل', 'فعل أمر', 'طلب الكتابة مباشرة.'],
+        ['سافرَ المسافرُ بالطائرةِ', 'فعل ماضٍ', 'حدث في الزمن الماضي.'],
+        ['نحنُ نحبُّ وطنَنا العراقَ', 'فعل مضارع', 'يبدأ بالنون ويدل على الاستمرار.']
+      ];
+      ar4Sentences.forEach(([sent, kind, reason]) => {
+        CURRICULUM_DATA[4].questions.arabic4.push(makeQ(`ما نوع الفعل الذي تبدأ به الجملة: (${sent})؟`, kind, ['اسم علم', 'حرف جر', 'ضمير متصل'].filter(x => x !== kind), reason, `الفعل في بداية (${sent}) هو ${kind} لأنه ${reason}`));
+      });
+
+      const ar4Pronouns = [
+        ['أنتَ', 'للمفرد المذكر المخاطب', '..... تلميذٌ مهذبٌ.'],
+        ['أنتِ', 'للمفردة المؤنثة المخاطبة', '..... تلميذةٌ ذكيةٌ.'],
+        ['أنتما', 'للمثنى المذكر والمؤنث المخاطب', '..... صديقان مخلصان.'],
+        ['أنتم', 'لجمع الذكور المخاطبين', '..... أبطالُ المستقبلِ.'],
+        ['أنتنَّ', 'لجمع الإناث المخاطبات', '..... معلماتٌ مخلصاتٌ.'],
+        ['أنا', 'للمتكلم المفرد', '..... أحبُّ القراءةَ.'],
+        ['نحنُ', 'للمتكلمين الجمع', '..... نحمي وطنَنا.'],
+        ['هيَ', 'للمفردة المؤنثة الغائبة', '..... ترسمُ لوحةً.'],
+        ['هما', 'للمثنى الغائب', '..... يلعبانِ بالكرةِ.'],
+        ['هم', 'لجمع الذكور الغائبين', '..... يزرعونَ الأرضَ.'],
+        ['هنَّ', 'لجمع الإناث الغائبات', '..... يدرسنَ بجدٍّ.'],
+        ['هذه', 'اسم إشارة للمفردة المؤنثة القريبة', '..... حديقةٌ جميلةٌ.'],
+        ['هذان', 'اسم إشارة للمثنى المذكر القريب', '..... كتابانِ مفيدانِ.'],
+        ['هاتان', 'اسم إشارة للمثنى المؤنث القريب', '..... وردتانِ متفتحتانِ.'],
+        ['هؤلاء', 'اسم إشارة لجمع المذكر والمؤنث القريب', '..... تلاميذُ مجتهدونَ.'],
+        ['التي', 'اسم موصول للمفردة المؤنثة', 'نجحت التلميذةُ ..... اجتهدت.'],
+        ['اللذان', 'اسم موصول للمثنى المذكر', 'فاز اللاعبانِ ..... تدربا جيداً.'],
+        ['اللتان', 'اسم موصول للمثنى المؤنث', 'حضرت الطالبتانِ ..... فازتا.'],
+        ['الذين', 'اسم موصول لجمع الذكور', 'أحبُّ المعلمينَ ..... يعلموننا.']
+      ];
+      ar4Pronouns.forEach(([word, usage, example]) => {
+        CURRICULUM_DATA[4].questions.arabic4.push(makeQ(`اختر الكلمة المناسبة لإكمال الجملة: (${example})`, word, ['مِن', 'على', 'لَم'], `نحتاج كلمة تُستخدم ${usage}.`, `نختار (${word}) لأنها تُستخدم ${usage}.`));
+      });
+
+      const ar4Dictation = [
+        ['المدرسة', 'الـ (قمرية)', 'حرف الميم من الحروف القمرية.'],
+        ['الشمس', 'الـ (شمسية)', 'حرف الشين شمسي مشدد.'],
+        ['العراق', 'الـ (قمرية)', 'حرف العين قمري وتُلفظ اللام.'],
+        ['التلميذ', 'الـ (شمسية)', 'حرف التاء شمسي مشدد.'],
+        ['القمر', 'الـ (قمرية)', 'حرف القاف قمري وتُلفظ اللام.'],
+        ['الكتاب', 'الـ (قمرية)', 'حرف الكاف قمري وتُلفظ اللام.'],
+        ['النهر', 'الـ (شمسية)', 'حرف النون شمسي مشدد.'],
+        ['السماء', 'الـ (شمسية)', 'حرف السين شمسي مشدد.'],
+        ['الوطن', 'الـ (قمرية)', 'حرف الواو قمري وتُلفظ اللام.'],
+        ['الربيع', 'الـ (شمسية)', 'حرف الراء شمسي مشدد.'],
+        ['الصيف', 'الـ (شمسية)', 'حرف الصاد شمسي مشدد.'],
+        ['الخريف', 'الـ (قمرية)', 'حرف الخاء قمري وتُلفظ اللام.'],
+        ['الشتاء', 'الـ (شمسية)', 'حرف الشين شمسي مشدد.'],
+        ['البحر', 'الـ (قمرية)', 'حرف الباء قمري وتُلفظ اللام.'],
+        ['الجبل', 'الـ (قمرية)', 'حرف الجيم قمري وتُلفظ اللام.'],
+        ['الطالب', 'الـ (شمسية)', 'حرف الطاء شمسي مشدد.'],
+        ['الحديقة', 'الـ (قمرية)', 'حرف الحاء قمري وتُلفظ اللام.'],
+        ['الزهرة', 'الـ (شمسية)', 'حرف الزاي شمسي مشدد.'],
+        ['الفلاح', 'الـ (قمرية)', 'حرف الفاء قمري وتُلفظ اللام.'],
+        ['الذهب', 'الـ (شمسية)', 'حرف الذال شمسي مشدد.']
+      ];
+      ar4Dictation.forEach(([word, type, exp]) => {
+        CURRICULUM_DATA[4].questions.arabic4.push(makeQ(`ما نوع اللام في كلمة (${word})؟`, type, [type === 'الـ (قمرية)' ? 'الـ (شمسية)' : 'الـ (قمرية)', 'لام الأمر', 'لام التعليل'], 'انطق الكلمة بصوت مسموع ولاحظ هل تُلفظ اللام أم لا.', `في كلمة (${word}) نوع اللام ${type}: ${exp}`));
+      });
+
+      const ar4Roots = ['كتب', 'درس', 'علم', 'لعب', 'زرع', 'صنع', 'حفظ', 'قرأ', 'فتح', 'نصر', 'حمد', 'شكر', 'سمع', 'فهم', 'عمل', 'جمع', 'سبح', 'رسم', 'طبخ', 'غسل'];
+      ar4Roots.forEach(r => {
+        CURRICULUM_DATA[4].questions.arabic4.push(makeQ(`أي كلمة من الكلمات الآتية هي (اسم الفاعل) من الفعل (${r})؟`, `${r[0]}ا${r[1]}${r[2]}`, [`م${r[0]}${r[1]}و${r[2]}`, `ي${r[0]}${r[1]}${r[2]}`, `ا${r[0]}${r[1]}${r[2]}`], 'اسم الفاعل يأتي على وزن (فاعِل).', `اسم الفاعل من (${r}) على وزن فاعل هو (${r[0]}ا${r[1]}${r[2]}).`));
+      });
+
+      // 2. MATH GRADE 4 (to 100)
+      for (let i = 1; i <= 32; i++) {
+        const a = (i * 3) % 11 + 2, b = (i * 5) % 11 + 2, prod = a * b;
+        CURRICULUM_DATA[4].questions.math4.push(makeQ(`ما ناتج ضرب: ${a} × ${b} = ؟`, `${prod}`, [`${prod + a}`, `${prod - b}`, `${a + b}`], `اجمع العدد ${a} مع نفسه ${b} مرات.`, `${a} × ${b} = ${prod}.`));
+      }
+      for (let i = 1; i <= 30; i++) {
+        const div = (i % 8) + 2, quot = ((i * 2) % 9) + 2, dividend = div * quot;
+        CURRICULUM_DATA[4].questions.math4.push(makeQ(`ما ناتج قسمة: ${dividend} ÷ ${div} = ؟`, `${quot}`, [`${quot + 1}`, `${quot + 2}`, `${Math.max(1, quot - 1)}`], `ما العدد الذي نضربه في ${div} ليعطي ${dividend}؟`, `بما أن ${div} × ${quot} = ${dividend}، فإن الناتج هو ${quot}.`));
+      }
+      for (let i = 1; i <= 30; i++) {
+        const base = i * 1000 + (i % 9) * 100 + 45;
+        const hundreds = Math.floor((base % 1000) / 100);
+        const rounded = hundreds >= 5 ? (Math.floor(base / 1000) + 1) * 1000 : Math.floor(base / 1000) * 1000;
+        CURRICULUM_DATA[4].questions.math4.push(makeQ(`قرّب العدد (${base}) إلى أقرب ألف:`, `${rounded}`, [`${rounded + 1000}`, `${Math.max(0, rounded - 1000)}`, `${base + 100}`], `انظر إلى رقم المئات (${hundreds})؛ إذا كان 5 أو أكثر نزيد مرتبة الألوف 1.`, `تقريب العدد ${base} إلى أقرب ألف هو ${rounded}.`));
+      }
+
+      // 3. SCIENCE GRADE 4 (to 100)
+      const sci4Facts = [
+        ['البكتيريا الكروية', 'تتخذ شكلاً كروياً', 'سُميت كروية لأن شكلها يشبه الكرة.'],
+        ['البكتيريا العصوية', 'تتخذ شكلاً يشبه العصا', 'سُميت عصوية لأن شكلها يشبه العصا.'],
+        ['البكتيريا الحلزونية', 'تتخذ شكلاً حلزونياً', 'سُميت حلزونية لأن شكلها يشبه الحلزون.'],
+        ['الطحالب', 'كائنات حية بسيطة تصنع غذاءها بنفسها', 'تحتوي الطحالب على صبغات تمكنها من صنع غذائها.'],
+        ['النباتات المركبة', 'نباتات تتركب أجسامها من خلايا متعددة ولها جذر وساق وأوراق', 'مثل النخيل والأشجار المثمرة.'],
+        ['النخلة', 'من النباتات المركبة المشهورة في العراق وتنتج التمور', 'يتكون جسم النخلة من جذر وساق وأوراق (سعف).'],
+        ['النتح', 'عملية خروج الماء الزائد عن حاجة النبات عن طريق الثغور في الأوراق', 'يساعد النتح في تبريد النبات.'],
+        ['الحيوانات اللافقارية', 'حيوانات تخلو أجسامها من العمود الفقري', 'مثل دودة الأرض والحلزون والفراشة.'],
+        ['دودة الأرض', 'من الحيوانات اللافقارية المفيدة للتربة', 'تعمل على تهوية التربة وتفتيتها.'],
+        ['الأسماك', 'حيوانات فقارية تتنفس بالخياشيم وتعيش في الماء', 'تغطي أجسامها القشور وتتحرك بالزعانف.'],
+        ['البرمائيات', 'حيوانات فقارية تقضي جزءاً من حياتها في الماء وجزءاً على اليابسة', 'مثل الضفدع.'],
+        ['الزواحف', 'حيوانات فقارية يغطي جسمها الحراشف', 'مثل السلحفاة والأفعى والتمساح.'],
+        ['الطيور', 'حيوانات فقارية يغطي جسمها الريش وتبيض', 'معظم الطيور قادرة على الطيران.'],
+        ['اللبائن (الثدييات)', 'حيوانات فقارية تلد صغارها وترضعهم الحليب', 'يغطي أجسامها الشعر أو الفرو أو الصوف.'],
+        ['أبو ذنيبة', 'المرحلة التي تفقس من بيضة الضفدع وتعيش في الماء', 'يتنفس أبو ذنيبة بالخياشيم وله ذيل للسباحة.'],
+        ['التلقيح في النباتات', 'انتقال حبوب اللقاح من الطلع إلى المتاع', 'يتم التلقيح بواسطة الرياح أو الحشرات.'],
+        ['الإخصاب في النباتات', 'اندماج حبة اللقاح مع البويضة لتكوين البذرة', 'بعد الإخصاب يتحول المبيض إلى ثمرة.'],
+        ['المادة السائلة', 'لها حجم ثابت وشكل متغير يأخذ شكل الإناء الذي توضع فيه', 'مثل الماء والحليب والزيت.'],
+        ['المادة الغازية', 'ليس لها شكل ثابت ولا حجم ثابت وتنتشر لتملا المكان', 'مثل الهواء وبخار الماء والأوكسجين.'],
+        ['الانصهار', 'تحول المادة من الحالة الصلبة إلى الحالة السائلة بالتسخين', 'مثل ذوبان الثلج إلى ماء.'],
+        ['الانجماد', 'تحول المادة من الحالة السائلة إلى الحالة الصلبة بالتبريد', 'مثل تجمد الماء وتحوله إلى ثلج.'],
+        ['التكاثف', 'تحول المادة من الحالة الغازية إلى الحالة السائلة بالتبريد', 'مثل تشكل قطرات الندى والغيوم.'],
+        ['التلوث البيئي', 'إضافة مواد ضارة إلى البيئة تؤدي إلى تغير خصائصها', 'يشمل تلوث الماء والهواء والتربة.'],
+        ['الاحتراق', 'تغير كيميائي يحول المادة إلى مادة جديدة تختلف في خصائصها', 'مثل احتراق الخشب وتحوله إلى رماد ودخان.'],
+        ['صدأ الحديد', 'تغير كيميائي يحدث للحديد عند تعرضه للهواء والرطوبة', 'يُضعف الحديد ويغير لونه إلى البني المحمر.'],
+        ['الوقود الأحفوري', 'مادة تُستخرج من باطن الأرض وتحرر طاقة عند حرقها', 'تكوّن من بقايا الكائنات الحية المطمورة منذ ملايين السنين.'],
+        ['الطاقة المتجددة', 'طاقة نظيفة لا تنفد ولا تلوث البيئة', 'مثل الطاقة الشمسية وطاقة الرياح وطاقة المياه.'],
+        ['الطاقة الشمسية', 'طاقة نحصل عليها من أشعة الشمس', 'تُستخدم في السخانات الشمسية وتوليد الكهرباء.'],
+        ['الصوت', 'شكل من أشكال الطاقة ينتج عن اهتزاز الأجسام', 'ينتقل الصوت في المواد الصلبة والسائلة والغازية.'],
+        ['الضوء', 'شكل من أشكال الطاقة يساعدنا على رؤية الأشياء من حولنا', 'يسير الضوء في خطوط مستقيمة بسرعة كبيرة جداً.'],
+        ['قوس قزح (ألوان الطيف)', 'يتكون من 7 ألوان عند تحلل ضوء الشمس عبر قطرات المطر', 'يظهر بعد سقوط المطر وسطوع الشمس.'],
+        ['الاحتكاك', 'قوة تبطئ من حركة الأجسام أو توقفها عند تلامس سطحين', 'يساعدنا الاحتكاك على المشي دون انزلاق.'],
+        ['البكرة', 'آلة بسيطة تُستخدم لرفع الأجسام الثقيلة إلى الأعلى بسهولة', 'تُستخدم في سارية العلم والرافعات.'],
+        ['العجلة والمحور', 'آلة بسيطة تُسهل حركة ونقل الأشياء الثقيلة', 'تُستخدم في السيارات والدراجات الهوائية.'],
+        ['السطح المائل', 'آلة بسيطة تساعد على تحريك الأجسام إلى الأعلى أو الأسفل بجهد أقل', 'مثل المنحدر الذي تُصعد عليه العربات.']
+      ];
+      sci4Facts.forEach(([term, def, exp]) => {
+        CURRICULUM_DATA[4].questions.science4.push(
+          makeQ(`ماذا يُقصد بـ (${term}) في علوم الصف الرابع؟`, def, ['كوكب في الفضاء الخارجي', 'أداة لقياس الزمن', 'نوع من المعادن النادرة'], `تذكر تعريف (${term}) في الكتاب.`, `${term}: ${def}. ${exp}`),
+          makeQ(`ما المصطلح العلمي الذي يدل على: (${def})؟`, term, ['الجاذبية المغناطيسية', 'المجرة الحلزونية', 'التيار المتناوب'], `ابحث عن الاسم العلمي المطابق لهذا الوصف.`, `المصطلح الصحيح هو (${term}): ${exp}`)
+        );
+      });
+      const sci4More = [
+        ['أي الكائنات تصنع غذاءها بنفسها؟', 'النباتات والطحالب', 'الحيوانات المفترسة', 'الفطريات', 'البكتيريا الضارة'],
+        ['ماذا يحتاج النبات للقيام بالبناء الضوئي؟', 'ضوء الشمس والماء وثنائي أوكسيد الكربون', 'الظلام والملح', 'النفط والغاز', 'الحديد والنحاس'],
+        ['أين توجد البذور في النباتات الزهرية؟', 'داخل الثمرة', 'في الجذور', 'في الساق', 'في التربة فقط'],
+        ['ما وظيفة الجذور في النبات؟', 'تثبيت النبات وامتصاص الماء والأملاح', 'صنع الغذاء', 'إنتاج البذور', 'جذب الحشرات'],
+        ['ما وظيفة الساق في النبات؟', 'نقل الماء والغذاء وحمل الأوراق', 'امتصاص الماء من التربة', 'التنفس فقط', 'التكاثر بالبذور'],
+        ['أي حيوان يمر بمرحلة (العذراء) في دورة حياته؟', 'الفراشة', 'الضفدع', 'السمكة', 'الدجاجة'],
+        ['كم مرحلة تمر بها دورة حياة الضفدع؟', '3 مراحل رئيسية (بيضة، أبو ذنيبة، ضفدع مكتمل)', 'مرحلة واحدة', '6 مراحل', 'مرحلتان فقط'],
+        ['أي من الآتي تغير فيزيائي وليس كيميائياً؟', 'تقطيع الورق وذوبان الثلج', 'حرق الورق', 'صدأ الحديد', 'فساد الطعام'],
+        ['أي من الآتي يُعد من الوقود الأحفوري غير المتجدد؟', 'الفحم الحجري', 'طاقة الرياح', 'طاقة الشمس', 'طاقة المد والجزر'],
+        ['كيف ينتقل الصوت بأسرع ما يمكن؟', 'في المواد الصلبة', 'في الهواء', 'في الماء', 'في الفراغ'],
+        ['هل ينتقل الصوت في الفضاء الخارجي (الفراغ)؟', 'لا، لأن الصوت يحتاج إلى وسط مادي للانتقال', 'نعم، بسرعة البرق', 'نعم، في الليل فقط', 'نعم، عبر الضوء'],
+        ['كم عدد ألوان الطيف الشمسي (قوس المطر)؟', '7 ألوان', '3 ألوان', '5 ألوان', '10 ألوان'],
+        ['ما الأداة التي تحلل ضوء الشمس الأبيض إلى 7 ألوان؟', 'الموشور الزجاجي', 'المغناطيس', 'الميزان ذو الكفتين', 'المحرار'],
+        ['لماذا نرى الأجسام بألوانها المختلفة؟', 'لأن الجسم يعكس لونه ويمتص باقي الألوان', 'لأن الجسم يضيء من تلقاء نفسه', 'بسبب الجاذبية', 'بسبب الصوت'],
+        ['ماذا يحدث لقوة الاحتكاك على السطوح الملساء (الناعمة)؟', 'تقل قوة الاحتكاك', 'تزداد قوة الاحتكاك جداً', 'تصبح لا نهائية', 'تتحول إلى كهرباء'],
+        ['ماذا يحدث لقوة الاحتكاك على السطوح الخشنة؟', 'تزداد قوة الاحتكاك', 'تختفي تماماً', 'تقل جداً', 'تتحول إلى ضوء'],
+        ['لماذا تُوضع زيوت وشحوم في محركات السيارات؟', 'لتقليل الاحتكاك بين أجزاء المحرك ومنع تلفها', 'لزيادة الوزن', 'لتبريد الهواء', 'لتغيير اللون'],
+        ['أي أداة تُعد مثالاً على (العتلة)؟', 'المقص وكسارة الجوز', 'المرآة', 'المصباح', 'البطارية'],
+        ['أي أداة تُعد مثالاً على (البريمة / البرغي)؟', 'المسمار اللولبي', 'المسطرة', 'الكرة', 'الورقة'],
+        ['ما وحدة قياس القوة في النظام الدولي؟', 'النيوتن', 'المتر', 'الكيلوغرام', 'اللتر'],
+        ['ما وحدة قياس الكتلة؟', 'الكيلوغرام والغرام', 'المتر', 'الثانية', 'الدرجة السيليزية'],
+        ['ما وحدة قياس الطول؟', 'المتر والسنتيمتر', 'الكيلوغرام', 'اللتر', 'النيوتن']
+      ];
+      sci4More.forEach(([q, c, w1, w2, w3]) => {
+        CURRICULUM_DATA[4].questions.science4.push(makeQ(q, c, [w1, w2, w3], 'تذكر دروس العلوم للصف الرابع.', `الإجابة الصحيحة: ${c}.`));
+      });
+
+      // 4. SOCIAL STUDIES GRADE 4 (to 100)
+      const soc4Data = [
+        ['البيئة المحلية', 'المنطقة التي تعيش فيها أنت وأسرتك وجيرانك وتضم بيتك ومدرستك', 'تشمل المنزل والمدرسة والحي.'],
+        ['البيت', 'ظاهرة بشرية صغيرة ضمن بيئتك المحلية تعيش فيه مع أسرتك', 'يحمينا من الظواهر الطبيعية كالحر والبرد.'],
+        ['المدرسة', 'ظاهرة بشرية ضمن بيئتك المحلية وهي المكان الذي تتعلم فيه', 'تقع على مسافة قريبة من بيتك.'],
+        ['الحدائق العامة', 'ظاهرة بشرية وجدت للترفيه والترويح عن النفس', 'يجب المحافظة على نظافتها وأشجارها.'],
+        ['الخريطة', 'رسم مصغر أو مخطط يمثل سطح الكرة الأرضية أو جزءاً صغيراً منه', 'تُستخدم الرموز والألوان فيها.'],
+        ['عنوان الخريطة', 'اسم الخريطة ويُوضع عادة في أعلى أو أسفل الخريطة', 'يوضح موضوع الخريطة مثل خريطة العراق.'],
+        ['مقياس الرسم', 'النسبة بين البعد على الخريطة وما يقابله في الطبيعة', 'يُكتب في أسفل الخريطة.'],
+        ['إطار الخريطة', 'الخط الرئيسي الذي يحيط بالخريطة من جميع جهاتها', 'يحدد مساحة الخريطة.'],
+        ['الشمال الشرقي', 'جهة فرعية تقع بين الشمال والشرق', 'من الجهات الفرعية الأربع.'],
+        ['الشمال الغربي', 'جهة فرعية تقع بين الشمال والغرب', 'من الجهات الفرعية الأربع.'],
+        ['الجنوب الشرقي', 'جهة فرعية تقع بين الجنوب والشرق', 'من الجهات الفرعية الأربع.'],
+        ['الجنوب الغربي', 'جهة فرعية تقع بين الجنوب والغرب', 'من الجهات الفرعية الأربع.'],
+        ['البوصلة', 'أداة تُستخدم لتحديد الاتجاهات في الليل والنهار', 'إبرتها المغناطيسية تشير دائماً نحو الشمال.'],
+        ['النجم القطبي', 'نجم في السماء يُستخدم ليلاً لتحديد جهة الشمال', 'ثابت في جهة الشمال.'],
+        ['السهل', 'أرض منبسطة واسعة قليلة الارتفاع تسهل فيها الزراعة والتنقل', 'مثل السهل الرسوبي في العراق.'],
+        ['الهضبة', 'أرض مرتفعة قليلاً وسطحها مستوٍ أو شبه مستوٍ', 'مثل الهضبة الغربية في العراق.'],
+        ['الوادي', 'أرض منخفضة تقع بين جبلين أو مرتفعين', 'تجري فيه المياه أحياناً.'],
+        ['الطقس', 'حالة الجو من حيث درجة الحرارة والرياح والأمطار خلال يوم أو عدة أيام', 'يتغير الطقس من يوم لآخر.'],
+        ['المناخ', 'وصف حالة الجو من حيث عناصره لفترة زمنية طويلة قد تكون فصلاً أو سنة', 'مناخ العراق حار جاف صيفاً ومعتدل ممطر شتاءً.'],
+        ['المحرار', 'أداة تُستخدم لقياس درجة حرارة الجو', 'يقيس الحرارة بالدرجة المئوية.'],
+        ['دوارة الرياح', 'أداة تُستخدم لمعرفة اتجاه الرياح', 'تتحرك مع اتجاه هبوب الرياح.'],
+        ['مقياس المطر', 'أداة تُستخدم لقياس كمية الأمطار الساقطة', 'يوضع في أماكن مفتوحة.'],
+        ['المدينة', 'تجمع سكاني كبير المساحة كثير السكان يعمل أهلها بالتجارة والصناعة والخدمات', 'تتوفر فيها الجامعات والمستشفيات الكبيرة.'],
+        ['القرية (الريف)', 'تجمع سكاني صغير المساحة قليل السكان يعمل أهلها بالزراعة وتربية الحيوانات', 'تتميز بهوائها النقي وهدوئها.'],
+        ['التاريخ', 'علم يدرس الماضي وأحداثه وما تركه الأجداد من حضارة', 'يساعدنا على فهم حاضرنا وبناء مستقبلنا.'],
+        ['اليوم', 'وحدة زمنية تتكون من 24 ساعة (ليل ونهار)', 'يمثل الزمن الحاضر.'],
+        ['الأسبوع', 'وحدة زمنية تتكون من 7 أيام', 'يبدأ بالسبت وينتهي بالجمعة.'],
+        ['الشهر', 'وحدة زمنية تتكون من 30 أو 31 يوماً (أربعة أسابيع)', 'في السنة 12 شهراً.'],
+        ['السنة', 'وحدة زمنية تتكون من 12 شهراً (365 يوماً)', 'تضم الفصول الأربعة.'],
+        ['العقد', 'وحدة زمنية تساوي 10 سنوات', 'كل 10 سنوات تُسمى عقداً.'],
+        ['القرن', 'وحدة زمنية تساوي 100 سنة', 'كل 100 سنة تُسمى قرناً.'],
+        ['الألفية', 'وحدة زمنية تساوي 1000 سنة', 'كل 1000 سنة تُسمى ألفية.'],
+        ['أور', 'مدينة عراقية قديمة تقع جنوب العراق قرب الناصرية (ذي قار)', 'اشتهرت بزقورتها المدرجة وبمولد النبي إبراهيم (ع).'],
+        ['الحضر', 'مدينة عراقية قديمة تقع جنوب غرب الموصل (نينوى)', 'لقبت بمدينة الشمس واشتهرت بملوكها ومعابدها.'],
+        ['سامراء', 'مدينة عراقية قديمة تقع على نهر دجلة شمال بغداد وتشتهر بالملوية', 'اتخذها الخليفة المعتصم عاصمة للدولة العباسية.'],
+        ['بابل', 'مدينة عراقية قديمة تقع جنوب بغداد واشتهرت بالجنائن المعلقة ومسلة حمورابي', 'إحدى أعظم حواضر العالم القديم.'],
+        ['نينوى (آشور)', 'مدينة عراقية قديمة في الشمال على نهر دجلة واشتهرت بالثيران المجنحة', 'عاصمة الإمبراطورية الآشورية.'],
+        ['الكوفة', 'مدينة إسلامية عراقية تقع قرب نهر الفرات وبجوار النجف الأشرف', 'اتخذها الإمام علي (ع) عاصمة للخلافة.'],
+        ['البصرة', 'أول مدينة إسلامية أسسها المسلمون خارج الجزيرة العربية وتطل على الخليج العربي', 'ميناء العراق الرئيسي ومدينة النخيل.']
+      ];
+      soc4Data.forEach(([term, def, exp]) => {
+        CURRICULUM_DATA[4].questions.social4.push(
+          makeQ(`ما المقصود بـ (${term}) في اجتماعيات الصف الرابع؟`, def, ['نوع من المعادن الفلزية', 'جهاز لقياس سرعة الصوت', 'كوكب خارج المجموعة الشمسية'], `تذكر درس (${term}) في كتاب الاجتماعيات.`, `${term}: ${def}. ${exp}`),
+          makeQ(`ما الاسم الذي يُطلق على: (${def})؟`, term, ['المجرة الحلزونية', 'التفاعل النووي', 'المحيط المتجمد'], `اختر المصطلح الجغرافي أو التاريخي المناسب.`, `الإجابة الصحيحة هي (${term}): ${exp}`)
+        );
+      });
+      const soc4Extra = [
+        ['كم عدد الجهات الأصلية؟', '4 جهات (الشمال، الجنوب، الشرق، الغرب)', 'جهتان فقط', '6 جهات', '8 جهات'],
+        ['كم عدد الجهات الفرعية؟', '4 جهات (شمال شرقي، شمال غربي، جنوب شرقي، جنوب غربي)', 'جهتان', '3 جهات', '10 جهات'],
+        ['إلى أي جهة تشير إبرة البوصلة المغناطيسية دائماً؟', 'جهة الشمال', 'جهة الجنوب', 'جهة الشرق', 'جهة الغرب'],
+        ['إذا وقفت ووجهك نحو شروق الشمس (الشرق)، فأين يكون الغرب؟', 'خلفك', 'أمامك', 'على يمينك', 'على يسارك'],
+        ['إذا وقفت ووجهك نحو الشرق، فأين يكون الشمال؟', 'على يسارك', 'على يمينك', 'خلفك', 'أمامك'],
+        ['إذا وقفت ووجهك نحو الشرق، فأين يكون الجنوب؟', 'على يمينك', 'على يسارك', 'أمامك', 'خلفك'],
+        ['أي من الآتي يُعد من الظواهر البشرية؟', 'المصنع والجسر والمدرسة', 'الجبل والنهر', 'المطر والرياح', 'الصحراء والسهل'],
+        ['أي من الآتي يُعد من الظواهر الطبيعية؟', 'الجبال والأنهار والنبات الطبيعي', 'السيارات والقطارات', 'المباني والمستشفيات', 'السدود والجسور'],
+        ['بماذا يشتهر سكان القرى (الريف) في العراق؟', 'بالزراعة وتربية الحيوانات', 'بصناعة السفن الفضائية', 'بالتعدين البحري', 'بصناعة الطائرات'],
+        ['بماذا يشتهر سكان المدن الكبيرة في العراق؟', 'بالتجارة والصناعة والوظائف والخدمات', 'برعي الأغنام فقط', 'بصيد اللؤلؤ فقط', 'بالزراعة البدائية فقط'],
+        ['ما واجبنا تجاه الممتلكات العامة مثل المدرسة والحديقة؟', 'المحافظة عليها وعدم تخريبها أو الكتابة على جدرانها', 'إهمالها', 'كسر مقاعدها', 'رمي النفايات فيها'],
+        ['لماذا سُمي العراق بـ (بلاد الرافدين)؟', 'لوجود نهري دجلة والفرات العظيمين فيه', 'لوجود جبلين فقط', 'لوجود بحرين فيه', 'لكثرة صحاريه'],
+        ['ما ألوان علم جمهورية العراق؟', 'الأحمر والأبيض والأسود مع عبارة (الله أكبر) بالأخضر', 'الأزرق والأصفر فقط', 'الأخضر والبرتقالي', 'الأسود والأزرق'],
+        ['ماذا كُتب في وسط العلم العراقي باللون الأخضر؟', 'الله أكبر', 'الوطن أولاً', 'بلاد الرافدين', 'السلام']
+      ];
+      soc4Extra.forEach(([q, c, w1, w2, w3]) => {
+        CURRICULUM_DATA[4].questions.social4.push(makeQ(q, c, [w1, w2, w3], 'تذكر دروس الاجتماعيات للصف الرابع.', `الإجابة الصحيحة: ${c}.`));
+      });
+
+      // 5. ISLAMIC GRADE 4 (to 100)
+      const isl4Data = [
+        ['الوضوء', 'غسل أعضاء مخصوصة بالماء الطهور بنية الطهارة قبل الصلاة', 'تُبطل الصلاة بدون وضوء.'],
+        ['التيمم', 'مسح الوجه واليدين بالتراب الطاهر عند فقدان الماء أو المرض', 'رخصة شرعية عند عدم وجود الماء.'],
+        ['سورة الفاتحة', 'أعظم سورة في القرآن الكريم وتُقرأ في كل ركعة من الصلاة', 'تُسمى أم الكتاب والسبع المثاني.'],
+        ['سورة الإخلاص', 'سورة مكية تعدل ثلث القرآن الكريم وتُثبت وحدانية الله تعالى', 'تبدأ بـ (قُلْ هُوَ اللَّهُ أَحَدٌ).'],
+        ['سورة الفلق', 'سورة نستعيذ فيها برب الفلق من شر ما خلق ومن شر الحاسدين', 'إحدى المعوذتين.'],
+        ['سورة الناس', 'سورة نستعيذ فيها برب الناس ملك الناس من شر الوسواس الخناس', 'آخر سورة في القرآن الكريم.'],
+        ['سورة الكوثر', 'أقصر سورة في القرآن الكريم وتبشر النبي (ص) بنهر الكوثر في الجنة', 'تتكون من 3 آيات كريمة.'],
+        ['سورة الماعون', 'سورة تحث على إطعام المسكين ورعاية اليتيم والإخلاص في الصلاة', 'تنهى عن الرياء ومنع المساعدة.'],
+        ['سورة العصر', 'سورة تؤكد أن الإنسان في خسر إلا الذين آمنوا وعملوا الصالحات وتواصوا بالحق والصبر', 'تتكون من 3 آيات عظيمة.'],
+        ['سورة التين', 'سورة أقسم الله فيها بالتين والزيتون وطور سينين والبلد الأمين', 'تؤكد أن الله خلق الإنسان في أحسن تقويم.'],
+        ['سورة الشرح (ألم نشرح)', 'سورة تبين مكانة النبي (ص) وتؤكد أن مع العسر يسراً', 'تتكون من 8 آيات.'],
+        ['صلاة الفجر (الصبح)', 'أول صلاة مفروضة في اليوم وعدد ركعاتها ركعتان', 'وقتها من طلوع الفجر الصادق حتى شروق الشمس.'],
+        ['صلاة الظهر', 'ثاني صلاة مفروضة في اليوم وعدد ركعاتها 4 ركعات', 'وقتها عند زوال الشمس وقت الظهيرة.'],
+        ['صلاة العصر', 'ثالث صلاة مفروضة في اليوم وعدد ركعاتها 4 ركعات', 'وقتها في فترة العصر قبل الغروب.'],
+        ['صلاة المغرب', 'رابع صلاة مفروضة في اليوم وعدد ركعاتها 3 ركعات', 'وقتها بعد غروب الشمس مباشرة.'],
+        ['صلاة العشاء', 'خامس صلاة مفروضة في اليوم وعدد ركعاتها 4 ركعات', 'وقتها بعد مغيب الشفق الأحمر ليلاً.'],
+        ['الصدق', 'قول الحق ومطابقة الكلام للواقع وهو من أعظم صفات المؤمن', 'يهدي الصدق إلى البر والبر يهدي إلى الجنة.'],
+        ['الأمانة', 'حفظ حقوق الناس وإرجاع الودائع لأصحابها وإتقان العمل', 'لُقّب نبينا محمد (ص) بالصادق الأمين.'],
+        ['بر الوالدين', 'طاعة الأب والأم والإحسان إليهما وخفض الجناح لهما', 'أمرنا الله ببر الوالدين بعد عبادته مباشرة.'],
+        ['إماطة الأذى عن الطريق', 'إزالة الحجارة والأشواك والنفايات من طريق الناس وهي صدقة', 'شعبة من شعب الإيمان.'],
+        ['الرفق بالحيوان', 'إطعام الحيوانات وسقيها وعدم إيذائها', 'دخلت امرأة الجنة لأنها سقت كلباً عطشاناً.'],
+        ['عام الفيل', 'العام الذي وُلد فيه نبينا محمد (ص) في مكة المكرمة', 'حمى الله فيه الكعبة من جيش أبرهة الحبشي.'],
+        ['حليمة السعدية', 'مرضعة نبينا محمد (ص) في بادية بني سعد', 'نال بيتها البركة والخير بوجود النبي (ص).'],
+        ['عبد المطلب', 'جد نبينا محمد (ص) الذي كفله بعد وفاة أمه آمنة', 'كان سيد قريش في مكة المكرمة.'],
+        ['أبو طالب', 'عم نبينا محمد (ص) الذي رباه ودافع عنه بكل قوة', 'كفل النبي (ص) بعد وفاة جده عبد المطلب.'],
+        ['دار الأرقم بن أبي الأرقم', 'أول مدرسة في الإسلام كان يجتمع فيها النبي (ص) مع الصحابة سراً', 'تقع قرب جبل الصفا في مكة المكرمة.'],
+        ['الهجرة إلى الحبشة', 'أول هجرة للمسلمين بأمر النبي (ص) لأن فيها ملكاً عادلاً لا يُظلم عنده أحد', 'اسم ملك الحبشة العادل هو النجاشي.'],
+        ['صلاة الجماعة', 'الصلاة التي يؤديها المسلمون صفاً واحداً خلف الإمام في المسجد', 'تفضل صلاة الجماعة صلاة الفرد بسبع وعشرين درجة.'],
+        ['الأذان', 'النداء الشرعي للإعلام بدخول وقت الصلاة المفروضة', 'أول مؤذن في الإسلام هو بلال بن رباح.'],
+        ['الزكاة', 'الركن الثالث من أركان الإسلام وهي حق الفقراء في أموال الأغنياء', 'تطهر المال وتنشر المحبة بين الناس.']
+      ];
+      isl4Data.forEach(([term, def, exp]) => {
+        CURRICULUM_DATA[4].questions.islamic4.push(
+          makeQ(`ما المقصود بـ (${term}) في التربية الإسلامية؟`, def, ['اسم مدينة أثرية قديمة', 'نوع من أنواع النباتات', 'أداة لقياس الحرارة'], `تذكر دروس التربية الإسلامية للصف الرابع.`, `${term}: ${def}. ${exp}`),
+          makeQ(`ما المصطلح الإسلامي الذي يدل على: (${def})؟`, term, ['الكواكب السيارة', 'المعادن النفيسة', 'الجهات الفرعية'], `اختر المصطلح الديني الصحيح.`, `الإجابة الصحيحة هي (${term}): ${exp}`)
+        );
+      });
+      const isl4Extra = [
+        ['من هو أول نبي خلقه الله تعالى؟', 'نبي الله آدم (عليه السلام)', 'نبي الله نوح (ع)', 'نبي الله إبراهيم (ع)', 'نبي الله موسى (ع)'],
+        ['من هو النبي الذي ابتلعه الحوت ثم نجاه الله بتسبيحه؟', 'نبي الله يونس (عليه السلام)', 'نبي الله صالح (ع)', 'نبي الله داود (ع)', 'نبي الله سليمان (ع)'],
+        ['ما الدعاء الذي ردده نبي الله يونس (ع) في بطن الحوت؟', 'لا إله إلا أنت سبحانك إني كنت من الظالمين', 'الحمد لله رب العالمين', 'سبحان الله وبحمده', 'ربنا آتنا في الدنيا حسنة'],
+        ['من هو النبي الذي ألان الله له الحديد وعلمه منطق الطير؟', 'نبي الله داود وسليمان (عليهما السلام)', 'نبي الله هود (ع)', 'نبي الله شعيب (ع)', 'نبي الله لوط (ع)'],
+        ['من هو النبي الذي كلمه الله تعالى وأنزل عليه التوراة؟', 'نبي الله موسى (عليه السلام)', 'نبي الله عيسى (ع)', 'نبي الله إسماعيل (ع)', 'نبي الله يعقوب (ع)'],
+        ['من هو النبي الذي أنزل الله عليه الإنجيل؟', 'نبي الله عيسى (عليه السلام)', 'نبي الله موسى (ع)', 'نبي الله نوح (ع)', 'نبي الله إبراهيم (ع)'],
+        ['كم عدد ركعات الصلوات المفروضة في اليوم الواحد مجتمعة؟', '17 ركعة', '10 ركعات', '12 ركعة', '20 ركعة'],
+        ['ما أول ما يُغسل في الوضوء بعد النية والتسمية؟', 'غسل الكفين ثلاثاً ثم المضمضة والاستنشاق', 'غسل الرجلين', 'مسح الرأس', 'غسل الأذنين'],
+        ['ماذا نقول عندما نعطس؟', 'الحمد لله', 'أستغفر الله', 'سبحان الله', 'الله أكبر'],
+        ['ماذا نقول لمن عطس وقال (الحمد لله)؟', 'يرحمك الله', 'بارك الله فيك', 'تقبل الله', 'جزاك الله خيراً'],
+        ['ما تحية الإسلام المباركة التي نلقيها عند اللقاء؟', 'السلام عليكم ورحمة الله وبركاته', 'صباح الخير فقط', 'أهلاً وسهلاً فقط', 'مرحباً'],
+        ['ما ثواب من يقول: (السلام عليكم ورحمة الله وبركاته) كاملة؟', '30 حسنة', '10 حسنات', '5 حسنات', 'حسنة واحدة'],
+        ['ما اسم الملك الموكل بنزول الوحي (القرآن) على الأنبياء؟', 'جبريل (عليه السلام)', 'ميكائيل (ع)', 'إسرافيل (ع)', 'رضوان (ع)'],
+        ['في أي ليلة أُنزل القرآن الكريم؟', 'ليلة القدر المباركة في شهر رمضان', 'ليلة العيد', 'أول يوم من محرم', 'منتصف شعبان'],
+        ['كم عدد أجزاء القرآن الكريم؟', '30 جزءاً', '20 جزءاً', '40 جزءاً', '15 جزءاً'],
+        ['كم عدد سور القرآن الكريم؟', '114 سورة', '100 سورة', '120 سورة', '99 سورة'],
+        ['ما أطول سورة في القرآن الكريم؟', 'سورة البقرة', 'سورة آل عمران', 'سورة النساء', 'سورة الكهف'],
+        ['بماذا نبدأ تلاوة القرآن الكريم دائماً؟', 'الاستعاذة (أعوذ بالله من الشيطان الرجيم) والبسملة', 'التكبير فقط', 'التسبيح فقط', 'الجلوس بصمت'],
+        ['من هو والد نبينا محمد (ص)؟', 'عبد الله بن عبد المطلب', 'أبو طالب', 'العباس', 'حمزة'],
+        ['في أي يوم من الأسبوع وُلد نبينا محمد (ص)؟', 'يوم الإثنين من شهر ربيع الأول', 'يوم الجمعة', 'يوم السبت', 'يوم الأربعاء'],
+        ['ما اسم الغار الذي كان يتعبد فيه النبي (ص) قبل البعثة؟', 'غار حراء', 'غار ثور', 'كهف الرقيم', 'جبل أحد'],
+        ['من هو أول من أسلم من الصبيان (الأطفال)؟', 'الإمام علي بن أبي طالب (عليه السلام)', 'زيد بن حارثة', 'أبو بكر الصديق', 'بلال بن رباح'],
+        ['من هو أول من أسلم من الرجال؟', 'أبو بكر الصديق (رضي الله عنه)', 'عمر بن الخطاب', 'عثمان بن عفان', 'أبو سفيان'],
+        ['كم سنة استمرت الدعوة الإسلامية سراً في مكة المكرمة؟', '3 سنوات', 'سنة واحدة', '10 سنوات', '5 سنوات'],
+        ['ما الصفة التي اشتهر بها النبي (ص) بين أهل مكة قبل الإسلام؟', 'الصادق الأمين', 'التاجر الغني', 'الشاعر الفصيح', 'الفارس المغوار'],
+        ['كيف نتصرف إذا وجدنا مالاً أو قلماً مفقوداً في المدرسة؟', 'نسلمه إلى إدارة المدرسة أو المعلم ليعود لصاحبه', 'نأخذه لأنفسنا', 'نرميه في السلة', 'نخفيه في الحقيبة'],
+        ['ما حكم الكذب في الإسلام؟', 'حرام ويؤدي إلى غضب الله', 'مباح أحياناً', 'مكروه فقط', 'مستحب'],
+        ['ماذا نفعل عند سماع الأذان للصلاة؟', 'نردد مع المؤذن ثم نستعد للصلاة', 'نرفع صوت التلفاز', 'نستمر في اللعب دون اهتمام', 'نتكلم بصوت عالٍ'],
+        ['ما هي قبلة المسلمين في الصلاة؟', 'الكعبة المشرفة في مكة المكرمة', 'المسجد النبوي', 'المسجد الأقصى', 'جبل عرفة'],
+        ['أين يقع المسجد النبوي الشريف؟', 'في المدينة المنورة', 'في مكة المكرمة', 'في بغداد', 'في القدس'],
+        ['ما اسم العيد الذي يأتي بعد صيام شهر رمضان المبارك؟', 'عيد الفطر المبارك', 'عيد الأضحى المبارك', 'المولد النبوي', 'رأس السنة'],
+        ['ما اسم العيد الذي يأتي في العاشر من ذي الحجة وقت الحج؟', 'عيد الأضحى المبارك', 'عيد الفطر المبارك', 'عيد الغدير', 'ليلة القدر']
+      ];
+      isl4Extra.forEach(([q, c, w1, w2, w3]) => {
+        CURRICULUM_DATA[4].questions.islamic4.push(makeQ(q, c, [w1, w2, w3], 'تذكر دروس التربية الإسلامية للصف الرابع.', `الإجابة الصحيحة: ${c}.`));
+      });
+
+      // 6. ENGLISH GRADE 4 (to 100)
+      const eng4Vocab = [
+        ['February', 'شباط (الشهر الثاني)', 'Months of the year'],
+        ['March', 'آذار (الشهر الثالث)', 'Months of the year'],
+        ['April', 'نيسان (الشهر الرابع)', 'Months of the year'],
+        ['May', 'أيار (الشهر الخامس)', 'Months of the year'],
+        ['June', 'حزيران (الشهر السادس)', 'Months of the year'],
+        ['July', 'تموز (الشهر السابع)', 'Months of the year'],
+        ['August', 'آب (الشهر الثامن)', 'Months of the year'],
+        ['September', 'أيلول (الشهر التاسع)', 'Months of the year'],
+        ['October', 'تشرين الأول (الشهر العاشر)', 'Months of the year'],
+        ['November', 'تشرين الثاني (الشهر الحادي عشر)', 'Months of the year'],
+        ['December', 'كانون الأول (الشهر الثاني عشر)', 'Months of the year'],
+        ['Sunday', 'يوم الأحد', 'Days of the week'],
+        ['Monday', 'يوم الإثنين', 'Days of the week'],
+        ['Tuesday', 'يوم الثلاثاء', 'Days of the week'],
+        ['Wednesday', 'يوم الأربعاء', 'Days of the week'],
+        ['Thursday', 'يوم الخميس', 'Days of the week'],
+        ['Friday', 'يوم الجمعة', 'Days of the week'],
+        ['Saturday', 'يوم السبت', 'Days of the week'],
+        ['Slide', 'زحليقة (لعبة في الملعب)', 'Playground'],
+        ['Swing', 'أرجوحة', 'Playground'],
+        ['Roundabout', 'دوارة الألعاب', 'Playground'],
+        ['Ladder', 'سُلّم', 'Playground'],
+        ['Tunnel', 'نفق الألعاب', 'Playground'],
+        ['Bars', 'قضبان التسلق', 'Playground'],
+        ['Short', 'قصير', 'Adjectives'],
+        ['Big', 'كبير', 'Adjectives'],
+        ['Small', 'صغير', 'Adjectives'],
+        ['Fast', 'سريع', 'Adjectives'],
+        ['Slow', 'بطيء', 'Adjectives'],
+        ['Young', 'صغير السن / شاب', 'Adjectives'],
+        ['Old', 'كبير السن / قديم', 'Adjectives'],
+        ['Long', 'طويل (للأشياء والشعر)', 'Adjectives'],
+        ['Ruler', 'مسطرة', 'School objects'],
+        ['Rubber', 'ممحاة', 'School objects'],
+        ['Pencil case', 'مقلمة', 'School objects'],
+        ['Sharpener', 'مبراة', 'School objects'],
+        ['Notebook', 'دفتر ملاحظات', 'School objects'],
+        ['River', 'نهر', 'Geography'],
+        ['Desert', 'صحراء', 'Geography'],
+        ['City', 'مدينة', 'Geography'],
+        ['Village', 'قرية', 'Geography'],
+        ['Oil field', 'حقل نفط', 'Iraq Geography'],
+        ['Marshes', 'الأهوار', 'Iraq Geography'],
+        ['Flag', 'عَلَم', 'Countries'],
+        ['Capital', 'عاصمة', 'Countries'],
+        ['England', 'إنجلترا', 'Countries']
+      ];
+      eng4Vocab.forEach(([en, ar, topic]) => {
+        CURRICULUM_DATA[4].questions.english4.push(
+          makeQ(`ماذا تعني كلمة (${en}) باللغة العربية؟ (${topic})`, ar, ['سيارة حمراء', 'طائرة ورقية', 'ملعقة طعام'], `تذكر مفردات الوحدة (${topic}).`, `كلمة (${en}) تعني (${ar}).`),
+          makeQ(`كيف نكتب كلمة (${ar}) باللغة الإنجليزية؟`, en, ['Table', 'Window', 'Garden'], `اختر الكلمة الإنجليزية المطابقة لـ (${ar}).`, `الترجمة الإنجليزية لـ (${ar}) هي (${en}).`)
+        );
+      });
+
+      // 7. ARABIC GRADE 6 (to 100)
+      const ar6KanaInna = [
+        ['أصبحَ', 'من أخوات كانَ، يفيد التوقيت في الصباح', 'يرفع المبتدأ وينصب الخبر.'],
+        ['أضحى', 'من أخوات كانَ، يفيد التوقيت في الضحى', 'يرفع المبتدأ وينصب الخبر.'],
+        ['ظلَّ', 'من أخوات كانَ، يفيد الاستمرار طوال النهار', 'يرفع المبتدأ وينصب الخبر.'],
+        ['أمسى', 'من أخوات كانَ، يفيد التوقيت في المساء', 'يرفع المبتدأ وينصب الخبر.'],
+        ['باتَ', 'من أخوات كانَ، يفيد التوقيت في الليل', 'يرفع المبتدأ وينصب الخبر.'],
+        ['صارَ', 'من أخوات كانَ، يفيد التحويل من حالة إلى أخرى', 'مثل: صارَ الماءُ ثلجاً.'],
+        ['ليسَ', 'من أخوات كانَ، يفيد النفي', 'مثل: ليسَ الكسولُ ناجحاً.'],
+        ['إنَّ', 'حرف مشبه بالفعل يفيد التوكيد', 'تنصب المبتدأ وترفع الخبر.'],
+        ['أنَّ', 'حرف مشبه بالفعل يفيد التوكيد ويقع في وسط الجملة', 'مثل: علمتُ أنَّ الامتحانَ قريبٌ.'],
+        ['كأنَّ', 'حرف مشبه بالفعل يفيد التشبيه', 'مثل: كأنَّ المعلمَ أبٌ.'],
+        ['لكنَّ', 'حرف مشبه بالفعل يفيد الاستدراك', 'مثل: الجوُّ باردٌ لكنَّ الشمسَ مشرقةٌ.'],
+        ['ليتَ', 'حرف مشبه بالفعل يفيد التمني', 'مثل: ليتَ السلامَ دائمٌ.'],
+        ['لعلَّ', 'حرف مشبه بالفعل يفيد الترجي', 'مثل: لعلَّ النصرَ قريبٌ.']
+      ];
+      ar6KanaInna.forEach(([word, meaning, rule]) => {
+        CURRICULUM_DATA[6].questions.arabic6.push(
+          makeQ(`ما نوع الأداة (${word}) وما معناها في قواعد الصف السادس؟`, meaning, ['حرف جر يجر الاسم', 'أداة جزم للفعل المضارع', 'اسم موصول للمثنى'], `تذكر أخوات كان وأخوات إنَّ.`, `${word}: ${meaning}، وعملها: ${rule}`),
+          makeQ(`اختر الأداة التي تؤدي المعنى الآتي: (${meaning})`, word, ['لَم', 'إلى', 'الذين'], `ابحث عن الفعل الناقص أو الحرف المشبه بالفعل المناسب.`, `الأداة الصحيحة هي (${word}).`)
+        );
+      });
+
+      const ar6Parsing = [
+        ['كانَ العراقيُّ صابراً', 'صابراً', 'خبر كانَ منصوب وعلامة نصبه الفتحة', 'كان ترفع الأول وتنصب الثاني.'],
+        ['أصبحتِ المهندساتُ ماهراتٍ', 'ماهراتٍ', 'خبر أصبحت منصوب وعلامة نصبه الكسرة بدل الفتحة لأنه جمع مؤنث سالم', 'جمع المؤنث السالم يُنصب بالكسرة.'],
+        ['ظلَّ الصديقانِ مخلصينِ', 'مخلصينِ', 'خبر ظلَّ منصوب وعلامة نصبه الياء لأنه مثنى', 'المثنى يُنصب بالياء.'],
+        ['صارَ الفلاحونَ نشيطينَ', 'نشيطينَ', 'خبر صارَ منصوب وعلامة نصبه الياء لأنه جمع مذكر سالم', 'جمع المذكر السالم يُنصب بالياء.'],
+        ['إنَّ المعلمينَ مخلصونَ', 'المعلمينَ', 'اسم إنَّ منصوب وعلامة نصبه الياء لأنه جمع مذكر سالم', 'إنَّ تنصب المبتدأ.'],
+        ['لعلَّ الطالباتِ ناجحاتٌ', 'الطالباتِ', 'اسم لعلَّ منصوب وعلامة نصبه الكسرة بدل الفتحة لأنه جمع مؤنث سالم', 'جمع المؤنث السالم يُنصب بالكسرة.'],
+        ['كأنَّ الجنديينِ أسدانِ', 'الجنديينِ', 'اسم كأنَّ منصوب وعلامة نصبه الياء لأنه مثنى', 'المثنى يُنصب بالياء.'],
+        ['يكرمُ المديرُ المتفوقينَ', 'المتفوقينَ', 'مفعول به منصوب وعلامة نصبه الياء لأنه جمع مذكر سالم', 'وقع عليه فعل الفاعل.'],
+        ['قرأتُ قصتينِ مفيدتينِ', 'قصتينِ', 'مفعول به منصوب وعلامة نصبه الياء لأنه مثنى', 'المثنى يُنصب بالياء.'],
+        ['تُحترمُ الأمهاتُ في كلِّ وقتٍ', 'الأمهاتُ', 'نائب فاعل مرفوع وعلامة رفعه الضمة الظاهرة', 'الفعل (تُحترمُ) مبني للمجهول.'],
+        ['كُتِبَ الدرسُ على السبورةِ', 'الدرسُ', 'نائب فاعل مرفوع وعلامة رفعه الضمة الظاهرة', 'كُتِبَ فعل ماضٍ مبني للمجهول.'],
+        ['زُرِعَتِ الأرضُ بالقمحِ', 'الأرضُ', 'نائب فاعل مرفوع وعلامة رفعه الضمة الظاهرة', 'حلّ المفعول به محل الفاعل بعد حذفه.'],
+        ['يُعاقَبُ المقصرونَ على إهمالهم', 'المقصرونَ', 'نائب فاعل مرفوع وعلامة رفعه الواو لأنه جمع مذكر سالم', 'نائب الفاعل مرفوع دائماً.'],
+        ['سجدتُ للهِ سجدتينِ', 'سجدتينِ', 'مفعول مطلق منصوب وعلامة نصبه الياء لأنه مثنى (لبيان العدد)', 'مشتق من لفظ الفعل سجدتُ.'],
+        ['انطلقَ المتسابقُ انطلاقاً سريعاً', 'انطلاقاً', 'مفعول مطلق منصوب وعلامة نصبه الفتحة (لبيان نوع الفعل)', 'مصدر منصوب من لفظ الفعل.'],
+        ['سافرتُ صباحاً إلى بغدادَ', 'صباحاً', 'مفعول فيه ظرف زمان منصوب وعلامة نصبه الفتحة', 'يدل على زمن السفر.'],
+        ['وقفَ التلميذُ أمامَ المعلمِ', 'أمامَ', 'مفعول فيه ظرف مكان منصوب وعلامة نصبه الفتحة', 'يدل على مكان الوقوف.'],
+        ['لنْ ينجحَ الكسولُ', 'ينجحَ', 'فعل مضارع منصوب بـ (لنْ) وعلامة نصبه الفتحة', '(لنْ) أداة نصب ونفي واستقبال.'],
+        ['لمْ يهملْ يوسفُ واجبَهُ', 'يهملْ', 'فعل مضارع مجزوم بـ (لمْ) وعلامة جزمه السكون', '(لمْ) أداة جزم ونفي وقلب.'],
+        ['لا تؤجلْ عملَ اليومِ إلى غدٍ', 'تؤجلْ', 'فعل مضارع مجزوم بـ (لا الناهية) وعلامة جزمه السكون', '(لا) هنا ناهية جازمة.'],
+        ['الأولادُ لمْ يلعبوا في الشارعِ', 'يلعبوا', 'فعل مضارع مجزوم وعلامة جزمه حذف النون لأنه من الأفعال الخمسة', 'الأفعال الخمسة تُنصب وتُجزم بحذف النون.'],
+        ['يجبُ أنْ تجتهدوا في دروسكم', 'تجتهدوا', 'فعل مضارع منصوب بـ (أنْ) وعلامة نصبه حذف النون لأنه من الأفعال الخمسة', 'الأفعال الخمسة تُنصب بحذف النون.'],
+        ['الطبيبانِ يعالجانِ المرضى', 'يعالجانِ', 'فعل مضارع مرفوع وعلامة رفعه ثبوت النون لأنه من الأفعال الخمسة', 'الأفعال الخمسة تُرفع بثبوت النون.'],
+        ['أبوكَ رجلٌ كريمٌ', 'أبوكَ', 'مبتدأ مرفوع وعلامة رفعه الواو لأنه من الأسماء الخمسة', 'الأسماء الخمسة تُرفع بالواو وتُنصب بالألف وتُجر بالياء.'],
+        ['رأيتُ أخاكَ في المدرسةِ', 'أخاكَ', 'مفعول به منصوب وعلامة نصبه الألف لأنه من الأسماء الخمسة', 'الأسماء الخمسة تُنصب بالألف.'],
+        ['سلمتُ على أبيكَ', 'أبيكَ', 'اسم مجرور وعلامة جره الياء لأنه من الأسماء الخمسة', 'الأسماء الخمسة تُجر بالياء.'],
+        ['جاءَ الطالبُ النشيطُ', 'النشيطُ', 'نعت (صفة) مرفوع وعلامة رفعه الضمة يتبع المنعوت', 'النعت يتبع المنعوت في الإعراب.'],
+        ['رأيتُ شجرةً مثمرةً', 'مثمرةً', 'نعت (صفة) منصوب وعلامة نصبه الفتحة', 'وصف الشجرة بأنها مثمرة.'],
+        ['دخلَ المعلمُ والتلميذُ إلى الصفِّ', 'التلميذُ', 'اسم معطوف مرفوع وعلامة رفعه الضمة (الواو حرف عطف)', 'المعطوف يتبع المعطوف عليه في الإعراب.']
+      ];
+      ar6Parsing.forEach(([sent, target, parsing, hint]) => {
+        CURRICULUM_DATA[6].questions.arabic6.push(makeQ(`ما الإعراب الصحيح لكلمة (${target}) في جملة: (${sent})؟`, parsing, ['حرف جر مبني على السكون', 'فعل أمر مبني على حذف النون', 'ضمير منفصل في محل نصب'], hint, `إعراب (${target}) في (${sent}): ${parsing}.`));
+      });
+
+      const ar6Definite = [
+        ['العراقُ', 'معرّف بـ (أل)'], ['بغدادُ', 'اسم عَلَم (لمكان)'], ['يوسفُ', 'اسم عَلَم (لمذكر)'],
+        ['دجلةُ', 'اسم عَلَم (لنهر)'], ['كتابُ القواعدِ', 'معرّف بالإضافة'], ['كرةُ القدمِ', 'معرّف بالإضافة'],
+        ['قلمٌ', 'نكرة (يدل على غير معين)'], ['مدرسةٌ', 'نكرة (يدل على غير معين)'], ['فاطمةُ', 'اسم عَلَم (لمؤنث)'],
+        ['أربيلُ', 'اسم عَلَم (لمكان)'], ['بابُ الصفِّ', 'معرّف بالإضافة'], ['طالبٌ', 'نكرة (يدل على غير معين)'],
+        ['نورُ العلمِ', 'معرّف بالإضافة'], ['البصرةُ', 'اسم عَلَم ومعرّف بـ (أل)'], ['شجرةٌ', 'نكرة (يدل على غير معين)'],
+        ['الفراتُ', 'اسم عَلَم (لنهر)'], ['وطنُ الجميعِ', 'معرّف بالإضافة'], ['نجمٌ', 'نكرة (يدل على غير معين)'],
+        ['النجفُ', 'اسم عَلَم (لمكان)'], ['سماءُ الوطنِ', 'معرّف بالإضافة']
+      ];
+      ar6Definite.forEach(([word, kind]) => {
+        CURRICULUM_DATA[6].questions.arabic6.push(makeQ(`ما نوع الاسم (${word}) من حيث النكرة والمعرفة؟`, kind, ['فعل مضارع مرفوع', 'حرف عطف', 'ظرف زمان'], 'تذكر أنواع المعارف الثلاثة في السادس: المعرّف بـ (أل)، العلم، المعرّف بالإضافة.', `(${word}) هو: ${kind}.`));
+      });
+
+      const ar6Extra = [
+        ['ما هي الأسماء الخمسة في اللغة العربية؟', 'أبو، أخو، حمو، فو، ذو', 'هذا، هذه، هذان، هاتان، هؤلاء', 'الذي، التي، اللذان، اللتان، الذين', 'أنا، نحن، أنت، هو، هي'],
+        ['بماذا تُرفع الأسماء الخمسة؟', 'بالواو (مثل: أبوكَ)', 'بالألف', 'بالياء', 'بالضمة المقدرة'],
+        ['بماذا تُنصب الأسماء الخمسة؟', 'بالألف (مثل: رأيتُ أخاكَ)', 'بالواو', 'بالياء', 'بالكسرة'],
+        ['بماذا تُجر الأسماء الخمسة؟', 'بالياء (مثل: مررتُ بأبيكَ)', 'بالألف', 'بالواو', 'بالفتحة'],
+        ['كيف يُبنى الفعل الماضي للمجهول؟', 'بضم أوله وكسر ما قبل آخره (مثل: كُتِبَ)', 'بفتح أوله', 'بضم أوله وفتح ما قبل آخره', 'بحذف آخره'],
+        ['كيف يُبنى الفعل المضارع للمجهول؟', 'بضم أوله وفتح ما قبل آخره (مثل: يُكتَبُ)', 'بضم أوله وكسر ما قبل آخره', 'بكسر أوله', 'بتسكين أوله'],
+        ['ما حروف العطف المقررة في الصف السادس الابتدائي؟', 'الواو، الفاء، ثمَّ', 'مِن، إلى، عن', 'إنَّ، أنَّ، كأنَّ', 'لَم، لن، لا'],
+        ['ماذا يفيد حرف العطف (ثمَّ)؟', 'الترتيب مع التراخي في الزمن', 'المشاركة المطلقة', 'الترتيب والتعقيب مباشرة', 'النفي'],
+        ['ماذا يفيد حرف العطف (الفاء)؟', 'الترتيب والتعقيب (بسرعة دون مهلة)', 'التراخي الطويل', 'الاستدراك', 'التمني'],
+        ['ماذا تفيد (لا النافية) الداخلة على الفعل المضارع؟', 'تنفي الفعل ولا تغير حركته الإعرابية (يبقى مرفوعاً)', 'تجزم الفعل المضارع', 'تنصب الفعل المضارع', 'تجر الاسم'],
+        ['ماذا تفيد (لا الناهية) الداخلة على الفعل المضارع؟', 'تطلب ترك الفعل وتجزم المضارع (مثل: لا تلعبْ)', 'ترفع المضارع', 'تنصب المضارع', 'تفيد التوكيد'],
+        ['متى تُكتب همزة (ابن) ولا تُحذف؟', 'إذا وقعت في أول السطر أو لم تقع بين اسمين علمين', 'بين اسمين علمين دائماً', 'في وسط الكلمة فقط', 'بعد حرف النداء يا'],
+        ['أين يقع (المفعول المطلق) في الجملة وما حركته؟', 'اسم منصوب يذكر بعد الفعل ويكون من لفظه', 'اسم مرفوع يبدأ به الكلام', 'فعل ماضٍ', 'حرف جر'],
+        ['كم نوعاً للمفعول المطلق في منهج السادس الابتدائي؟', 'ثلاثة أنواع: لتوكيد الفعل، لبيان نوعه، لبيان عدده', 'نوع واحد فقط', 'نوعان فقط', 'خمسة أنواع'],
+        ['في جملة (دقَّتِ الساعةُ دقَّتينِ)، ما نوع المفعول المطلق؟', 'لبيان عدد مرات وقوع الفعل', 'لتوكيد الفعل', 'لبيان نوع الفعل', 'مفعول به'],
+        ['في جملة (فهمتُ الدرسَ فهماً)، ما نوع المفعول المطلق؟', 'لتوكيد الفعل', 'لبيان نوعه', 'لبيان عدده', 'ظرف زمان']
+      ];
+      ar6Extra.forEach(([q, c, w1, w2, w3]) => {
+        CURRICULUM_DATA[6].questions.arabic6.push(makeQ(q, c, [w1, w2, w3], 'تذكر قواعد اللغة العربية للصف السادس الابتدائي.', `الإجابة الصحيحة: ${c}.`));
+      });
+
+      // 8. MATH GRADE 6 (to 100)
+      for (let i = 1; i <= 22; i++) {
+        const a = -1 * (i + 3), b = (i * 2) % 15 + 2, res = a + b;
+        CURRICULUM_DATA[6].questions.math6.push(makeQ(`ما ناتج جمع العددين الصحيحين: (${a}) + (+${b}) = ؟`, `${res}`, [`${res + 4}`, `${res - 4}`, `${Math.abs(a) + b}`], 'عند جمع عددين مختلفين في الإشارة نطرح ونأخذ إشارة الأكبر.', `(${a}) + (+${b}) = ${res}.`));
+      }
+      for (let i = 1; i <= 22; i++) {
+        const a = -1 * ((i % 9) + 2), b = -1 * (((i * 3) % 8) + 2), prod = a * b;
+        CURRICULUM_DATA[6].questions.math6.push(makeQ(`ما ناتج ضرب العددين الصحيحين: (${a}) × (${b}) = ؟`, `+${prod}`, [`-${prod}`, `${a + b}`, `${prod + 2}`], 'سالب × سالب = موجب دائماً!', `بما أن الإشارتين متشابهتان (سالب × سالب)، فالناتج موجب (+${prod}).`));
+      }
+      for (let i = 1; i <= 18; i++) {
+        const x = i * 3 + 5, add = i + 4, total = x + add;
+        CURRICULUM_DATA[6].questions.math6.push(makeQ(`حل المعادلة الآتية لإيجاد قيمة المتغير (س): س + ${add} = ${total}`, `${x}`, [`${total + add}`, `${x + 5}`, `${Math.max(1, x - 3)}`], `اطرح ${add} من ${total} لإيجاد قيمة س.`, `س = ${total} - ${add} = ${x}.`));
+      }
+      const math6Geom = [
+        ['ما مساحة دائرة نصف قطرها 7 سم؟ (π = 22/7)', '154 سم²', '44 سم²', '49 سم²', '22 سم²'],
+        ['ما محيط دائرة قطرها 14 سم؟ (π = 22/7)', '44 سم', '154 سم', '28 سم', '88 سم'],
+        ['ما مساحة متوازي أضلاع طول قاعدته 10 سم وارتفاعه 6 سم؟', '60 سم²', '16 سم²', '32 سم²', '30 سم²'],
+        ['ما مساحة شبه منحرف طول قاعدتيه المتوازيتين 6 سم و 8 سم وارتفاعه 5 سم؟', '35 سم²', '70 سم²', '40 سم²', '30 سم²'],
+        ['ما حجم متوازي سطوح مستطيلة أبعاده 5 سم، 4 سم، 3 سم؟', '60 سم³', '12 سم³', '20 سم³', '45 سم³'],
+        ['ما حجم مكعب طول حرفه 4 سم؟', '64 سم³', '16 سم³', '48 سم³', '12 سم³'],
+        ['ما قياس الزاوية المكملة لزاوية قياسها 110 درجات؟', '70 درجة', '90 درجة', '250 درجة', '80 درجة'],
+        ['ما قياس الزاوية المتممة لزاوية قياسها 35 درجة؟', '55 درجة', '145 درجة', '65 درجة', '45 درجة'],
+        ['ما العلاقة بين الزاويتين المتقابلتين بالرأس؟', 'متساويتان في القياس دائماً', 'مجموعهما 90 درجة', 'مجموعهما 360 درجة', 'إحداهما ضعف الأخرى'],
+        ['ما مجموع قياسات زوايا المثلث الداخلية؟', '180 درجة', '90 درجة', '360 درجة', '270 درجة'],
+        ['ما مجموع قياسات زوايا الشكل الرباعي الداخلية؟', '360 درجة', '180 درجة', '90 درجة', '540 درجة'],
+        ['كم يساوي الجذر التربيعي للعدد 144؟', '12', '11', '14', '13'],
+        ['كم يساوي الجذر التربيعي للعدد 169؟', '13', '12', '14', '15'],
+        ['كم يساوي الجذر التربيعي للعدد 225؟', '15', '25', '14', '12'],
+        ['كم يساوي الجذر التكعيبي للعدد 64؟', '4', '8', '6', '3'],
+        ['كم يساوي الجذر التكعيبي للعدد 125؟', '5', '25', '15', '4'],
+        ['كم يساوي الجذر التكعيبي للعدد 1000؟', '10', '100', '50', '20'],
+        ['اكتب النسبة 3 : 4 بصورة نسبة مئوية (%):', '75%', '34%', '43%', '25%'],
+        ['اكتب الكسر 1/5 بصورة نسبة مئوية (%):', '20%', '15%', '50%', '5%'],
+        ['اكتب الكسر العشري 0.45 بصورة نسبة مئوية (%):', '45%', '4.5%', '0.45%', '450%'],
+        ['إذا كان مقياس الرسم 1 : 100000، وكان البعد على الخريطة 4 سم، فما البعد الحقيقي بالكيلومترات؟', '4 كم', '40 كم', '400 كم', '0.4 كم'],
+        ['ما النسبة بين 500 غرام و 2 كيلوغرام؟', '1 : 4', '500 : 2', '1 : 2', '2 : 5'],
+        ['حل التناسب: س / 6 = 4 / 12 ، فما قيمة س؟', '2', '3', '4', '6'],
+        ['ما الوسط الحسابي للأعداد: 10، 15، 20؟', '15', '45', '10', '20'],
+        ['ما القيمة المتطرفة في البيانات: 12، 14، 13، 15، 95؟', '95', '12', '14', '13'],
+        ['ما المنوال للبيانات: 5، 7، 5، 8، 5، 9؟', '5', '7', '8', '9'],
+        ['ما الوسيط للأعداد المرتبة: 3، 6، 9، 12، 15؟', '9', '6', '12', '15'],
+        ['ما المدى لمجموعة البيانات: 40، 15، 25، 10؟', '30', '40', '10', '25'],
+        ['ما ناتج قسمة: 3.6 ÷ 0.6 = ؟', '6', '0.6', '60', '0.06']
+      ];
+      math6Geom.forEach(([q, c, w1, w2, w3]) => {
+        CURRICULUM_DATA[6].questions.math6.push(makeQ(q, c, [w1, w2, w3], 'تذكر قوانين الرياضيات للصف السادس الابتدائي.', `الحل الصحيح هو: ${c}.`));
+      });
+
+      // 9. SCIENCE GRADE 6 (to 100)
+      const sci6Terms = [
+        ['الدرنة', 'ساق أرضية متحورة لخزن المواد الغذائية وتوجد على سطحها عيون', 'مثل البطاطا والزنجبيل والسوس.'],
+        ['البصلة', 'ساق قرصية يخرج من أسفلها جذور عرضية ليفية وتحمل أوراقاً ذات قواعد شحمية', 'مثل البصل والثوم والنرجس.'],
+        ['التطعيم', 'أحد طرائق التكاثر الخضري الاصطناعي بنقل جزء نباتي (الطعم) إلى نبات آخر (الأصل)', 'يُستخدم لإكثار البرتقال والليمون.'],
+        ['الأقلام', 'جزء مقطوع من النبات يُغرس في التربة لغرض تكاثره خضرياً', 'مثل أقلام العنب والتين والورد.'],
+        ['الفسيلة', 'نمو جانبي ينشأ من قاعدة الساق وتطابق النبات الأم في خصائصها', 'تُستخدم لإكثار النخيل والموز.'],
+        ['البذرة', 'بويضة مخصبة تكونت في مبيض الزهرة بعد عملية الإخصاب', 'تتكون من غلاف البذرة والفلقتين والجنين والسويداء.'],
+        ['الإنبات', 'المراحل التي تمر بها البذرة أثناء نموها لتكوين نبات جديد', 'تحتاج البذرة للإنبات إلى الماء والهواء ودرجة حرارة مناسبة.'],
+        ['الانتشار الآلي', 'قيام الإنسان بنقل البذور من مكان إلى آخر لغرض زراعتها وتكثيرها', 'أحد طرائق انتشار البذور.'],
+        ['الجهاز العصبي المركزي', 'يتكون من الدماغ والحبل الشوكي', 'ينظم جميع أفعال الجسم الإرادية واللاإرادية.'],
+        ['الجهاز العصبي المحيطي', 'يتكون من شبكة كبيرة من الأعصاب التي تربط الجهاز المركزي بأعضاء الجسم', 'تنقل الإيعازات العصبية.'],
+        ['الإيعاز العصبي', 'أوامر يصدرها الدماغ على شكل إشارات كهربائية إلى أعضاء الجسم', 'تنتقل عبر الأعصاب بسرعة فائقة.'],
+        ['الهيكل المحوري', 'يتكون من الجمجمة والعمود الفقري والقفص الصدري', 'يحمي الأعضاء المهمة كالدماغ والقلب والرئتين.'],
+        ['الهيكل الطرفي', 'يتكون من حزام الكتف والأطراف العليا وحزام الحوض والأطراف السفلى', 'يساعد الجسم على الحركة والتنقل.'],
+        ['المفصل', 'تركيب عظمي يربط عظمين مع بعضهما ويسمح للعظام بحرية الحركة', 'يُغلف المفصل بالغضروف لتقليل الاحتكاك.'],
+        ['العضلات الإرادية', 'عضلات ترتبط بالهيكل العظمي ويمكننا التحكم بحركتها', 'مثل عضلات الذراعين والساقين.'],
+        ['العضلات اللاإرادية', 'عضلات لا يمكن للإنسان أن يتحكم بعملها وحركتها', 'مثل عضلة القلب وعضلات المعدة.'],
+        ['البؤبؤ', 'فتحة صغيرة في وسط القزحية يمر من خلالها الضوء إلى العين', 'يتسع في الظلام ويضيق في الضوء الساطع.'],
+        ['الشبكية', 'الطبقة الداخلية للعين التي تتحسس الضوء وتميز الألوان', 'تتكون عليها صورة مقلوبة للجسم المرئي.'],
+        ['الأذن الوسطى', 'تحتوي على غشاء الطبلة وثلاث عظام صغيرة تنقل الصوت للأذن الداخلية', 'أصغر عظام جسم الإنسان توجد فيها.'],
+        ['براعم التذوق', 'مناطق منتشرة على سطح اللسان تميز الطعوم الأربعة (الحلو، المالح، الحامض، المر)', 'براعم الحلاوة في مقدمة اللسان.'],
+        ['البشرة', 'الطبقة الخارجية للجلد التي تحفظ السوائل الحيوية داخل الجسم', 'تحتوي على مسامات تخرج منها قطرات العرق.'],
+        ['الأدمة', 'الطبقة التي تلي البشرة وتحتوي على نهايات الأعصاب الحسية والغدد العرقية والدهنية', 'تعطينا الإحساس بالحرارة والبرودة والألم.'],
+        ['النواة', 'تقع في مركز الذرة وتحتوي على البروتونات الموجبة والنيوترونات المتعادلة', 'تتركز فيها معظم كتلة الذرة.'],
+        ['البروتونات', 'جسيمات شحنتها موجبة (+) توجد داخل نواة الذرة', 'كتلتها أكبر بكثير من كتلة الإلكترون.'],
+        ['النيوترونات', 'جسيمات متعادلة الشحنة (لا شحنة لها) توجد داخل نواة الذرة', 'يرمز لها بالحرف (n).'],
+        ['العنصر', 'مادة تتكون من نوع واحد من الذرات المتشابهة', 'مثل الحديد والنحاس والأوكسجين.'],
+        ['المركب', 'مادة ناتجة من اتحاد عنصرين أو أكثر بنسب ثابتة وتختلف خواصها عن عناصرها', 'مثل الماء (H2O) وملح الطعام.'],
+        ['التفاعل الكيميائي', 'تغير في ترتيب ارتباط ذرات المواد المتفاعلة لتكوين مواد جديدة تختلف في صفاتها', 'مثل الاحتراق والصدأ وتخمر العجين.'],
+        ['المواد المتفاعلة', 'المواد الأولية التي تشترك في التفاعل الكيميائي وتُكتب على يسار السهم', 'تتغير روابطها لتكوين النواتج.'],
+        ['المواد الناتجة', 'المواد الجديدة التي تتكون نتيجة التفاعل الكيميائي وتُكتب على يمين السهم', 'تختلف في خواصها الفيزيائية والكيميائية.'],
+        ['الكتلة', 'مقدار ما يحتويه الجسم من مادة وتُقاس بالميزان ذي الكفتين', 'وحدة قياسها الكيلوغرام (kg).'],
+        ['الوزن', 'قوة جذب الأرض للجسم ويُقاس بالميزان النابضي', 'وحدة قياسه النيوتن (N) ويتغير بتغير البعد عن الأرض.'],
+        ['العتلة', 'آلة بسيطة تجعل أداء الأعمال أكثر سهولة وتوفر القوة المبذولة وتسرع إنجاز العمل', 'تتكون من ساق، مرتكز، قوة، ومقاومة.'],
+        ['المولد الكهربائي', 'جهاز يقوم بتحويل الطاقة الحركية إلى طاقة كهربائية', 'يُستخدم في محطات توليد الكهرباء.'],
+        ['التأريض', 'توصيل أجسام الأجهزة الكهربائية بسلك خاص إلى الأرض لتفريغ الشحنات وتجنب الصعقة الكهربائية', 'وسيلة أمان مهمة جداً في المنازل.'],
+        ['المواد الشفافة', 'مواد تسمح بمرور الضوء من خلالها فنرى الأجسام خلفها بوضوح', 'مثل الزجاج الصافي والماء النقي والهواء.'],
+        ['المواد المعتمة', 'مواد لا تسمح بمرور الضوء من خلالها ولا نرى الأجسام خلفها', 'مثل الخشب والورق المقوى والحديد.'],
+        ['خسوف القمر', 'ظاهرة طبيعية تحدث عندما تقع الأرض بين الشمس والقمر على استقامة واحدة', 'يحجب ظل الأرض ضوء الشمس عن القمر.'],
+        ['كسوف الشمس', 'ظاهرة طبيعية تحدث عندما يقع القمر بين الأرض والشمس على استقامة واحدة', 'يحجب القمر ضوء الشمس عن جزء من الأرض.'],
+        ['المجرة', 'تجمع هائل من النجوم والغبار والغازات ترتبط معاً بقوة الجذب', 'تقع مجموعتنا الشمسية في مجرة درب التبانة.']
+      ];
+      sci6Terms.forEach(([term, def, exp]) => {
+        CURRICULUM_DATA[6].questions.science6.push(
+          makeQ(`ما التعريف العلمي لـ (${term}) في علوم السادس الابتدائي؟`, def, ['وحدة قياس التيار الكهربائي', 'اسم محافظة عراقية قديمة', 'نوع من الأفعال الخمسة'], `تذكر مصطلحات العلوم للصف السادس.`, `${term}: ${def}. ${exp}`),
+          makeQ(`ما المصطلح العلمي الذي يدل على: (${def})؟`, term, ['الكهرباء الساكنة', 'الجدول الدوري', 'البناء الضوئي'], `اختر المصطلح العلمي الصحيح.`, `المصطلح الصحيح هو (${term}): ${exp}`)
+        );
+      });
+      const sci6Extra = [
+        ['كم عدد عظام جسم الإنسان البالغ؟', '206 عظمات', '150 عظمة', '300 عظمة', '100 عظمة'],
+        ['كم عدد فقرات العمود الفقري للإنسان؟', '33 فقرة', '20 فقرة', '45 فقرة', '12 فقرة'],
+        ['أين تقع براعم المرورة على اللسان؟', 'في القسم الخلفي من اللسان', 'في مقدمة اللسان', 'على جانبي اللسان الأماميين', 'تحت اللسان'],
+        ['أين تقع براعم الحلاوة على اللسان؟', 'في مقدمة اللسان', 'في مؤخرة اللسان', 'في وسط اللسان', 'في الحلق'],
+        ['ما اسم الغدد التي تفرز العرق وتساعد في تنظيم درجة حرارة الجسم؟', 'الغدد العرقية في طبقة الأدمة', 'الغدد اللعابية', 'الغدد الدمعية', 'الغدد اللمفاوية'],
+        ['لماذا تكون الذرة متعادلة كهربائياً في حالتها الطبيعية؟', 'لأن عدد البروتونات الموجبة يساوي عدد الإلكترونات السالبة', 'لأنها لا تحتوي على شحنات', 'لأن النيوترونات موجبة', 'لأنها كبيرة الحجم'],
+        ['ما وحدة قياس التيار الكهربائي؟', 'الأمبير', 'الفولت', 'النيوتن', 'الواط'],
+        ['كيف يتم ربط الأجهزة الكهربائية في المنازل؟', 'على التوازي (لضمان استمرار عمل بقية الأجهزة إذا تعطل أحدها)', 'على التوالي فقط', 'بدون أسلاك', 'بواسطة الخشب'],
+        ['أي نوع من العتلات يكون فيه (المرتكز) بين القوة والمقاومة؟', 'عتلة من النوع الأول (مثل المقص والميزان)', 'عتلة من النوع الثاني', 'عتلة من النوع الثالث', 'البكرة الثابتة'],
+        ['أي نوع من العتلات تكون فيه (المقاومة) بين القوة والمرتكز؟', 'عتلة من النوع الثاني (مثل كسارة الجوز وعربة الحديقة)', 'عتلة من النوع الأول', 'عتلة من النوع الثالث', 'السطح المائل'],
+        ['أي نوع من العتلات تكون فيه (القوة) بين المرتكز والمقاومة؟', 'عتلة من النوع الثالث (مثل الملقط والمكنسة اليدوية)', 'عتلة من النوع الأول', 'عتلة من النوع الثاني', 'العجلة'],
+        ['ما السبب الرئيسي لتكون الظل خلف الأجسام المعتمة؟', 'سير الضوء في خطوط مستقيمة وعدم مروره عبر الجسم المعتم', 'انكسار الضوء في الماء', 'دوران القمر', 'قوة الجاذبية']
+      ];
+      sci6Extra.forEach(([q, c, w1, w2, w3]) => {
+        CURRICULUM_DATA[6].questions.science6.push(makeQ(q, c, [w1, w2, w3], 'تذكر دروس العلوم للصف السادس الابتدائي.', `الإجابة الصحيحة: ${c}.`));
+      });
+
+      // 10. SOCIAL STUDIES GRADE 6 (to 100)
+      const gov6List = [
+        ['دهوك', 'تقع في أقصى شمال وطننا العراق وتُعد إحدى محافظات إقليم كردستان', 'تشتهر بجبال بيخير وباكرمان ومصيف سولاف.'],
+        ['أربيل', 'عاصمة إقليم كردستان العراق وتقع في شمال وطننا', 'تشتهر بقلعتها الأثرية الشامخة وقمة جبل هلكرد وشلال كلي علي بك.'],
+        ['السليمانية', 'إحدى محافظات إقليم كردستان وتقع في شمال شرق العراق', 'تشتهر بجبال قنديل وبازيان ومصيف سرجنار وسد دوكان.'],
+        ['نينوى', 'تقع في القسم الشمالي الغربي من العراق ومركزها مدينة الموصل (أم الربيعين)', 'تضم آثار الحضر ونمرود وسد الموصل الكبير.'],
+        ['كركوك', 'تقع في منطقة انتقالية بين المنطقة المتموجة والسهل الرسوبي وتشتهر بحقول النفط', 'تضم قلعة كركوك الأثرية وحقول بابا كركر النفطية.'],
+        ['صلاح الدين', 'تقع شمال بغداد ومركزها مدينة تكريت وتضم مدينة سامراء الأثرية', 'تشتهر بملوية سامراء وقصر العاشق وسد سامراء.'],
+        ['ديالى', 'تقع في القسم الأوسط الشرقي من العراق ومركزها بعقوبة وتشتهر ببساتين الحمضيات', 'يجري فيها نهر ديالى وفيها سد حمرين.'],
+        ['بغداد', 'عاصمة جمهورية العراق وأكبر مدنه من حيث عدد السكان ويقسمها نهر دجلة إلى الكرخ والرصافة', 'بناها أبو جعفر المنصور وتضم المدرسة المستنصرية.'],
+        ['الأنبار', 'أكبر محافظات العراق من حيث المساحة وتقع في القسم الغربي من وطننا', 'يجري فيها نهر الفرات وتضم بحيرة الحبانية وسد حديثة.'],
+        ['واسط', 'تقع في القسم الشرقي الأوسط من منطقة السهل الرسوبي ومركزها مدينة الكوت', 'تضم سدة الكوت الشهيرة على نهر دجلة.'],
+        ['بابل', 'تقع في القسم الشمالي من الفرات الأوسط ومركزها مدينة الحلة', 'تضم آثار مدينة بابل التاريخية والجنائن المعلقة وبوابة عشتار.'],
+        ['كربلاء المقدسة', 'تقع في القسم الغربي الأوسط من العراق على حافة الهضبة الغربية', 'تضم الروضة الحسينية والروضة العباسية المقدستين وقصر الأخيضر.'],
+        ['الديوانية (القادسية)', 'تقع في الجزء الجنوبي الأوسط من السهل الرسوبي ويمر فيها شط الديوانية', 'تضم مدينة نفر الأثرية الشهيرة.'],
+        ['النجف الأشرف', 'تقع على الحافة الشرقية للهضبة الغربية وتضم مرقد الإمام علي (ع)', 'تضم مدينة الكوفة التاريخية ومسجدها الكبير.'],
+        ['ميسان', 'تقع في القسم الجنوبي الشرقي من العراق ومركزها مدينة العمارة', 'تشتهر بأهوارها الواسعة مثل هور الحويزة.'],
+        ['ذي قار', 'تقع في القسم الجنوبي من العراق ومركزها مدينة الناصرية', 'تضم مدينة أور الأثرية وزقورتها وأهوار الجبايش.'],
+        ['المثنى', 'تقع في القسم الجنوبي الغربي من العراق ومركزها مدينة السماوة', 'تضم مدينة الوركاء الأثرية التي اخترعت فيها الكتابة.'],
+        ['البصرة', 'تقع في أقصى جنوب العراق وهي منفذه البحري الوحيد على الخليج العربي', 'يلتقي فيها دجلة والفرات ليكوّنا شط العرب وتشتهر بالنخيل والنفط.']
+      ];
+      gov6List.forEach(([gov, loc, feat]) => {
+        CURRICULUM_DATA[6].questions.social6.push(
+          makeQ(`ما الموقع الجغرافي لمحافظة (${gov}) في العراق؟`, loc, ['تقع في قارة أوروبا', 'تقع على شواطئ المحيط الأطلسي', 'تقع في أقصى جنوب أفريقيا'], `تذكر خريطة المحافظات العراقية الـ 18.`, `محافظة ${gov}: ${loc}.`),
+          makeQ(`بماذا تشتهر محافظة (${gov}) من معالم حضارية أو طبيعية؟`, feat, ['بوجود جبال الألب الثلجية', 'بوجود نهر الأمازون', 'بوجود أهرامات الجيزة'], `تذكر أبرز معالم محافظة ${gov}.`, `تشتهر محافظة ${gov} بأنها: ${feat}`),
+          makeQ(`أي محافظة عراقية ينطبق عليها الوصف الآتي: (${feat})؟`, gov, ['بيروت', 'القاهرة', 'دمشق'], `اختر المحافظة العراقية الصحيحة.`, `المحافظة المقصودة هي (${gov}).`)
+        );
+      });
+      const soc6Extra = [
+        ['ما أكبر محافظة عراقية من حيث المساحة؟', 'محافظة الأنبار', 'محافظة بغداد', 'محافظة كربلاء', 'محافظة دهوك'],
+        ['ما أصغر محافظة عراقية من حيث المساحة وأكثرها سكاناً؟', 'محافظة بغداد', 'محافظة الأنبار', 'محافظة نينوى', 'محافظة المثنى'],
+        ['من أين ينبع نهرا دجلة والفرات؟', 'من المرتفعات الجبلية في تركيا', 'من الخليج العربي', 'من الهضبة الغربية', 'من بحيرة الثرثار'],
+        ['كم يبلغ طول شط العرب من كرمة علي حتى مصبه في الخليج العربي؟', 'حوالي 180 كم', '10 كم فقط', '1500 كم', '50 كم'],
+        ['ما اسم السد الكبير الواقع على نهر دجلة في محافظة نينوى؟', 'سد الموصل', 'سد حديثة', 'سد دوكان', 'سدة الهندية'],
+        ['ما اسم السد الواقع على نهر الفرات في محافظة الأنبار؟', 'سد حديثة', 'سد دربندخان', 'سد الموصل', 'سدة الكوت'],
+        ['أين تقع المدرسة المستنصرية التاريخية؟', 'في بغداد (جانب الرصافة)', 'في البصرة', 'في أربيل', 'في النجف'],
+        ['من بنى المدرسة المستنصرية في بغداد؟', 'الخليفة العباسي المستنصر بالله', 'أبو جعفر المنصور', 'حمورابي', 'المعتصم'],
+        ['ما اسم المدينة الأثرية في المثنى التي ظهر فيها أول حرف كتابي في التاريخ؟', 'مدينة الوركاء', 'مدينة الحضر', 'مدينة سامراء', 'مدينة تكريت'],
+        ['أين يقع قصر الأخيضر الأثري الشهير؟', 'في محافظة كربلاء المقدسة', 'في دهوك', 'في ديالى', 'في السليمانية'],
+        ['ما أهمية موقع العراق الجغرافي بين قارات العالم؟', 'يمثل حلقة وصل تجارية وحضارية بين قارات العالم القديم (آسيا وأفريقيا وأوروبا)', 'معزول عن العالم', 'يقع في القطب الشمالي', 'لا يمر به أي طريق تجاري'],
+        ['ما التضاريس التي تغطي القسم الشمالي والشمالي الشرقي من العراق؟', 'المنطقة الجبلية', 'الهضبة الغربية', 'السهل الرسوبي', 'الساحل البحري'],
+        ['ما التضاريس التي تشكل وسط وجنوب العراق وتتميز بخصوبة تربتها؟', 'السهل الرسوبي', 'المنطقة الجبلية', 'الهضبة الصحراوية', 'الجبال البركانية'],
+        ['ما المقصود بـ (المواطنة الصالحة)؟', 'حب الوطن والالتزام بالقوانين والمحافظة على الممتلكات العامة والوحدة الوطنية', 'إهمال الدراسة', 'عدم احترام النظام', 'تلويث البيئة'],
+        ['لماذا يتنوع الغطاء النباتي في العراق من الشمال إلى الجنوب؟', 'بسبب تنوع التضاريس والمناخ وكميات الأمطار الساقطة', 'لأن العراق لا توجد فيه أنهار', 'بسبب البرودة الشديدة طوال العام', 'لعدم وجود تربة صالحة'],
+        ['ما المحافظة التي تضم بحيرة ساوة الفريدة؟', 'محافظة المثنى', 'محافظة أربيل', 'محافظة دهوك', 'محافظة ديالى'],
+        ['ما المحافظة التي تضم مصيف شقلاوة ومصيف صلاح الدين؟', 'محافظة أربيل', 'محافظة البصرة', 'محافظة واسط', 'محافظة بابل'],
+        ['ما المحافظة التي تضم مصيف سرجنار وبحيرة دوكان؟', 'محافظة السليمانية', 'محافظة الأنبار', 'محافظة كربلاء', 'محافظة ميسان'],
+        ['ما المحافظة التي تضم مصيف سولاف وسرسنك؟', 'محافظة دهوك', 'محافظة ذي قار', 'محافظة ميسان', 'محافظة الديوانية'],
+        ['ما الذي يربط أبناء الشعب العراقي من الشمال إلى الجنوب؟', 'تاريخ مشترك ووطن واحد وأرض واحدة ومصير مشترك', 'لا شيء يربطهم', 'التنافس السلبي', 'الفرقة'],
+        ['أين يقع مرقد الإمامين العسكريين (عليهما السلام)؟', 'في مدينة سامراء بمحافظة صلاح الدين', 'في البصرة', 'في دهوك', 'في الأنبار'],
+        ['ما اسم الجسر العباسي الأثري الشهير في قضاء زاخو؟', 'جسر دلال', 'جسر الصرافية', 'جسر الأئمة', 'جسر الكوفة'],
+        ['ما المحافظة التي تشتهر بإنتاج التمور بكميات كبيرة وتُسمى مدينة السياب؟', 'محافظة البصرة', 'محافظة دهوك', 'محافظة السليمانية', 'محافظة نينوى'],
+        ['أين تقع بوابة عشتار والجنائن المعلقة؟', 'في مدينة بابل الأثرية', 'في سامراء', 'في تكريت', 'في الكوت'],
+        ['ما هو الرمز الوطني الذي يمثل سيادة العراق واستقلاله؟', 'العلم العراقي والنشيد الوطني (موطني)', 'إشارات المرور', 'علامات الطقس', 'خرائط الطرق'],
+        ['كيف نساهم في حماية البيئة في وطننا العراق؟', 'بزراعة الأشجار وترشيد المياه وعدم رمي النفايات في الأنهار والشوارع', 'بقطع الأشجار', 'بحرق الإطارات', 'بإهدار الماء'],
+        ['ما الفائدة الاقتصادية للسدود والخزانات في العراق؟', 'خزن المياه وتوليد الطاقة الكهربائية والوقاية من الفيضانات', 'تلوث المياه', 'تجفيف الأنهار', 'منع الزراعة'],
+        ['ما اسم نهر دجلة باللغة الإنجليزية كما ورد في المناهج؟', 'Tigris', 'Euphrates', 'Nile', 'Amazon'],
+        ['ما اسم نهر الفرات باللغة الإنجليزية كما ورد في المناهج؟', 'Euphrates', 'Tigris', 'Jordan', 'Thames'],
+        ['ماذا تعني كلمة (العراق) في التاريخ القديم؟', 'المستوطن أو البلاد ذات الجذور العريقة وبلاد ما بين النهرين', 'الصحراء الخالية', 'الجزيرة الجليدية', 'الجبل الواحد'],
+        ['ما المحافظة التي يمر فيها شط الغراف وشط الدجيل؟', 'محافظة واسط وذي قار', 'محافظة دهوك', 'محافظة الأنبار', 'محافظة أربيل'],
+        ['ما اسم المدينة التاريخية في نينوى التي كانت عاصمة الآشوريين؟', 'نمرود وآشور ونينوى', 'أور', 'الوركاء', 'الحلة'],
+        ['ما اسم السد الواقع على نهر ديالى؟', 'سد حمرين وسد دربندخان', 'سد حديثة', 'سد الموصل', 'سدة الهندية'],
+        ['أين تقع بحيرة الرزازة؟', 'بين محافظتي كربلاء المقدسة والأنبار', 'في أربيل', 'في دهوك', 'في البصرة'],
+        ['ما المحافظة التي تضم مدينة نفر الأثرية؟', 'محافظة الديوانية (القادسية)', 'محافظة كركوك', 'محافظة دهوك', 'محافظة السليمانية'],
+        ['بماذا تشتهر محافظة ديالى زراعياً؟', 'بزراعة الحمضيات (البرتقال والليمون) والنخيل', 'بزراعة التفاح الجبلي فقط', 'بصيد الأسماك البحرية', 'بزراعة الشاي'],
+        ['أين يقع قصر العاشق الأثري؟', 'في مدينة سامراء بمحافظة صلاح الدين', 'في البصرة', 'في السليمانية', 'في المثنى'],
+        ['ما هي أعلى قمة جبلية في سلسلة جبال حصاروست؟', 'قمة جبل هلكرد (3600 متر)', 'جبل مكحول', 'جبل حمرين', 'جبل سنجار']
+      ];
+      soc6Extra.forEach(([q, c, w1, w2, w3]) => {
+        CURRICULUM_DATA[6].questions.social6.push(makeQ(q, c, [w1, w2, w3], 'تذكر دروس الاجتماعيات للصف السادس الابتدائي.', `الإجابة الصحيحة: ${c}.`));
+      });
+
+      // 11. ISLAMIC GRADE 6 (to 100)
+      const isl6Terms = [
+        ['الإظهار الحلقي', 'إخراج النون الساكنة أو التنوين من مخرجهما من غير غنة إذا جاء بعدها أحد حروف الحلق الستة', 'حروفه: (ء، هـ، ع، ح، غ، خ).'],
+        ['الإدغام بغنة', 'إدخال النون الساكنة أو التنوين بحرف من حروف (ينمو) بحيث يصيران حرفاً واحداً مشدداً مع الغنة', 'حروفه: الياء، النون، الميم، الواو.'],
+        ['الإدغام بغير غنة', 'إدخال النون الساكنة أو التنوين باللام أو الراء من غير غنة', 'حروفه: اللام (ل) والراء (ر).'],
+        ['الإقلاب', 'قلب النون الساكنة أو التنوين ميماً مخفاة بغنة إذا جاء بعدها حرف الباء (ب)', 'مثل: (مِن بَعد) تُلفظ (مِمبَعد).'],
+        ['الإخفاء الحقيقي', 'النطق بالنون الساكنة أو التنوين بحالة وسط بين الإظهار والإدغام مع بقاء الغنة', 'يحدث عند بقية الحروف الـ 15.'],
+        ['الغنة', 'صوت لذيذ يخرج من الخيشوم (أعلى الأنف) ومقداره حركتان', 'يصاحب النون والميم المشددتين والإدغام والإخفاء.'],
+        ['سورة لقمان', 'سورة مكية تتضمن وصايا لقمان الحكيم لابنه بالتوحيد وبر الوالدين وإقامة الصلاة والتواضع', 'من السور المقررة في الصف السادس.'],
+        ['سورة الحجرات', 'سورة مدنية تضع قواعد الأخلاق الاجتماعية كالتثبت من الأخبار والنهي عن السخرية والتنابز والغيبة', 'سورة الآداب والأخلاق الإسلامية.'],
+        ['سورة الرحمن', 'سورة تُسمى عروس القرآن وتعدد نعم الله العظيمة وتكرر آية (فَبِأَيِّ آلَاءِ رَبِّكُمَا تُكَذِّبَانِ)', 'تبدأ باسم الله (الرحمن).'],
+        ['سورة النجم', 'سورة تتحدث عن صدق الوحي الذي نزل على النبي (ص) وعن رحلة المعراج وسدرة المنتهى', 'من السور المقررة للحفظ والفهم.'],
+        ['سورة الإنسان (الدهر)', 'سورة مدنية تذكر نعيم الأبرار في الجنة الذين يطعمون الطعام على حبه مسكيناً ويتيماً وأسيراً', 'من السور المقررة في الصف السادس.'],
+        ['سورة الأعلى', 'سورة مكية تسبح الله الأعلى وتذكر فلاح من تزكى وذكر اسم ربه فصلى', 'مقررة للحفظ في الصف السادس.'],
+        ['غزوة أحد', 'معركة وقعت في السنة الثالثة للهجرة قرب جبل أحد بالمدينة المنورة', 'خالف الرماة أمر النبي (ص) فنزلوا من الجبل لجمع الغنائم.'],
+        ['معركة الخندق (الأحزاب)', 'معركة وقعت في السنة الخامسة للهجرة وحفر فيها المسلمون خندقاً حول المدينة بمشورة سلمان الفارسي', 'انتصر المسلمون دون قتال مباشر بفضل الله.'],
+        ['صلح الحديبية', 'معاهدة سلام عقدها النبي (ص) مع قريش في السنة السادسة للهجرة وسماه القرآن فتحاً مبيناً', 'مهد لانتشار الإسلام ودخول الناس فيه أفواجاً.'],
+        ['فتح مكة المكرمة', 'وقع في السنة الثامنة للهجرة ودخل النبي (ص) مكة منتصراً وعفا عن أهلها قائلاً: اذهبوا فأنتم الطلقاء', 'حطم النبي (ص) الأصنام حول الكعبة المشرفة.'],
+        ['حجة الوداع', 'الحجة الوحيدة التي حجها النبي (ص) في السنة العاشرة للهجرة وألقى فيها خطبته العظيمة', 'أعلن فيها المساواة بين البشر وحرمة الدماء والأموال.'],
+        ['الإسراء والمعراج', 'معجزة عظيمة أُسري فيها بالنبي (ص) ليلاً من المسجد الحرام إلى المسجد الأقصى ثم عُرج به إلى السماوات العلا', 'فُرضت فيها الصلوات الخمس.'],
+        ['الغيبة', 'ذكرك أخاك المسلم في غيابه بما يكره وهي من الكبائر المحرمة', 'شبهها القرآن بأكل لحم الأخ ميتاً.'],
+        ['النميمة', 'نقل الكلام بين الناس بقصد الإفساد وإيقاع العداوة والبغضاء بينهم', 'نهى عنها الإسلام بشدة.'],
+        ['الإيثار', 'تفضيل الغير على النفس في الخير والمساعدة مع الحاجة إليه', 'من أسمى درجات الكرم والأخلاق.'],
+        ['التسامح والعفو', 'التجاوز عن إساءة الآخرين ومقابلة السيئة بالحسنة', 'يقوي المحبة والتماسك في المجتمع.'],
+        ['الحج', 'الركن الخامس من أركان الإسلام وهو قصد بيت الله الحرام في مكة لأداء مناسك مخصوصة في ذي الحجة', 'واجب على المسلم المستطيع مرة في العمر.'],
+        ['العمرة', 'زيارة بيت الله الحرام في مكة المكرمة للطواف والسعي في أي وقت من السنة', 'تُسمى الحج الأصغر.'],
+        ['صوم شهر رمضان', 'الركن الرابع من أركان الإسلام وهو الإمساك عن المفطرات من طلوع الفجر إلى غروب الشمس بنية التقرب إلى الله', 'يعلمنا الصبر والشعور بالفقراء.']
+      ];
+      isl6Terms.forEach(([term, def, exp]) => {
+        CURRICULUM_DATA[6].questions.islamic6.push(
+          makeQ(`ما المقصود بـ (${term}) في التربية الإسلامية للصف السادس؟`, def, ['قانون فيزياء يخص الكهرباء', 'محافظة عراقية في الشمال', 'فعل مضارع منصوب'], `تذكر دروس التربية الإسلامية للصف السادس.`, `${term}: ${def}. ${exp}`),
+          makeQ(`ما المصطلح الإسلامي الذي ينطبق على: (${def})؟`, term, ['المبتدأ والخبر', 'السهل الرسوبي', 'الكسوف الحلقي'], `اختر المصطلح الشرعي أو التاريخي المناسب.`, `الإجابة الصحيحة هي (${term}): ${exp}`)
+        );
+      });
+      const isl6Extra = [
+        ['ما أول وصية أوصى بها لقمان الحكيم ابنه في القرآن الكريم؟', 'عدم الشرك بالله تعالى لأن الشرك ظلم عظيم', 'جمع المال الكثير', 'التكبر على الناس', 'السفر البعيد'],
+        ['لماذا نهانا لقمان الحكيم عن رفع الصوت بشدة دون حاجة؟', 'لأن أنكر الأصوات لصوت الحمير', 'لأن الصوت العالي يطفئ المصابيح', 'لأنه يوقف المطر', 'لأنه يغير الوقت'],
+        ['ما عدد حروف الإخفاء الحقيقي في أحكام النون الساكنة؟', '15 حرفاً', '6 حروف', 'حرف واحد', 'حرفان'],
+        ['ما حكم النون الساكنة في كلمة (مِنْ رَبِّهِمْ)؟', 'إدغام بغير غنة (لوجود حرف الراء بعد النون)', 'إظهار حلقي', 'إقلاب', 'إخفاء'],
+        ['ما حكم النون الساكنة في كلمة (مَنْ يَعْمَلْ)؟', 'إدغام بغنة (لوجود حرف الياء من حروف ينمو)', 'إظهار حلقي', 'إقلاب', 'إدغام بغير غنة'],
+        ['ما حكم النون الساكنة في كلمة (أَنْعَمْتَ)؟', 'إظهار حلقي (لوجود حرف العين بعد النون)', 'إدغام', 'إقلاب', 'إخفاء'],
+        ['من هو الصحابي الذي أشار بحفر الخندق حول المدينة المنورة؟', 'سلمان الفارسي (رضي الله عنه)', 'خالد بن الوليد', 'أبو أيوب الأنصاري', 'صهيب الرومي'],
+        ['في أي شهر هجري وقع فتح مكة المكرمة؟', 'شهر رمضان المبارك (السنة الثامنة للهجرة)', 'شهر محرم', 'شهر رجب', 'شهر صفر'],
+        ['ما أول عمل قام به النبي (ص) عند وصوله إلى المدينة المنورة مهاجراً؟', 'بناء المسجد النبوي الشريف والمؤاخاة بين المهاجرين والأنصار', 'بناء قصر كبير', 'جمع الضرائب', 'السفر إلى الشام'],
+        ['من هو الصحابي الذي استضاف النبي (ص) في بيته عند وصوله إلى المدينة؟', 'أبو أيوب الأنصاري', 'حسان بن ثابت', 'أنس بن مالك', 'سعد بن معاذ'],
+        ['ما معنى (التثبت من الأخبار) في سورة الحجرات؟', 'التأكد من صحة الخبر قبل تصديقه ونشره بين الناس', 'نشر الإشاعات بسرعة', 'تصديق كل ما نسمعه', 'السخرية من الآخرين'],
+        ['ما هو معيار التفاضل بين الناس عند الله تعالى كما ورد في سورة الحجرات؟', 'التقوى والعمل الصالح (إِنَّ أَكْرَمَكُمْ عِنْدَ اللَّهِ أَتْقَاكُمْ)', 'المال والذهب', 'اللون والنسب', 'القوة الجسدية'],
+        ['من هو سيد الشهداء الذي استُشهد في غزوة أحد؟', 'حمزة بن عبد المطلب عم النبي (ص)', 'أبو سفيان', 'الوليد بن المغيرة', 'أبرهة'],
+        ['ما اسم السيدة الطاهرة بنت النبي (ص) وسيدة نساء العالمين؟', 'السيدة فاطمة الزهراء (عليها السلام)', 'السيدة حليمة', 'السيدة آمنة', 'السيدة بلقيس'],
+        ['من هما سبطا رسول الله (ص) وسيدا شباب أهل الجنة؟', 'الإمام الحسن والإمام الحسين (عليهما السلام)', 'قارون وهامان', 'أبرهة وجالوت', 'قابيل وهابيل'],
+        ['ما هي عقوبة شارب الخمر والمخدرات في الدنيا والآخرة؟', 'تذهب العقل وتدمر الصحة وتوجب غضب الله وعقابه', 'تزيد الذكاء', 'تقوي الجسم', 'لا ضرر فيها'],
+        ['ما واجبنا تجاه المرافق العامة والبيئة في الإسلام؟', 'النظافة من الإيمان وحماية البيئة من التلوث والإفساد', 'إتلاف الأشجار', 'تلويث الأنهار', 'الإسراف في الماء'],
+        ['ماذا قال النبي (ص) عن الإسراف في ماء الوضوء؟', 'لا تسرف في الماء ولو كنت على نهر جارٍ', 'أسرف كما تشاء', 'استخدم كل ماء النهر', 'لا تتوضأ بالماء'],
+        ['ما هي صفات المنافق الثلاث التي حذر منها النبي (ص)؟', 'إذا حدث كذب، وإذا وعد أخلف، وإذا اؤتمن خان', 'الصدق والأمانة والوفاء', 'الصلاة والصوم والزكاة', 'الكرم والشجاعة والحلم'],
+        ['ما جزاء من يزور مريضاً ويعوده في الإسلام؟', 'يغمره الله برحمته وتستغفر له الملائكة', 'يضيع وقته', 'لا أجر له', 'يُلام على ذلك'],
+        ['ما حكم النون الساكنة في كلمة (مِنْ بَعْدِ)؟', 'إقلاب (لوجود حرف الباء بعد النون الساكنة)', 'إظهار حلقي', 'إدغام بغنة', 'إدغام بغير غنة'],
+        ['ما حكم التنوين في قوله تعالى (غَفُورٌ رَحِيمٌ)؟', 'إدغام بغير غنة (لوجود الراء بعد التنوين)', 'إظهار', 'إقلاب', 'إخفاء'],
+        ['كم عدد الأشهر الحرم في الإسلام؟', 'أربعة أشهر (ذو القعدة، ذو الحجة، محرم، رجب)', 'شهران فقط', 'ستة أشهر', 'عشرة أشهر'],
+        ['ما اسم السورة التي نزلت في صلح الحديبية وبشرت المؤمنين بالنصر؟', 'سورة الفتح', 'سورة الفيل', 'سورة قريش', 'سورة التكاثر'],
+        ['ما الواجب على المسلم تجاه وطنه العراق؟', 'حبه والدفاع عنه والحفاظ على وحدته وخيراته وطلب العلم لخدمته', 'إهماله', 'تخريب ممتلكاته', 'التكاسل عن الدراسة'],
+        ['من هو الصحابي الجليل الملقب بـ (سيف الله المسلول)؟', 'خالد بن الوليد', 'بلال بن رباح', 'أبو ذر الغفاري', 'عمار بن ياسر'],
+        ['ما معنى (التواضع) الذي أمرنا به الإسلام؟', 'عدم التكبر على الناس واحترام الصغير والكبير', 'الذل والضعف', 'الغرور والتفاخر', 'إهانة الفقراء'],
+        ['ما هي الكتب السماوية الأربعة المذكورة في القرآن الكريم؟', 'القرآن الكريم، التوراة، الإنجيل، الزبور', 'الألفية والمعلقات', 'التاريخ والجغرافية', 'الرسائل والخطب'],
+        ['ما اسم الصحابي مؤذن الرسول (ص)؟', 'بلال بن رباح الحبشي', 'سلمان الفارسي', 'صهيب الرومي', 'زيد بن ثابت'],
+        ['ما جزاء البار بوالديه في الدنيا والآخرة؟', 'رضا الله تعالى والبركة في الرزق والعمر ودخول الجنة', 'غضب الله', 'الخسارة في الدنيا', 'الندم'],
+        ['كيف نتعامل مع زملائنا في المدرسة؟', 'بالمحبة والتعاون والاحترام والابتعاد عن السخرية والتنمر', 'بالتكبر والأنانية', 'بالخصام الدائم', 'بالغش في الامتحانات'],
+        ['ما معنى قوله تعالى: (وَتَعَاوَنُوا عَلَى الْبِرِّ وَالتَّقْوَى)؟', 'مساعدة بعضنا في أعمال الخير والطاعة وترك الشر والعدوان', 'التعاون على الظلم', 'عدم مساعدة المحتاج', 'الانعزال عن الناس'],
+        ['ما أول ركن من أركان الإسلام؟', 'الشهادتان (أشهد أن لا إله إلا الله وأن محمداً رسول الله)', 'الزكاة', 'الصوم', 'الحج'],
+        ['في أي مدينة يقع المسجد الأقصى المبارك؟', 'في مدينة القدس الشريف في فلسطين', 'في مكة المكرمة', 'في المدينة المنورة', 'في دمشق'],
+        ['ما ثواب قراءة الحرف الواحد من القرآن الكريم؟', 'حسنة والحسنة بعشر أمثالها', 'حسنة واحدة فقط', 'لا ثواب فيها', 'خمس حسنات'],
+        ['ماذا نقول عند الانتهاء من قراءة القرآن الكريم؟', 'صدق الله العلي العظيم', 'بسم الله الرحمن الرحيم', 'الحمد لله على الطعام', 'سبحان ربي الأعلى'],
+        ['من هو النبي الذي سُمي بـ (كليم الله)؟', 'نبي الله موسى (عليه السلام)', 'نبي الله عيسى (ع)', 'نبي الله نوح (ع)', 'نبي الله هود (ع)']
+      ];
+      isl6Extra.forEach(([q, c, w1, w2, w3]) => {
+        CURRICULUM_DATA[6].questions.islamic6.push(makeQ(q, c, [w1, w2, w3], 'تذكر دروس التربية الإسلامية للصف السادس الابتدائي.', `الإجابة الصحيحة: ${c}.`));
+      });
+
+      // 12. ENGLISH GRADE 6 (to 100)
+      const eng6Vocab = [
+        ['Engineer', 'مهندس', 'Jobs'],
+        ['IT programmer', 'مبرمج حاسوب', 'Jobs'],
+        ['Farmer', 'فلاح / مزارع', 'Jobs'],
+        ['Housewife', 'ربة بيت', 'Jobs'],
+        ['Doctor', 'طبيب', 'Jobs'],
+        ['Bus driver', 'سائق حافلة', 'Jobs'],
+        ['Builder', 'بنّاء', 'Jobs'],
+        ['Shop assistant', 'بائع في محل', 'Jobs'],
+        ['Office', 'مكتب', 'Workplaces'],
+        ['Building site', 'موقع بناء', 'Workplaces'],
+        ['Hospital', 'مستشفى', 'Workplaces'],
+        ['Roads', 'طرق', 'Workplaces'],
+        ['Oil refinery', 'مصفى نفط', 'Workplaces'],
+        ['Stomach ache', 'ألم في المعدة', 'Illnesses'],
+        ['Toothache', 'ألم في الأسنان', 'Illnesses'],
+        ['Earache', 'ألم في الأذن', 'Illnesses'],
+        ['Sore throat', 'التهاب الحلق', 'Illnesses'],
+        ['Cough', 'سعال (كحة)', 'Illnesses'],
+        ['Rash', 'طفح جلدي', 'Illnesses'],
+        ['Temperature', 'ارتفاع درجة الحرارة (حمى)', 'Illnesses'],
+        ['Broken arm', 'ذراع مكسورة', 'Illnesses'],
+        ['Tablet / Pill', 'قرص دواء', 'Health'],
+        ['Cotton', 'قطن', 'Materials'],
+        ['Leather', 'جلد', 'Materials'],
+        ['Wool', 'صوف', 'Materials'],
+        ['Denim', 'قماش الجينز', 'Materials'],
+        ['Glass', 'زجاج', 'Materials'],
+        ['Wood', 'خشب', 'Materials'],
+        ['Metal', 'معدن', 'Materials'],
+        ['Rubber', 'مطاط', 'Materials'],
+        ['Laptop', 'حاسوب محمول', 'Technology'],
+        ['Keyboard', 'لوحة المفاتيح', 'Technology'],
+        ['Mouse', 'فأرة الحاسوب', 'Technology'],
+        ['Screen', 'شاشة', 'Technology'],
+        ['Website', 'موقع إلكتروني', 'Technology'],
+        ['Password', 'كلمة المرور', 'Technology']
+      ];
+      eng6Vocab.forEach(([en, ar, topic]) => {
+        CURRICULUM_DATA[6].questions.english6.push(
+          makeQ(`ماذا تعني كلمة (${en}) في منهج السادس الابتدائي؟ (${topic})`, ar, ['ملعب كرة قدم', 'نهر طويل', 'حقيبة مدرسية'], `تذكر مفردات الوحدة (${topic}).`, `كلمة (${en}) تعني (${ar}).`),
+          makeQ(`ما الترجمة الإنجليزية الصحيحة لكلمة (${ar})؟`, en, ['Bicycle', 'Mountain', 'Elephant'], `اختر الكلمة الإنجليزية الصحيحة لـ (${ar}).`, `الترجمة الإنجليزية لـ (${ar}) هي (${en}).`)
+        );
+      });
+      const eng6Grammar = [
+        ['اختر الأداة الصحيحة: My uncle is ..... engineer.', 'an', 'a', 'the', 'two'],
+        ['اختر الأداة الصحيحة: My sister is ..... nurse.', 'a', 'an', 'are', 'were'],
+        ['اختر حرف الجر المناسب: I live ..... Baghdad.', 'in', 'on', 'at', 'under'],
+        ['اختر حرف الجر المناسب: She works ..... an office.', 'in', 'on', 'under', 'between'],
+        ['اختر حرف الجر المناسب: He works ..... a building site.', 'on', 'in', 'at', 'into'],
+        ['اختر حرف الجر المناسب: A housewife works ..... home.', 'at', 'on', 'into', 'under'],
+        ['ما هو جمع كلمة (Foot - قدم) في الإنجليزية؟', 'Feet', 'Foots', 'Feets', 'Footes'],
+        ['ما هو جمع كلمة (Child - طفل) في الإنجليزية؟', 'Children', 'Childs', 'Childrens', 'Childes'],
+        ['اختر الضمير الانعكاسي الصحيح: She looked at ..... in the mirror.', 'herself', 'himself', 'myself', 'themselves'],
+        ['اختر الضمير الانعكاسي الصحيح: He hurt ..... when he fell.', 'himself', 'herself', 'itself', 'ourselves'],
+        ['اختر الضمير الانعكاسي الصحيح: We enjoyed ..... at the park.', 'ourselves', 'myself', 'yourself', 'himself'],
+        ['اختر الضمير الانعكاسي الصحيح: They made the cake by .....', 'themselves', 'himself', 'herself', 'myself'],
+        ['اختر الكلمة المناسبة للنصيحة: You ..... eat healthy food and fruit.', 'should', 'shouldn’t', 'mustn’t', 'didn’t'],
+        ['اختر الكلمة المناسبة للتحذير: You ..... touch a hot saucepan.', 'mustn’t', 'should', 'can', 'are'],
+        ['اختر الكلمة الصحيحة: I have a toothache. You ..... go to the dentist.', 'should', 'shouldn’t', 'mustn’t', 'weren’t'],
+        ['أكمل الجملة: Cotton comes ..... a plant.', 'from', 'in', 'on', 'at'],
+        ['أكمل الجملة: Keys are made ..... metal.', 'of', 'from', 'at', 'on'],
+        ['اختر صيغة المقارنة الصحيحة: Jupiter is ..... than Earth.', 'bigger', 'big', 'biggest', 'more big'],
+        ['اختر صيغة التفضيل الصحيحة: Mercury is the ..... planet to the Sun.', 'closest', 'closer', 'close', 'more close'],
+        ['اختر الكلمة الصحيحة: I like tea, ..... I don’t like coffee.', 'but', 'and', 'so', 'or']
+      ];
+      eng6Grammar.forEach(([q, c, w1, w2, w3]) => {
+        CURRICULUM_DATA[6].questions.english6.push(makeQ(q, c, [w1, w2, w3], 'تذكر قواعد اللغة الإنجليزية للصف السادس الابتدائي.', `الإجابة الصحيحة: ${c}.`));
+      });
+
+      // Trim every subject bank to EXACTLY 100 unique questions
+      [4, 6].forEach(g => {
+        Object.keys(CURRICULUM_DATA[g].questions).forEach(subKey => {
+          CURRICULUM_DATA[g].questions[subKey] = CURRICULUM_DATA[g].questions[subKey].slice(0, 100);
+        });
+      });
+    }
+
+    buildFull100QuestionBanks();
+
+    /* ==========================================================================
        5. APPLICATION STATE & LOCALSTORAGE PERSISTENCE
        ========================================================================== */
     let currentGrade = null;
@@ -860,12 +1770,13 @@
     let fiftyUsedCurrent = false;
 
     const DEFAULT_PROFILE = {
-      stars: 20, // Starter gift stars!
+      stars: 20,
       xp: 0,
       level: 1,
       unlockedAvatars: ['hero_self', 'lion'],
       activeAvatar: 'hero_self',
-      customPhoto: null
+      customPhoto: null,
+      answeredQuestions: {}
     };
 
     let profiles = {
@@ -875,22 +1786,19 @@
 
     function loadProfile(grade) {
       try {
-        const saved = localStorage.getItem(`iraqi_heroes_g${grade}`);
+        const saved = localStorage.getItem(`iraqi_heroes_v2_g${grade}`);
         if (saved) {
-          return { ...DEFAULT_PROFILE, ...JSON.parse(saved) };
+          const parsed = JSON.parse(saved);
+          return { ...DEFAULT_PROFILE, ...parsed, answeredQuestions: parsed.answeredQuestions || {} };
         }
-      } catch (e) {
-        console.warn('LocalStorage unavailable:', e);
-      }
-      return { ...DEFAULT_PROFILE };
+      } catch (e) { console.warn(e); }
+      return { ...DEFAULT_PROFILE, answeredQuestions: {} };
     }
 
     function saveProfile(grade) {
       try {
-        localStorage.setItem(`iraqi_heroes_g${grade}`, JSON.stringify(profiles[grade]));
-      } catch (e) {
-        console.warn('Could not save profile:', e);
-      }
+        localStorage.setItem(`iraqi_heroes_v2_g${grade}`, JSON.stringify(profiles[grade]));
+      } catch (e) { console.warn(e); }
       updateHomePreviews();
     }
 
@@ -898,8 +1806,8 @@
       const heroLabel = grade === 4 ? 'يعقوب' : 'يوسف';
       return `
         <div class="w-full h-full flex flex-col items-center justify-center text-center p-1 bg-slate-900/20">
-          <span class="text-3xl leading-none mb-0.5">📷</span>
-          <span class="text-[10px] font-black text-slate-950 leading-tight">صورة ${heroLabel}</span>
+          <span class="text-2xl leading-none mb-0.5">📷</span>
+          <span class="text-[9px] font-black text-slate-950 leading-tight">${heroLabel}</span>
         </div>
       `;
     }
@@ -916,7 +1824,6 @@
       reader.onload = function(e) {
         const img = new Image();
         img.onload = function() {
-          // Compress & resize image nicely for localStorage
           const canvas = document.createElement('canvas');
           const size = 260;
           canvas.width = size;
@@ -982,17 +1889,16 @@
       toast.textContent = msg;
       toast.classList.remove('hidden');
       clearTimeout(toast._timer);
-      toast._timer = setTimeout(() => {
-        toast.classList.add('hidden');
-      }, 2600);
+      toast._timer = setTimeout(() => toast.classList.add('hidden'), 2600);
     }
 
     function goHome() {
       SoundFX.click();
+      VoiceReader.stop();
       currentGrade = null;
       document.getElementById('player-hud').classList.add('hidden');
       document.getElementById('player-hud').classList.remove('flex');
-      document.getElementById('header-subtitle').textContent = 'المنهاج الدراسي العراقي الممتع';
+      document.getElementById('header-subtitle').textContent = 'بنك الأسئلة الكامل (100 سؤال لكل مادة)';
       updateHomePreviews();
       showScreen('screen-grades');
     }
@@ -1021,7 +1927,6 @@
       document.getElementById('hud-level').textContent = p.level;
       document.getElementById('hud-stars').textContent = p.stars;
 
-      // XP bar logic (100 XP per level)
       const xpInLevel = p.xp % 100;
       document.getElementById('xp-text').textContent = `${xpInLevel} / 100 XP`;
       document.getElementById('xp-bar').style.width = `${Math.max(8, xpInLevel)}%`;
@@ -1041,10 +1946,25 @@
     function renderSubjects() {
       const grid = document.getElementById('subjects-grid');
       const subjects = CURRICULUM_DATA[currentGrade].subjects;
+      const gradeBank = CURRICULUM_DATA[currentGrade].questions;
+      const p = profiles[currentGrade];
       grid.innerHTML = '';
 
       subjects.forEach(sub => {
         const isMixed = sub.id.startsWith('mixed');
+        const totalInBank = isMixed ? 600 : gradeBank[sub.id].length;
+        let solvedCount = 0;
+
+        if (isMixed) {
+          Object.keys(gradeBank).forEach(k => {
+            solvedCount += (p.answeredQuestions[k] || []).length;
+          });
+        } else {
+          solvedCount = (p.answeredQuestions[sub.id] || []).length;
+        }
+
+        const pct = Math.min(100, Math.round((solvedCount / totalInBank) * 100));
+
         const card = document.createElement('div');
         card.onclick = () => startSubjectQuiz(sub.id);
         card.className = `hero-card cursor-pointer bg-gradient-to-br ${sub.color} rounded-3xl p-5 sm:p-6 border-2 ${isMixed ? 'border-amber-300 shadow-amber-500/30 sm:col-span-2 lg:col-span-1' : 'border-white/25'} shadow-xl flex flex-col justify-between relative overflow-hidden group`;
@@ -1054,15 +1974,26 @@
           <div>
             <div class="flex items-center justify-between mb-3">
               <span class="text-4xl">${sub.icon}</span>
-              <span class="bg-black/25 text-white text-xs font-extrabold px-3 py-1 rounded-full">
-                ${isMixed ? 'مكافأة مضاعفة ⭐' : '8 أسئلة'}
+              <span class="bg-black/30 text-amber-200 text-xs font-extrabold px-3 py-1 rounded-full">
+                ${solvedCount} / ${totalInBank} سؤال ✅
               </span>
             </div>
             <h3 class="text-xl sm:text-2xl font-black text-white mb-1.5">${sub.name}</h3>
-            <p class="text-white/90 text-xs sm:text-sm font-medium mb-4">${sub.desc}</p>
+            <p class="text-white/90 text-xs sm:text-sm font-medium mb-3">${sub.desc}</p>
+            
+            <!-- Subject 100-Question Mastery Progress Bar -->
+            <div class="mb-4">
+              <div class="flex justify-between text-[11px] font-bold text-white/90 mb-1">
+                <span>نسبة الإنجاز في المادة</span>
+                <span>${pct}%</span>
+              </div>
+              <div class="w-full h-2.5 bg-black/35 rounded-full overflow-hidden">
+                <div class="h-full bg-amber-300 rounded-full transition-all duration-500" style="width: ${pct}%"></div>
+              </div>
+            </div>
           </div>
           <button class="w-full btn-3d bg-white/95 hover:bg-white text-slate-950 font-black py-2.5 rounded-2xl text-sm sm:text-base shadow">
-            انطلق الآن 🚀
+            ${solvedCount > 0 && solvedCount < totalInBank ? 'أكمل تحدي الـ 100 سؤال 🚀' : 'ابدأ ماراثون الـ 100 سؤال 🚀'}
           </button>
         `;
         grid.appendChild(card);
@@ -1070,7 +2001,7 @@
     }
 
     /* ==========================================================================
-       7. QUIZ GAMEPLAY LOGIC
+       7. QUIZ GAMEPLAY LOGIC (FULL 100-QUESTION MARATHON PER SUBJECT!)
        ========================================================================== */
     function shuffleArray(arr) {
       const copy = [...arr];
@@ -1086,16 +2017,25 @@
       currentSubjectId = subjectId;
       const gradeBank = CURRICULUM_DATA[currentGrade].questions;
       const subInfo = CURRICULUM_DATA[currentGrade].subjects.find(s => s.id === subjectId);
+      const p = profiles[currentGrade];
       
       let pool = [];
       if (subjectId.startsWith('mixed')) {
-        // Gather questions from all subjects in this grade
-        Object.values(gradeBank).forEach(qList => {
-          pool.push(...qList);
+        Object.entries(gradeBank).forEach(([subKey, qList]) => {
+          const solvedSet = new Set(p.answeredQuestions[subKey] || []);
+          qList.forEach(qObj => pool.push({ ...qObj, _subKey: subKey, _solved: solvedSet.has(qObj.q) }));
         });
-        currentQuestions = shuffleArray(pool).slice(0, 10);
+        const unsolved = shuffleArray(pool.filter(q => !q._solved));
+        const solved = shuffleArray(pool.filter(q => q._solved));
+        // Full 100-question mixed challenge from all 600 questions
+        currentQuestions = [...unsolved, ...solved].slice(0, 100);
       } else {
-        currentQuestions = shuffleArray(gradeBank[subjectId]).slice(0, 8);
+        const solvedSet = new Set(p.answeredQuestions[subjectId] || []);
+        const allQ = gradeBank[subjectId].map(qObj => ({ ...qObj, _subKey: subjectId, _solved: solvedSet.has(qObj.q) }));
+        const unsolved = shuffleArray(allQ.filter(q => !q._solved));
+        const solved = shuffleArray(allQ.filter(q => q._solved));
+        // Full 100-question session for the selected subject!
+        currentQuestions = [...unsolved, ...solved].slice(0, 100);
       }
 
       currentIndex = 0;
@@ -1124,16 +2064,15 @@
       document.getElementById('streak-count').textContent = streak;
       document.getElementById('streak-icon').className = streak >= 2 ? 'text-lg animate-fire' : 'text-lg';
 
+      document.getElementById('q-tag').textContent = qObj._solved ? 'مراجعة سؤال سابق 🔄' : 'سؤال جديد من الـ 100 ✨';
       document.getElementById('question-text').textContent = qObj.q;
       document.getElementById('hint-box').classList.add('hidden');
       document.getElementById('feedback-box').classList.add('hidden');
 
-      // Enable power-ups
       document.getElementById('btn-5050').disabled = false;
       document.getElementById('btn-hint').disabled = false;
       document.getElementById('btn-skip').disabled = false;
 
-      // Render 4 options
       const optionsGrid = document.getElementById('options-grid');
       optionsGrid.innerHTML = '';
       const optionLetters = ['أ', 'ب', 'ج', 'د'];
@@ -1151,13 +2090,15 @@
         `;
         optionsGrid.appendChild(btn);
       });
+
+      // Automatically read the question and all 4 options aloud in fluent Arabic
+      VoiceReader.readCurrentQuestion();
     }
 
     function handleAnswer(selectedIdx) {
       if (answeredCurrent) return;
       answeredCurrent = true;
 
-      // Disable power-ups after answering
       document.getElementById('btn-5050').disabled = true;
       document.getElementById('btn-hint').disabled = true;
       document.getElementById('btn-skip').disabled = true;
@@ -1166,7 +2107,6 @@
       const isCorrect = selectedIdx === qObj.ans;
       const isMixed = currentSubjectId.startsWith('mixed');
 
-      // Highlight buttons
       qObj.options.forEach((_, idx) => {
         const btn = document.getElementById(`opt-btn-${idx}`);
         btn.disabled = true;
@@ -1190,16 +2130,21 @@
         streak++;
         if (streak > maxStreak) maxStreak = streak;
 
-        // Calculate earned stars (base 10 + streak bonus + mixed bonus)
         const streakBonus = streak >= 3 ? 5 : 0;
         const mixedBonus = isMixed ? 5 : 0;
         const earned = 10 + streakBonus + mixedBonus;
         roundStars += earned;
 
-        // Update player profile
         const p = profiles[currentGrade];
         p.stars += earned;
         p.xp += 15;
+
+        const subKey = qObj._subKey;
+        if (!p.answeredQuestions[subKey]) p.answeredQuestions[subKey] = [];
+        if (!p.answeredQuestions[subKey].includes(qObj.q)) {
+          p.answeredQuestions[subKey].push(qObj.q);
+        }
+
         const newLevel = Math.floor(p.xp / 100) + 1;
         if (newLevel > p.level) {
           p.level = newLevel;
@@ -1213,8 +2158,20 @@
 
         fbBox.className = 'mt-6 rounded-2xl p-4 sm:p-5 border-2 bg-emerald-950/80 border-emerald-400 text-emerald-100 animate-pop';
         fbIcon.textContent = streak >= 3 ? '🔥' : '🌟';
+        const heroName = CURRICULUM_DATA[currentGrade].heroName;
+        const praiseList = [
+          `أحسنت يا بطل يا ${heroName}! إجابة صحيحة ورائعة.`,
+          `ممتاز يا ${heroName}! ذكاء خارق وإجابة موفقة.`,
+          `بارك الله فيك يا ${heroName}! إجابة صحيحة، استمر في التألق.`,
+          `رائع جداً يا بطل! لقد أجبت إجابة صحيحة.`
+        ];
+        const chosenPraise = streak >= 3
+          ? `ما شاء الله يا ${heroName}! سلسلة من ${streak} إجابات صحيحة متتالية!`
+          : praiseList[currentIndex % praiseList.length];
+
         fbTitle.textContent = streak >= 3 ? `إجابة خارقة! سلسلة ${streak} إجابات (+${earned} ⭐)` : `أحسنت يا بطل! (+${earned} ⭐)`;
         fbExp.textContent = `معلومة ذكية: ${qObj.exp}`;
+        VoiceReader.speak(`${chosenPraise} ${qObj.exp}`, 0.95, 1.06);
       } else {
         SoundFX.wrong();
         streak = 0;
@@ -1223,8 +2180,10 @@
 
         fbBox.className = 'mt-6 rounded-2xl p-4 sm:p-5 border-2 bg-rose-950/80 border-rose-400 text-rose-100 animate-pop';
         fbIcon.textContent = '💪';
+        const heroName = CURRICULUM_DATA[currentGrade].heroName;
         fbTitle.textContent = 'حاول في السؤال القادم يا بطل!';
         fbExp.textContent = `الإجابة الصحيحة هي (${qObj.options[qObj.ans]}). ${qObj.exp}`;
+        VoiceReader.speak(`لا بأس يا ${heroName}، حاول مرة أخرى في السؤال القادم. الإجابة الصحيحة هي: ${qObj.options[qObj.ans]}. ${qObj.exp}`, 0.93, 1.0);
       }
 
       const nextBtn = document.getElementById('next-q-btn');
@@ -1234,6 +2193,7 @@
 
     function nextQuestion() {
       SoundFX.click();
+      VoiceReader.stop();
       currentIndex++;
       if (currentIndex < currentQuestions.length) {
         renderQuestion();
@@ -1259,33 +2219,22 @@
       } else if (ratio >= 0.5) {
         document.getElementById('result-trophy').textContent = '🥈';
         document.getElementById('result-title').textContent = 'رائع جداً! تقدم ممتاز';
-        document.getElementById('result-subtitle').textContent = 'استمر في اللعب لتجمع نجوماً أكثر!';
+        document.getElementById('result-subtitle').textContent = 'استمر في اللعب لتكمل الـ 100 سؤال!';
       } else {
         document.getElementById('result-trophy').textContent = '🌟';
         document.getElementById('result-title').textContent = 'بداية شجاعة يا بطل!';
-        document.getElementById('result-subtitle').textContent = 'كل محاولة تجعلك أذكى وأقوى، جرب مرة أخرى!';
+        document.getElementById('result-subtitle').textContent = 'كل محاولة تجعلك أذكى وأقوى، جرب جولة جديدة!';
       }
 
       showScreen('screen-result');
     }
 
-    function replaySubject() {
-      startSubjectQuiz(currentSubjectId);
-    }
-
-    function backToSubjects() {
-      SoundFX.click();
-      renderSubjects();
-      showScreen('screen-subjects');
-    }
-
-    function exitQuiz() {
-      SoundFX.click();
-      showScreen('screen-subjects');
-    }
+    function replaySubject() { startSubjectQuiz(currentSubjectId); }
+    function backToSubjects() { SoundFX.click(); VoiceReader.stop(); renderSubjects(); showScreen('screen-subjects'); }
+    function exitQuiz() { SoundFX.click(); VoiceReader.stop(); renderSubjects(); showScreen('screen-subjects'); }
 
     /* ==========================================================================
-       8. POWER-UPS / HELPERS (50/50, HINT, SKIP)
+       8. POWER-UPS / HELPERS
        ========================================================================== */
     function use5050() {
       if (answeredCurrent || fiftyUsedCurrent) return;
@@ -1295,7 +2244,6 @@
         showToast('تحتاج إلى 5 نجوم ⭐ لاستخدام حذف إجابتين!');
         return;
       }
-
       SoundFX.powerup();
       p.stars -= 5;
       saveProfile(currentGrade);
@@ -1305,9 +2253,7 @@
 
       const qObj = currentQuestions[currentIndex];
       const wrongIndices = [0, 1, 2, 3].filter(i => i !== qObj.ans);
-      const toHide = shuffleArray(wrongIndices).slice(0, 2);
-
-      toHide.forEach(idx => {
+      shuffleArray(wrongIndices).slice(0, 2).forEach(idx => {
         const btn = document.getElementById(`opt-btn-${idx}`);
         btn.disabled = true;
         btn.classList.add('opacity-20', 'pointer-events-none');
@@ -1323,7 +2269,6 @@
         showToast('تحتاج إلى 5 نجوم ⭐ للحصول على تلميح ذكي!');
         return;
       }
-
       SoundFX.powerup();
       p.stars -= 5;
       saveProfile(currentGrade);
@@ -1331,8 +2276,7 @@
       hintUsedCurrent = true;
       document.getElementById('btn-hint').disabled = true;
 
-      const qObj = currentQuestions[currentIndex];
-      document.getElementById('hint-text').textContent = qObj.hint;
+      document.getElementById('hint-text').textContent = currentQuestions[currentIndex].hint;
       document.getElementById('hint-box').classList.remove('hidden');
     }
 
@@ -1344,7 +2288,6 @@
         showToast('تحتاج إلى 8 نجوم ⭐ لتخطي السؤال!');
         return;
       }
-
       SoundFX.powerup();
       p.stars -= 8;
       saveProfile(currentGrade);
@@ -1354,10 +2297,9 @@
     }
 
     /* ==========================================================================
-       9. REWARD SHOP & AVATAR UNLOCK SYSTEM
+       9. REWARD SHOP MODAL LOGIC
        ========================================================================== */
     function openShop() {
-      if (!currentGrade) return;
       SoundFX.click();
       renderShop();
       document.getElementById('shop-modal').classList.remove('hidden');
@@ -1375,80 +2317,56 @@
       grid.innerHTML = '';
 
       SHOP_ITEMS.forEach(item => {
-        const isUnlocked = p.unlockedAvatars.includes(item.id);
-        const isActive = p.activeAvatar === item.id;
-
+        const unlocked = p.unlockedAvatars.includes(item.id);
+        const active = p.activeAvatar === item.id;
         const card = document.createElement('div');
-        card.className = `rounded-2xl p-4 border-2 flex flex-col items-center text-center transition-all ${
-          isActive
-            ? 'bg-amber-400/20 border-amber-300 shadow-lg shadow-amber-500/20'
-            : isUnlocked
-            ? 'bg-white/10 border-white/20'
-            : 'bg-slate-950/60 border-white/10'
-        }`;
-
-        let btnHtml = '';
-        if (isActive) {
-          btnHtml = `<span class="w-full py-2 rounded-xl bg-emerald-500 text-slate-950 font-black text-xs">مُختار حالياً ✅</span>`;
-        } else if (isUnlocked) {
-          btnHtml = `<button onclick="equipAvatar('${item.id}')" class="w-full btn-3d py-2 rounded-xl bg-sky-500 hover:bg-sky-400 text-white font-black text-xs">اختيار الشخصية</button>`;
+        card.className = `rounded-2xl p-4 border-2 text-center flex flex-col items-center justify-between ${active ? 'bg-amber-500/25 border-amber-300' : 'bg-white/10 border-white/15'}`;
+        
+        let actionBtn = '';
+        if (active) {
+          actionBtn = `<span class="w-full bg-emerald-500 text-slate-950 font-black py-1.5 rounded-xl text-xs">مُفعّل حالياً ✅</span>`;
+        } else if (unlocked) {
+          actionBtn = `<button onclick="equipAvatar('${item.id}')" class="w-full btn-3d bg-sky-500 hover:bg-sky-400 text-white font-black py-1.5 rounded-xl text-xs">اختيار</button>`;
         } else {
-          btnHtml = `<button onclick="buyAvatar('${item.id}')" class="w-full btn-3d py-2 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-black text-xs">فتح بـ ${item.cost} ⭐</button>`;
-        }
-
-        let visualHtml = `<div class="text-5xl mb-2 ${!isUnlocked ? 'grayscale opacity-75' : 'animate-float'}">${item.emoji}</div>`;
-        if (item.id === 'hero_self') {
-          const inner = p.customPhoto
-            ? `<img src="${p.customPhoto}" class="w-full h-full object-cover" />`
-            : getDefaultHeroSvg(currentGrade);
-          visualHtml = `<div class="w-16 h-16 rounded-2xl overflow-hidden border-2 border-amber-300 mb-2 animate-float">${inner}</div>`;
+          actionBtn = `<button onclick="buyAvatar('${item.id}', ${item.cost})" class="w-full btn-3d bg-amber-400 hover:bg-amber-300 text-slate-950 font-black py-1.5 rounded-xl text-xs">شراء (${item.cost} ⭐)</button>`;
         }
 
         card.innerHTML = `
-          ${visualHtml}
+          <div class="text-4xl mb-2">${item.emoji}</div>
           <div class="font-black text-sm text-white mb-3">${item.title}</div>
-          ${btnHtml}
+          ${actionBtn}
         `;
         grid.appendChild(card);
       });
     }
 
-    function buyAvatar(itemId) {
-      const p = profiles[currentGrade];
-      const item = SHOP_ITEMS.find(i => i.id === itemId);
-      if (!item || p.unlockedAvatars.includes(itemId)) return;
+    function equipAvatar(id) {
+      SoundFX.click();
+      profiles[currentGrade].activeAvatar = id;
+      saveProfile(currentGrade);
+      updateHUD();
+      renderShop();
+    }
 
-      if (p.stars < item.cost) {
+    function buyAvatar(id, cost) {
+      const p = profiles[currentGrade];
+      if (p.stars < cost) {
         SoundFX.wrong();
-        showToast(`تحتاج إلى ${item.cost} نجمة ⭐ لفتح ${item.title}!`);
+        showToast(`تحتاج إلى ${cost} نجمة ⭐ لشراء هذا الوسام!`);
         return;
       }
-
       SoundFX.victory();
-      launchConfetti();
-      p.stars -= item.cost;
-      p.unlockedAvatars.push(itemId);
-      p.activeAvatar = itemId;
+      p.stars -= cost;
+      p.unlockedAvatars.push(id);
+      p.activeAvatar = id;
       saveProfile(currentGrade);
       updateHUD();
       renderShop();
-      showToast(`🎉 مبروك! حصلت على شخصية (${item.title})!`);
+      showToast('🎉 مبروك! تم فتح الشخصية الجديدة!');
     }
 
-    function equipAvatar(itemId) {
-      SoundFX.click();
-      const p = profiles[currentGrade];
-      if (!p.unlockedAvatars.includes(itemId)) return;
-      p.activeAvatar = itemId;
-      saveProfile(currentGrade);
-      updateHUD();
-      renderShop();
-    }
-
-    // Initialize on load
-    window.onload = function () {
-      updateHomePreviews();
-    };
+    // Initialize Home Screen on Load
+    updateHomePreviews();
   </script>
 </body>
 </html>
